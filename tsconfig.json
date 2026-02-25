@@ -8,14 +8,9 @@
         "module": "CommonJS",
         "declaration": true,
         "sourceMap": true,
-        "outDir": "./dist",
-        "rootDir": "./fable_output",
         "strict": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
         "forceConsistentCasingInFileNames": true
-    },
-    "include": [
-        "fable_output/**/*"
-    ]
+    }
 }

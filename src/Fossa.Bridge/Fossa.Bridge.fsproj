@@ -1,5 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
@@ -8,14 +7,11 @@
     <Authors>Fossa Contributors</Authors>
     <Description>Shared Domain Models and DTOs for Fossa UI and API</Description>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="Models\DTOs.fs" />
     <Compile Include="Services\Validation.fs" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Fable.Core" Version="4.4.0" />
   </ItemGroup>
-
 </Project>

@@ -8,4 +8,4 @@ param (
     $Instance
 )
 
-.\trigger.ps1 -Task Pack -Instance $Instance -Version $Version
+.\trigger.ps1 -Task Publish -Instance $Instance -Version $Version

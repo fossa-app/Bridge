@@ -607,5 +607,3 @@ FodyWeavers.xsd
 # Repository Specific
 .trash
 .idea/
-dist/
-fable_output/

@@ -11,16 +11,21 @@ module Validation =
             false
         else
             try
-                Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(250.0))
-            with
-            | :? RegexMatchTimeoutException -> false
+                Regex.IsMatch(
+                    email,
+                    @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+                    RegexOptions.IgnoreCase,
+                    TimeSpan.FromMilliseconds(250.0)
+                )
+            with :? RegexMatchTimeoutException ->
+                false
 
     let validateUserProfile (user: UserProfile) : string list =
         let mutable errors = []
 
         if String.IsNullOrWhiteSpace(user.Username) then
             errors <- "Username is required." :: errors
-            
+
         if user.Username <> null && user.Username.Length < 3 then
             errors <- "Username must be at least 3 characters long." :: errors
 
@@ -35,6 +40,7 @@ module Validation =
 
         if user.DateOfBirth.HasValue then
             let dob = user.DateOfBirth.Value
+
             if dob > DateTimeOffset.UtcNow then
                 errors <- "Date of Birth cannot be in the future." :: errors
 
