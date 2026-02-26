@@ -179,17 +179,19 @@ Task BuildProject EstimateVersion, {
     $project = Resolve-Path -Path 'src/Fossa.Bridge/Fossa.Bridge.fsproj'
     $nextVersion = $state.NextVersion
 
-    Exec { dotnet build $project /v:m /p:Configuration=Release /p:version=$nextVersion }
+    Exec { dotnet build $project /v:m --configuration Release /p:version=$nextVersion }
 }
 
 # Synopsis: Build
 Task Build Format, BuildProject, {
     $solution = Resolve-Path -Path 'Fossa.Bridge.slnx'
-    Exec { dotnet build $solution /p:Configuration=Release }
+    Exec { dotnet build $solution --configuration Release }
 }
 
 # Synopsis: Unit Test
 Task UnitTest Build, {
+    $project = Resolve-Path -Path 'tests/Fossa.Bridge.Tests/Fossa.Bridge.Tests.fsproj'
+    Exec { dotnet run --project $project --configuration Release }
 }
 
 # Synopsis: Functional Test
