@@ -8,7 +8,7 @@
     <Description>Shared Domain Models and DTOs for Fossa UI and API</Description>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Models\DTOs.fs" />
+    <Compile Include="Models\ApiModels.fs" />
     <Compile Include="Services\Validation.fs" />
   </ItemGroup>
   <ItemGroup>
