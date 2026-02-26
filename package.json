@@ -1,5 +1,5 @@
 {
-  "name": "@fossa/bridge",
+  "name": "@fossa-app/bridge",
   "version": "1.0.0",
   "description": "Shared Domain Models and DTOs for Fossa UI and API",
   "main": "dist/index.js",

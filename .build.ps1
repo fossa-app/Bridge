@@ -236,7 +236,7 @@ Task PackNPM Build, Test, {
     Exec { dotnet fable $projectPath --outDir $fableOutputArtifactsFolder --language typescript }
     Exec { npm version $nextVersion --no-git-tag-version --allow-same-version }
     Exec { npm install }
-    
+
     $baseTsConfig = (Resolve-Path .\tsconfig.json).Path.Replace('\', '/')
     $tempTsConfigPath = Join-Path -Path $buildArtifactsFolder -ChildPath 'tsconfig.build.json'
     $fablePattern = "$($fableOutputArtifactsFolder.Replace('\', '/'))/**/*"
