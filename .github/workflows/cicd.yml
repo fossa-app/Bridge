@@ -27,22 +27,11 @@ jobs:
         with:
           lfs: true
           fetch-depth: 0
-      - name: Set up Docker with containerd
-        uses: docker/setup-docker-action@v4
-        with:
-          daemon-config: |
-            {
-              "features": {
-                "containerd-snapshotter": true
-              }
-            }
       - name: "Install .NET Core SDK"
         uses: actions/setup-dotnet@v5.1.0
       - name: "Install InvokeBuild Module"
         shell: pwsh
         run: Install-Module -Name InvokeBuild -Force
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
       - name: "Restore"
         shell: pwsh
         run: .\restore.ps1 -Instance ${{github.run_id}}
@@ -87,15 +76,6 @@ jobs:
         with:
           name: ".trash"
           path: "./.trash"
-      - name: Set up Docker with containerd
-        uses: docker/setup-docker-action@v4
-        with:
-          daemon-config: |
-            {
-              "features": {
-                "containerd-snapshotter": true
-              }
-            }
       - name: "Install InvokeBuild Module"
         shell: pwsh
         run: Install-Module -Name InvokeBuild -Force
