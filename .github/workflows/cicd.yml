@@ -73,8 +73,8 @@ jobs:
     needs: ci
     if: github.event_name == 'release'
     environment:
-      name: "DockerHub"
-      url: https://hub.docker.com/r/tiksn/fossa-api
+      name: "Release"
+      url: "https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
