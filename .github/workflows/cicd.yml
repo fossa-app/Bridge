@@ -101,6 +101,7 @@ jobs:
         run: Install-Module -Name InvokeBuild -Force
       - name: "Publish"
         env:
-          DOCKER_ACCESS_TOKEN: ${{secrets.DOCKER_ACCESS_TOKEN}}
+          NUGET_API_KEY: ${{secrets.NUGET_API_KEY}}
+          NPM_TOKEN: ${{secrets.NPM_TOKEN}}
         shell: pwsh
         run: .\publish.ps1 -Instance ${{github.run_id}}
