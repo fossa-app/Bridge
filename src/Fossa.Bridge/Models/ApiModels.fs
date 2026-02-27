@@ -11,6 +11,12 @@ type AddressModel =
       PostalCode: string
       CountryCode: string }
 
+type ClientRetrievalModel =
+    { ClientId: Guid
+      ClientName: string
+      TenantId: Guid }
+
+
 type BranchModificationModel =
     { Name: string
       TimeZoneId: string
