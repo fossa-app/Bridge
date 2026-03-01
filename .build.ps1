@@ -258,6 +258,7 @@ Task PackNPM Build, Test, {
 
     Exec { npm run build -- --project $tempTsConfigPath }
     Exec { npm pack --pack-destination $buildArtifactsFolder }
+    Exec { npm version "1.0.0" --no-git-tag-version --allow-same-version }
 
     $npmPackage = Get-ChildItem -Path $buildArtifactsFolder -Filter '*.tgz' | Select-Object -First 1
 
