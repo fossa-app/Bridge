@@ -115,7 +115,7 @@ Task RestoreTools Clean, {
 
 # Synopsis: Restore NuGet packages
 Task RestoreNuGetPackages Clean, EnsureCentralPackageVersions, {
-    $solution = Resolve-Path -Path 'Fossa.Bridge.slnx'
+    $solution = Resolve-Path -Path 'Bridge.slnx'
     Exec { dotnet restore $solution }
 }
 
@@ -150,7 +150,7 @@ Task FormatXmlFiles Clean, {
 
 # Synopsis: Format Fantomas
 Task FormatFantomas Restore, {
-    $solution = Resolve-Path -Path 'Fossa.Bridge.slnx'
+    $solution = Resolve-Path -Path 'Bridge.slnx'
     Exec { dotnet fantomas . }
 }
 
@@ -176,7 +176,7 @@ Task EstimateVersion Restore, {
 # Synopsis: Build Project
 Task BuildProject EstimateVersion, {
     $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
-    $project = Resolve-Path -Path 'src/Fossa.Bridge/Fossa.Bridge.fsproj'
+    $project = Resolve-Path -Path 'src/Bridge/Bridge.fsproj'
     $nextVersion = $state.NextVersion
 
     Exec { dotnet build $project /v:m --configuration Release /p:version=$nextVersion }
@@ -184,13 +184,13 @@ Task BuildProject EstimateVersion, {
 
 # Synopsis: Build
 Task Build Format, BuildProject, {
-    $solution = Resolve-Path -Path 'Fossa.Bridge.slnx'
+    $solution = Resolve-Path -Path 'Bridge.slnx'
     Exec { dotnet build $solution --configuration Release }
 }
 
 # Synopsis: Unit Test
 Task UnitTest Build, {
-    $project = Resolve-Path -Path 'tests/Fossa.Bridge.Tests/Fossa.Bridge.Tests.fsproj'
+    $project = Resolve-Path -Path 'tests/Bridge.Tests/Bridge.Tests.fsproj'
     Exec { dotnet run --project $project --configuration Release }
 }
 
@@ -212,7 +212,7 @@ Task PackNuGet Build, Test, {
     $state = Import-Clixml -Path ".\.trash\$Instance\state.clixml"
     $buildArtifactsFolder = $state.BuildArtifactsFolder
     $nextVersion = $state.NextVersion
-    $projectPath = Resolve-Path -Path 'src/Fossa.Bridge/Fossa.Bridge.fsproj'
+    $projectPath = Resolve-Path -Path 'src/Bridge/Bridge.fsproj'
 
     Exec { dotnet pack $projectPath /v:m /p:Configuration=Release /p:version=$nextVersion --output $buildArtifactsFolder }
 
@@ -231,7 +231,7 @@ Task PackNPM Build, Test, {
     $distArtifactsFolder = $state.DistArtifactsFolder
     $fableOutputArtifactsFolder = $state.FableOutputArtifactsFolder
     $nextVersion = $state.NextVersion
-    $projectPath = Resolve-Path -Path 'src/Fossa.Bridge/Fossa.Bridge.fsproj'
+    $projectPath = Resolve-Path -Path 'src/Bridge/Bridge.fsproj'
 
     Exec { dotnet fable $projectPath --outDir $fableOutputArtifactsFolder --language typescript }
     Exec { npm version $nextVersion --no-git-tag-version --allow-same-version }
