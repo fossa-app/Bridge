@@ -245,9 +245,12 @@ Task PackNPM Build, Test, {
     $tempTsConfig = @"
 {
   `"extends`": `"$baseTsConfig`",
-  `"compilerOptions`": {
-    `"outDir`": `"$distPath`",
-    `"rootDir`": `"$fablePath`"
+  "compilerOptions": {
+    "outDir": "$distPath",
+    "rootDir": "$fablePath",
+    "noEmit": false,
+    "allowImportingTsExtensions": false,
+    "rewriteRelativeImportExtensions": true
   },
   `"include`": [
     `"$fablePattern`"
@@ -257,7 +260,11 @@ Task PackNPM Build, Test, {
     Set-Content -Path $tempTsConfigPath -Value $tempTsConfig
 
     Exec { npm run build -- --project $tempTsConfigPath }
+
+    Copy-Item -Path $distArtifactsFolder -Destination 'dist' -Recurse -Force
     Exec { npm pack --pack-destination $buildArtifactsFolder }
+    Remove-Item -Path 'dist' -Recurse -Force
+
     Exec { npm version "1.0.0" --no-git-tag-version --allow-same-version }
 
     $npmPackage = Get-ChildItem -Path $buildArtifactsFolder -Filter '*.tgz' | Select-Object -First 1

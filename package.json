@@ -4,6 +4,9 @@
   "description": "Shared Domain Models and DTOs for Fossa UI and API",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc"
   },
@@ -16,6 +19,6 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^25.3.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.9.3"
   }
 }
