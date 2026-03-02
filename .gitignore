@@ -607,3 +607,4 @@ FodyWeavers.xsd
 # Repository Specific
 .trash
 .idea/
+*.fable-temp.csproj
