@@ -4,45 +4,37 @@ open System.Threading.Tasks
 open Fossa.Bridge.Models
 open Fossa.Bridge.Services
 open System
+open Fossa.Bridge.Services.UrlHelpers
 
 type EmployeeClient(transport: IHttpTransport) =
     let buildUrl (queryParams: EmployeeQueryRequestModel) =
-        let mutable url = Endpoints.BasePath + "/" + Endpoints.Employees + "?"
+        let parameters =
+            [ if queryParams.Id.Count > 0 then
+                  for id in queryParams.Id do
+                      yield "Id", (id: UrlPart)
+              if not (String.IsNullOrEmpty(queryParams.Search)) then
+                  yield "Search", (queryParams.Search: UrlPart)
+              if queryParams.PageNumber.HasValue then
+                  yield "PageNumber", (queryParams.PageNumber.Value: UrlPart)
+              if queryParams.PageSize.HasValue then
+                  yield "PageSize", (queryParams.PageSize.Value: UrlPart)
+              if queryParams.ReportsToId.HasValue then
+                  yield "ReportsToId", (queryParams.ReportsToId.Value: UrlPart)
+              if queryParams.TopLevelOnly.HasValue then
+                  yield "TopLevelOnly", (queryParams.TopLevelOnly.Value: UrlPart) ]
 
-        if queryParams.Id.Count > 0 then
-            let ids = queryParams.Id |> Seq.map (fun id -> $"Id={id}") |> String.concat "&"
-            url <- url + ids + "&"
-
-        if not (String.IsNullOrEmpty(queryParams.Search)) then
-            url <- url + $"Search={Uri.EscapeDataString(queryParams.Search)}&"
-
-        if queryParams.PageNumber.HasValue then
-            url <- url + $"PageNumber={queryParams.PageNumber.Value}&"
-
-        if queryParams.PageSize.HasValue then
-            url <- url + $"PageSize={queryParams.PageSize.Value}&"
-
-        if queryParams.ReportsToId.HasValue then
-            url <- url + $"ReportsToId={queryParams.ReportsToId.Value}&"
-
-        if queryParams.TopLevelOnly.HasValue then
-            url <- url + $"TopLevelOnly={queryParams.TopLevelOnly.Value}&"
-
-        url.TrimEnd('&')
+        composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employees ] parameters
 
     let buildPagingUrl (queryParams: EmployeePagingRequestModel) =
-        let mutable url = Endpoints.BasePath + "/" + Endpoints.Employees + "?"
+        let parameters =
+            [ if not (String.IsNullOrEmpty(queryParams.Search)) then
+                  yield "Search", (queryParams.Search: UrlPart)
+              if queryParams.PageNumber.HasValue then
+                  yield "PageNumber", (queryParams.PageNumber.Value: UrlPart)
+              if queryParams.PageSize.HasValue then
+                  yield "PageSize", (queryParams.PageSize.Value: UrlPart) ]
 
-        if not (String.IsNullOrEmpty(queryParams.Search)) then
-            url <- url + $"Search={Uri.EscapeDataString(queryParams.Search)}&"
-
-        if queryParams.PageNumber.HasValue then
-            url <- url + $"PageNumber={queryParams.PageNumber.Value}&"
-
-        if queryParams.PageSize.HasValue then
-            url <- url + $"PageSize={queryParams.PageSize.Value}&"
-
-        url.TrimEnd('&')
+        composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employees ] parameters
 
     member _.GetEmployeesAsync(query: EmployeeQueryRequestModel) : Task<PagingResponseModel<EmployeeRetrievalModel>> =
         transport.GetAsync<PagingResponseModel<EmployeeRetrievalModel>>(buildUrl query)
@@ -53,19 +45,19 @@ type EmployeeClient(transport: IHttpTransport) =
         transport.GetAsync<PagingResponseModel<EmployeeRetrievalModel>>(buildPagingUrl query)
 
     member _.GetEmployeeAsync(id: int64) : Task<EmployeeRetrievalModel> =
-        transport.GetAsync<EmployeeRetrievalModel>(Endpoints.BasePath + "/" + Endpoints.Employee + $"/{id}")
+        transport.GetAsync<EmployeeRetrievalModel>(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee; id ] [])
 
     member _.CreateEmployeeAsync(model: EmployeeModificationModel) : Task<EmployeeRetrievalModel> =
         transport.PostAsync<EmployeeModificationModel, EmployeeRetrievalModel>(
-            Endpoints.BasePath + "/" + Endpoints.Employee,
+            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee ] [],
             model
         )
 
     member _.UpdateEmployeeAsync(id: int64, model: EmployeeModificationModel) : Task<EmployeeRetrievalModel> =
         transport.PutAsync<EmployeeModificationModel, EmployeeRetrievalModel>(
-            Endpoints.BasePath + "/" + Endpoints.Employee + $"/{id}",
+            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee; id ] [],
             model
         )
 
     member _.DeleteEmployeeAsync(id: int64) : Task<unit> =
-        transport.DeleteAsync(Endpoints.BasePath + "/" + Endpoints.Employee + $"/{id}")
+        transport.DeleteAsync(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee; id ] [])
