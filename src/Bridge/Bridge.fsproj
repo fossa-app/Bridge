@@ -4,7 +4,6 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageId>Fossa.Bridge</PackageId>
     <Version>1.0.0</Version>
-    <Authors>TIKSN</Authors>
     <Description>Shared Domain Models and DTOs for Fossa UI and API</Description>
   </PropertyGroup>
   <ItemGroup>

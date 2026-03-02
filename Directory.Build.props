@@ -1,0 +1,25 @@
+<Project>
+  <PropertyGroup Label="Build">
+    <LangVersion>latest</LangVersion>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <RootNamespace>Fossa.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <AssemblyName>Fossa.$(MSBuildProjectName)</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Label="Package">
+    <Authors>Tigran TIKSN Torosyan</Authors>
+    <Company>Tigran TIKSN Torosyan</Company>
+    <Copyright>Copyright © Tigran TIKSN Torosyan. All rights Reserved</Copyright>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/fossa-app/Bridge</PackageProjectUrl>
+    <PackageIcon>Icon.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/fossa-app/Bridge.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>https://github.com/fossa-app/Bridge/releases</PackageReleaseNotes>
+  </PropertyGroup>
+</Project>

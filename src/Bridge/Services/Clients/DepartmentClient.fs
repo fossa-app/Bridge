@@ -9,7 +9,7 @@ type DepartmentClient(transport: IHttpTransport) =
     let buildUrl (queryParams: DepartmentQueryRequestModel) =
         let mutable url = Endpoints.BasePath + "/" + Endpoints.Departments + "?"
 
-        if queryParams.Id <> null && queryParams.Id.Count > 0 then
+        if queryParams.Id.Count > 0 then
             let ids = queryParams.Id |> Seq.map (fun id -> $"Id={id}") |> String.concat "&"
             url <- url + ids + "&"
 

@@ -11,7 +11,7 @@ type AddressModel =
       PostalCode: string
       CountryCode: string }
 
-type ClientRetrievalModel =
+type IdentityClientRetrievalModel =
     { ClientId: Guid
       ClientName: string
       TenantId: Guid }
