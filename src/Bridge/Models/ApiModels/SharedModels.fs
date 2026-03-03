@@ -2,6 +2,7 @@ namespace Fossa.Bridge.Models.ApiModels
 
 open System
 
+[<CLIMutable>]
 type AddressModel =
     { Line1: string | null
       Line2: string | null
@@ -10,20 +11,24 @@ type AddressModel =
       PostalCode: string | null
       CountryCode: string | null }
 
+[<CLIMutable>]
 type CountryModel =
     { Name: string | null
       Code: string | null }
 
+[<CLIMutable>]
 type TimeZoneModel =
     { Id: string | null
       Name: string | null
       CountryCode: string | null
       CurrentOffset: Nullable<TimeSpan> }
 
+[<CLIMutable>]
 type PartyModel =
     { LongName: string | null
       ShortName: string | null }
 
+[<CLIMutable>]
 type LicenseTermsModel =
     { Licensor: PartyModel | null
       Licensee: PartyModel | null
