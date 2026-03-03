@@ -29,7 +29,7 @@ type BranchQueryRequestModel =
       PageSize: Nullable<int> }
 
 type BranchRetrievalModel =
-    { Id: Nullable<int64>
+    { Id: int64
       CompanyId: Nullable<int64>
       Name: string | null
       TimeZoneId: string | null
@@ -46,14 +46,14 @@ type CompanyModificationModel =
       CountryCode: string | null }
 
 type CompanyRetrievalModel =
-    { Id: Nullable<int64>
+    { Id: int64
       Name: string | null
       CountryCode: string | null }
 
 type CompanySettingsModificationModel = { ColorSchemeId: string | null }
 
 type CompanySettingsRetrievalModel =
-    { Id: Nullable<int64>
+    { Id: int64
       CompanyId: Nullable<int64>
       ColorSchemeId: string | null }
 
@@ -73,7 +73,7 @@ type DepartmentQueryRequestModel =
       PageSize: Nullable<int> }
 
 type DepartmentRetrievalModel =
-    { Id: Nullable<int64>
+    { Id: int64
       Name: string | null
       ParentDepartmentId: Nullable<int64>
       ManagerId: Nullable<int64> }
@@ -103,7 +103,7 @@ type EmployeeQueryRequestModel =
       TopLevelOnly: Nullable<bool> }
 
 type EmployeeRetrievalModel =
-    { Id: Nullable<int64>
+    { Id: int64
       CompanyId: Nullable<int64>
       AssignedBranchId: Nullable<int64>
       AssignedDepartmentId: Nullable<int64>
