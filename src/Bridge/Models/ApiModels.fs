@@ -4,139 +4,145 @@ open System
 open System.Collections.Generic
 
 type AddressModel =
-    { Line1: string
-      Line2: string
-      City: string
-      Subdivision: string
-      PostalCode: string
-      CountryCode: string }
+    { Line1: string | null
+      Line2: string | null
+      City: string | null
+      Subdivision: string | null
+      PostalCode: string | null
+      CountryCode: string | null }
 
 type IdentityClientRetrievalModel =
-    { ClientId: Guid
-      ClientName: string
-      TenantId: Guid }
+    { ClientId: Nullable<Guid>
+      ClientName: string | null
+      TenantId: Nullable<Guid> }
 
 
 type BranchModificationModel =
-    { Name: string
-      TimeZoneId: string
-      Address: AddressModel }
+    { Name: string | null
+      TimeZoneId: string | null
+      Address: AddressModel | null }
 
 type BranchQueryRequestModel =
-    { Id: IReadOnlyList<int64>
-      Search: string
+    { Id: IReadOnlyList<int64> | null
+      Search: string | null
       PageNumber: Nullable<int>
       PageSize: Nullable<int> }
 
 type BranchRetrievalModel =
-    { Id: int64
-      CompanyId: int64
-      Name: string
-      TimeZoneId: string
-      Address: AddressModel }
+    { Id: Nullable<int64>
+      CompanyId: Nullable<int64>
+      Name: string | null
+      TimeZoneId: string | null
+      Address: AddressModel | null }
 
 type CompanyEntitlementsModel =
-    { CompanyId: int64
-      MaximumBranchCount: int
-      MaximumEmployeeCount: int
-      MaximumDepartmentCount: int }
+    { CompanyId: Nullable<int64>
+      MaximumBranchCount: Nullable<int>
+      MaximumEmployeeCount: Nullable<int>
+      MaximumDepartmentCount: Nullable<int> }
 
-type CompanyModificationModel = { Name: string; CountryCode: string }
+type CompanyModificationModel =
+    { Name: string | null
+      CountryCode: string | null }
 
 type CompanyRetrievalModel =
-    { Id: int64
-      Name: string
-      CountryCode: string }
+    { Id: Nullable<int64>
+      Name: string | null
+      CountryCode: string | null }
 
-type CompanySettingsModificationModel = { ColorSchemeId: string }
+type CompanySettingsModificationModel = { ColorSchemeId: string | null }
 
 type CompanySettingsRetrievalModel =
-    { Id: int64
-      CompanyId: int64
-      ColorSchemeId: string }
+    { Id: Nullable<int64>
+      CompanyId: Nullable<int64>
+      ColorSchemeId: string | null }
 
-type CountryModel = { Name: string; Code: string }
+type CountryModel =
+    { Name: string | null
+      Code: string | null }
 
 type DepartmentModificationModel =
-    { Name: string
+    { Name: string | null
       ParentDepartmentId: Nullable<int64>
       ManagerId: Nullable<int64> }
 
 type DepartmentQueryRequestModel =
-    { Id: IReadOnlyList<int64>
-      Search: string
+    { Id: IReadOnlyList<int64> | null
+      Search: string | null
       PageNumber: Nullable<int>
       PageSize: Nullable<int> }
 
 type DepartmentRetrievalModel =
-    { Id: int64
-      Name: string
+    { Id: Nullable<int64>
+      Name: string | null
       ParentDepartmentId: Nullable<int64>
-      ManagerId: int64 }
+      ManagerId: Nullable<int64> }
 
 type EmployeeManagementModel =
     { AssignedBranchId: Nullable<int64>
       AssignedDepartmentId: Nullable<int64>
       ReportsToId: Nullable<int64>
-      JobTitle: string }
+      JobTitle: string | null }
 
 type EmployeeModificationModel =
-    { FirstName: string
-      LastName: string
-      FullName: string }
+    { FirstName: string | null
+      LastName: string | null
+      FullName: string | null }
 
 type EmployeePagingRequestModel =
-    { Search: string
+    { Search: string | null
       PageNumber: Nullable<int>
       PageSize: Nullable<int> }
 
 type EmployeeQueryRequestModel =
-    { Id: IReadOnlyList<int64>
-      Search: string
+    { Id: IReadOnlyList<int64> | null
+      Search: string | null
       PageNumber: Nullable<int>
       PageSize: Nullable<int>
       ReportsToId: Nullable<int64>
       TopLevelOnly: Nullable<bool> }
 
 type EmployeeRetrievalModel =
-    { Id: int64
-      CompanyId: int64
+    { Id: Nullable<int64>
+      CompanyId: Nullable<int64>
       AssignedBranchId: Nullable<int64>
       AssignedDepartmentId: Nullable<int64>
       ReportsToId: Nullable<int64>
-      JobTitle: string
-      FirstName: string
-      LastName: string
-      FullName: string }
+      JobTitle: string | null
+      FirstName: string | null
+      LastName: string | null
+      FullName: string | null }
 
 type TimeZoneModel =
-    { Id: string
-      Name: string
-      CountryCode: string
-      CurrentOffset: TimeSpan }
+    { Id: string | null
+      Name: string | null
+      CountryCode: string | null
+      CurrentOffset: Nullable<TimeSpan> }
 
-type PartyModel = { LongName: string; ShortName: string }
+type PartyModel =
+    { LongName: string | null
+      ShortName: string | null }
 
 type LicenseTermsModel =
-    { Licensor: PartyModel
-      Licensee: PartyModel
-      NotBefore: DateTimeOffset
-      NotAfter: DateTimeOffset }
+    { Licensor: PartyModel | null
+      Licensee: PartyModel | null
+      NotBefore: Nullable<DateTimeOffset>
+      NotAfter: Nullable<DateTimeOffset> }
 
 type LicenseResponseModel<'TEntitlementsModel> =
-    { Terms: LicenseTermsModel
+    { Terms: LicenseTermsModel | null
       Entitlements: 'TEntitlementsModel }
 
 type PagingResponseModel<'T> =
     { PageNumber: Nullable<int>
       PageSize: Nullable<int>
-      Items: IReadOnlyCollection<'T>
+      Items: IReadOnlyCollection<'T> | null
       TotalItems: Nullable<int64>
       TotalPages: Nullable<int64> }
 
 type SystemEntitlementsModel =
-    { EnvironmentName: string
-      EnvironmentKind: string
-      Countries: IReadOnlyList<CountryModel>
-      TimeZones: IReadOnlyList<TimeZoneModel>
-      MaximumCompanyCount: int }
+    { EnvironmentName: string | null
+      EnvironmentKind: string | null
+      Countries: IReadOnlyList<CountryModel> | null
+      TimeZones: IReadOnlyList<TimeZoneModel> | null
+      MaximumCompanyCount: Nullable<int> }

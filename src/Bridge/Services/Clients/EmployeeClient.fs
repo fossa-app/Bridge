@@ -9,9 +9,11 @@ open Fossa.Bridge.Services.UrlHelpers
 type EmployeeClient(transport: IHttpTransport) =
     let buildUrl (queryParams: EmployeeQueryRequestModel) =
         let parameters =
-            [ if queryParams.Id.Count > 0 then
-                  for id in queryParams.Id do
+            [ match Option.ofObj queryParams.Id with
+              | Some ids when ids.Count > 0 ->
+                  for id in ids do
                       yield "Id", (id: UrlPart)
+              | _ -> ()
               if not (String.IsNullOrEmpty(queryParams.Search)) then
                   yield "Search", (queryParams.Search: UrlPart)
               if queryParams.PageNumber.HasValue then
