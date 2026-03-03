@@ -4,12 +4,12 @@ open System
 open System.Collections.Generic
 
 type LicenseResponseModel<'TEntitlementsModel> =
-    { Terms: LicenseTermsModel | null
+    { Terms: LicenseTermsModel
       Entitlements: 'TEntitlementsModel }
 
 type PagingResponseModel<'T> =
     { PageNumber: Nullable<int>
       PageSize: Nullable<int>
-      Items: IReadOnlyCollection<'T> | null
+      Items: IReadOnlyCollection<'T>
       TotalItems: Nullable<int64>
       TotalPages: Nullable<int64> }
