@@ -63,3 +63,11 @@ type EmployeeClient(transport: IHttpTransport) =
 
     member _.DeleteEmployeeAsync(id: int64) : Task<unit> =
         transport.DeleteAsync(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee; id ] [])
+
+    interface IEmployeeClient with
+        member this.GetEmployeesAsync(query) = this.GetEmployeesAsync(query)
+        member this.GetEmployeesPagingAsync(query) = this.GetEmployeesPagingAsync(query)
+        member this.GetEmployeeAsync(id) = this.GetEmployeeAsync(id)
+        member this.CreateEmployeeAsync(model) = this.CreateEmployeeAsync(model)
+        member this.UpdateEmployeeAsync(id, model) = this.UpdateEmployeeAsync(id, model)
+        member this.DeleteEmployeeAsync(id) = this.DeleteEmployeeAsync(id)

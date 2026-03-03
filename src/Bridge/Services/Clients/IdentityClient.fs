@@ -10,3 +10,6 @@ type IdentityClient(transport: IHttpTransport) =
         transport.GetAsync<IdentityClientRetrievalModel>(
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.Client ] [ "origin", (origin: UrlPart) ]
         )
+
+    interface IIdentityClient with
+        member this.GetClientAsync(origin) = this.GetClientAsync(origin)

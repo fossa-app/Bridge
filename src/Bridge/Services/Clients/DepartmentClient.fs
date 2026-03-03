@@ -47,3 +47,10 @@ type DepartmentClient(transport: IHttpTransport) =
 
     member _.DeleteDepartmentAsync(id: int64) : Task<unit> =
         transport.DeleteAsync(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Departments; id ] [])
+
+    interface IDepartmentClient with
+        member this.GetDepartmentsAsync(query) = this.GetDepartmentsAsync(query)
+        member this.GetDepartmentAsync(id) = this.GetDepartmentAsync(id)
+        member this.CreateDepartmentAsync(model) = this.CreateDepartmentAsync(model)
+        member this.UpdateDepartmentAsync(id, model) = this.UpdateDepartmentAsync(id, model)
+        member this.DeleteDepartmentAsync(id) = this.DeleteDepartmentAsync(id)
