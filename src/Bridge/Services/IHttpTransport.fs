@@ -1,7 +1,6 @@
 namespace Fossa.Bridge.Services
 
 open System.Threading.Tasks
-open Fossa.Bridge.Models
 
 type IHttpTransport =
     abstract member GetAsync<'TResponse> : string -> Task<'TResponse>

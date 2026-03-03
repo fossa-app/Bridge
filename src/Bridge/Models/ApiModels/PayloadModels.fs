@@ -1,15 +1,7 @@
-namespace Fossa.Bridge.Models
+namespace Fossa.Bridge.Models.ApiModels
 
 open System
 open System.Collections.Generic
-
-type AddressModel =
-    { Line1: string | null
-      Line2: string | null
-      City: string | null
-      Subdivision: string | null
-      PostalCode: string | null
-      CountryCode: string | null }
 
 type IdentityClientRetrievalModel =
     { ClientId: Nullable<Guid>
@@ -56,10 +48,6 @@ type CompanySettingsRetrievalModel =
     { Id: int64
       CompanyId: int64
       ColorSchemeId: string | null }
-
-type CountryModel =
-    { Name: string | null
-      Code: string | null }
 
 type DepartmentModificationModel =
     { Name: string | null
@@ -112,33 +100,6 @@ type EmployeeRetrievalModel =
       FirstName: string | null
       LastName: string | null
       FullName: string | null }
-
-type TimeZoneModel =
-    { Id: string | null
-      Name: string | null
-      CountryCode: string | null
-      CurrentOffset: Nullable<TimeSpan> }
-
-type PartyModel =
-    { LongName: string | null
-      ShortName: string | null }
-
-type LicenseTermsModel =
-    { Licensor: PartyModel | null
-      Licensee: PartyModel | null
-      NotBefore: Nullable<DateTimeOffset>
-      NotAfter: Nullable<DateTimeOffset> }
-
-type LicenseResponseModel<'TEntitlementsModel> =
-    { Terms: LicenseTermsModel | null
-      Entitlements: 'TEntitlementsModel }
-
-type PagingResponseModel<'T> =
-    { PageNumber: Nullable<int>
-      PageSize: Nullable<int>
-      Items: IReadOnlyCollection<'T> | null
-      TotalItems: Nullable<int64>
-      TotalPages: Nullable<int64> }
 
 type SystemEntitlementsModel =
     { EnvironmentName: string
