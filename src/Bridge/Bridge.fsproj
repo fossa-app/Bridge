@@ -13,13 +13,21 @@
     <Compile Include="Services\UrlHelpers.fs" />
     <Compile Include="Services\Endpoints.fs" />
     <Compile Include="Services\IHttpTransport.fs" />
+    <Compile Include="Services\Clients\ICompanyClient.fs" />
     <Compile Include="Services\Clients\CompanyClient.fs" />
+    <Compile Include="Services\Clients\ICompanySettingsClient.fs" />
     <Compile Include="Services\Clients\CompanySettingsClient.fs" />
+    <Compile Include="Services\Clients\IEmployeeClient.fs" />
     <Compile Include="Services\Clients\EmployeeClient.fs" />
+    <Compile Include="Services\Clients\IIdentityClient.fs" />
     <Compile Include="Services\Clients\IdentityClient.fs" />
+    <Compile Include="Services\Clients\IBranchClient.fs" />
     <Compile Include="Services\Clients\BranchClient.fs" />
+    <Compile Include="Services\Clients\IDepartmentClient.fs" />
     <Compile Include="Services\Clients\DepartmentClient.fs" />
+    <Compile Include="Services\Clients\ICompanyLicenseClient.fs" />
     <Compile Include="Services\Clients\CompanyLicenseClient.fs" />
+    <Compile Include="Services\Clients\ISystemLicenseClient.fs" />
     <Compile Include="Services\Clients\SystemLicenseClient.fs" />
   </ItemGroup>
   <ItemGroup>

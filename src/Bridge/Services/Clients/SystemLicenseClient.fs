@@ -10,3 +10,6 @@ type SystemLicenseClient(transport: IHttpTransport) =
         transport.GetAsync<LicenseResponseModel<SystemEntitlementsModel>>(
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.SystemLicense ] []
         )
+
+    interface ISystemLicenseClient with
+        member this.GetLicenseAsync() = this.GetLicenseAsync()

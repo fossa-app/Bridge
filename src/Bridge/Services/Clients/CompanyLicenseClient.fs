@@ -16,3 +16,7 @@ type CompanyLicenseClient(transport: IHttpTransport) =
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.CompanyLicense ] [],
             model
         )
+
+    interface ICompanyLicenseClient with
+        member this.GetLicenseAsync() = this.GetLicenseAsync()
+        member this.CreateLicenseAsync(model) = this.CreateLicenseAsync(model)
