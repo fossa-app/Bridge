@@ -3,10 +3,12 @@ namespace Fossa.Bridge.Models.ApiModels
 open System
 open System.Collections.Generic
 
+[<CLIMutable>]
 type LicenseResponseModel<'TEntitlementsModel> =
     { Terms: LicenseTermsModel
       Entitlements: 'TEntitlementsModel }
 
+[<CLIMutable>]
 type PagingResponseModel<'T> =
     { PageNumber: Nullable<int>
       PageSize: Nullable<int>
