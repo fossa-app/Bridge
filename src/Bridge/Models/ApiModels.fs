@@ -30,16 +30,16 @@ type BranchQueryRequestModel =
 
 type BranchRetrievalModel =
     { Id: int64
-      CompanyId: Nullable<int64>
+      CompanyId: int64
       Name: string | null
       TimeZoneId: string | null
       Address: AddressModel | null }
 
 type CompanyEntitlementsModel =
-    { CompanyId: Nullable<int64>
-      MaximumBranchCount: Nullable<int>
-      MaximumEmployeeCount: Nullable<int>
-      MaximumDepartmentCount: Nullable<int> }
+    { CompanyId: int64
+      MaximumBranchCount: int
+      MaximumEmployeeCount: int
+      MaximumDepartmentCount: int }
 
 type CompanyModificationModel =
     { Name: string | null
@@ -54,7 +54,7 @@ type CompanySettingsModificationModel = { ColorSchemeId: string | null }
 
 type CompanySettingsRetrievalModel =
     { Id: int64
-      CompanyId: Nullable<int64>
+      CompanyId: int64
       ColorSchemeId: string | null }
 
 type CountryModel =
@@ -104,7 +104,7 @@ type EmployeeQueryRequestModel =
 
 type EmployeeRetrievalModel =
     { Id: int64
-      CompanyId: Nullable<int64>
+      CompanyId: int64
       AssignedBranchId: Nullable<int64>
       AssignedDepartmentId: Nullable<int64>
       ReportsToId: Nullable<int64>
@@ -141,8 +141,8 @@ type PagingResponseModel<'T> =
       TotalPages: Nullable<int64> }
 
 type SystemEntitlementsModel =
-    { EnvironmentName: string | null
-      EnvironmentKind: string | null
-      Countries: IReadOnlyList<CountryModel> | null
-      TimeZones: IReadOnlyList<TimeZoneModel> | null
-      MaximumCompanyCount: Nullable<int> }
+    { EnvironmentName: string
+      EnvironmentKind: string
+      Countries: IReadOnlyList<CountryModel>
+      TimeZones: IReadOnlyList<TimeZoneModel>
+      MaximumCompanyCount: int }
