@@ -8,6 +8,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <RootNamespace>Fossa.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
     <AssemblyName>Fossa.$(MSBuildProjectName)</AssemblyName>
+    <NoWarn>$(NoWarn);3391</NoWarn>
   </PropertyGroup>
   <PropertyGroup Label="Package">
     <Authors>Tigran TIKSN Torosyan</Authors>
