@@ -233,7 +233,7 @@ Task PackNPM Build, Test, {
     $nextVersion = $state.NextVersion
     $projectPath = Resolve-Path -Path 'src/Bridge/Bridge.fsproj'
 
-    Exec { dotnet fable $projectPath --outDir $fableOutputArtifactsFolder --language typescript }
+    Exec { dotnet fable $projectPath --outDir $fableOutputArtifactsFolder --language typescript --fableLib @fable-org/fable-library-ts }
     Exec { npm version $nextVersion --no-git-tag-version --allow-same-version }
     Exec { npm install }
 

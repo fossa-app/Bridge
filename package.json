@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "Shared Domain Models and DTOs for Fossa UI and API",
   "main": "dist/index.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "type": "module",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -17,8 +20,10 @@
   ],
   "author": "",
   "license": "MIT",
+  "dependencies": {
+    "@fable-org/fable-library-ts": "^2.0.0-rc.2"
+  },
   "devDependencies": {
-    "@types/node": "^25.3.0",
     "typescript": "^5.9.3"
   }
 }
