@@ -23,7 +23,7 @@ type CompanySettingsClient(transport: IHttpTransport) =
             model
         )
 
-    member _.DeleteCompanySettingsAsync() : Task<unit> =
+    member _.DeleteCompanySettingsAsync() : Task =
         transport.DeleteAsync(composeRelativeUrl [ Endpoints.BasePath; Endpoints.CompanySettings ] [])
 
     interface ICompanySettingsClient with

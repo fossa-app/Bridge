@@ -21,7 +21,7 @@ type CompanyClient(transport: IHttpTransport) =
             model
         )
 
-    member _.DeleteCompanyAsync() : Task<unit> =
+    member _.DeleteCompanyAsync() : Task =
         transport.DeleteAsync(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Company ] [])
 
     interface ICompanyClient with

@@ -41,7 +41,7 @@ type BranchClient(transport: IHttpTransport) =
             model
         )
 
-    member _.DeleteBranchAsync(id: int64) : Task<unit> =
+    member _.DeleteBranchAsync(id: int64) : Task =
         transport.DeleteAsync(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Branches; id ] [])
 
     interface IBranchClient with

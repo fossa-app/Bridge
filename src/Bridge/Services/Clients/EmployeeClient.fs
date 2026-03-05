@@ -61,7 +61,7 @@ type EmployeeClient(transport: IHttpTransport) =
             model
         )
 
-    member _.DeleteEmployeeAsync(id: int64) : Task<unit> =
+    member _.DeleteEmployeeAsync(id: int64) : Task =
         transport.DeleteAsync(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee; id ] [])
 
     interface IEmployeeClient with

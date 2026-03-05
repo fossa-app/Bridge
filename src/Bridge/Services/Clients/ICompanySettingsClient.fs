@@ -12,4 +12,4 @@ type ICompanySettingsClient =
     abstract member UpdateCompanySettingsAsync:
         model: CompanySettingsModificationModel -> Task<CompanySettingsRetrievalModel>
 
-    abstract member DeleteCompanySettingsAsync: unit -> Task<unit>
+    abstract member DeleteCompanySettingsAsync: unit -> Task
