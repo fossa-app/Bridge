@@ -4,4 +4,4 @@ open System.Threading.Tasks
 open Fossa.Bridge.Models.ApiModels
 
 type IIdentityClient =
-    abstract member GetClientAsync: origin: string -> Task<IdentityClientRetrievalModel>
+    abstract GetClientAsync: origin: string -> Task<IdentityClientRetrievalModel>
