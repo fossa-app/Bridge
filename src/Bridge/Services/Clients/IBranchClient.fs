@@ -8,4 +8,4 @@ type IBranchClient =
     abstract member GetBranchAsync: id: int64 -> Task<BranchRetrievalModel>
     abstract member CreateBranchAsync: model: BranchModificationModel -> Task<BranchRetrievalModel>
     abstract member UpdateBranchAsync: id: int64 * model: BranchModificationModel -> Task<BranchRetrievalModel>
-    abstract member DeleteBranchAsync: id: int64 -> Task<unit>
+    abstract member DeleteBranchAsync: id: int64 -> Task

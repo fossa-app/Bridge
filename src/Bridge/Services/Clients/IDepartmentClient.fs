@@ -13,4 +13,4 @@ type IDepartmentClient =
     abstract member UpdateDepartmentAsync:
         id: int64 * model: DepartmentModificationModel -> Task<DepartmentRetrievalModel>
 
-    abstract member DeleteDepartmentAsync: id: int64 -> Task<unit>
+    abstract member DeleteDepartmentAsync: id: int64 -> Task

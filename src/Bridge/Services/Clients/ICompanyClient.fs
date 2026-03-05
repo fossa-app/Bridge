@@ -7,4 +7,4 @@ type ICompanyClient =
     abstract member GetCompanyAsync: unit -> Task<CompanyRetrievalModel>
     abstract member CreateCompanyAsync: model: CompanyModificationModel -> Task<CompanyRetrievalModel>
     abstract member UpdateCompanyAsync: model: CompanyModificationModel -> Task<CompanyRetrievalModel>
-    abstract member DeleteCompanyAsync: unit -> Task<unit>
+    abstract member DeleteCompanyAsync: unit -> Task

@@ -13,4 +13,4 @@ type IEmployeeClient =
     abstract member GetEmployeeAsync: id: int64 -> Task<EmployeeRetrievalModel>
     abstract member CreateEmployeeAsync: model: EmployeeModificationModel -> Task<EmployeeRetrievalModel>
     abstract member UpdateEmployeeAsync: id: int64 * model: EmployeeModificationModel -> Task<EmployeeRetrievalModel>
-    abstract member DeleteEmployeeAsync: id: int64 -> Task<unit>
+    abstract member DeleteEmployeeAsync: id: int64 -> Task
