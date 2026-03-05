@@ -4,12 +4,10 @@ open System.Threading.Tasks
 open Fossa.Bridge.Models.ApiModels
 
 type ICompanySettingsClient =
-    abstract member GetCompanySettingsAsync: unit -> Task<CompanySettingsRetrievalModel>
+    abstract GetCompanySettingsAsync: unit -> Task<CompanySettingsRetrievalModel>
 
-    abstract member CreateCompanySettingsAsync:
-        model: CompanySettingsModificationModel -> Task<CompanySettingsRetrievalModel>
+    abstract CreateCompanySettingsAsync: model: CompanySettingsModificationModel -> Task<CompanySettingsRetrievalModel>
 
-    abstract member UpdateCompanySettingsAsync:
-        model: CompanySettingsModificationModel -> Task<CompanySettingsRetrievalModel>
+    abstract UpdateCompanySettingsAsync: model: CompanySettingsModificationModel -> Task<CompanySettingsRetrievalModel>
 
-    abstract member DeleteCompanySettingsAsync: unit -> Task
+    abstract DeleteCompanySettingsAsync: unit -> Task
