@@ -49,20 +49,29 @@ type EmployeeClient(transport: IHttpTransport) =
     member _.GetEmployeeAsync(id: int64) : Task<EmployeeRetrievalModel> =
         transport.GetAsync<EmployeeRetrievalModel>(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee; id ] [])
 
-    member _.CreateEmployeeAsync(model: EmployeeModificationModel) : Task<EmployeeRetrievalModel> =
-        transport.PostAsync<EmployeeModificationModel, EmployeeRetrievalModel>(
+    member _.CreateEmployeeAsync(model: EmployeeModificationModel) : Task =
+        transport.PostAsync<EmployeeModificationModel>(
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee ] [],
             model
         )
 
-    member _.UpdateEmployeeAsync(id: int64, model: EmployeeModificationModel) : Task<EmployeeRetrievalModel> =
-        transport.PutAsync<EmployeeModificationModel, EmployeeRetrievalModel>(
+    member _.UpdateEmployeeAsync(id: int64, model: EmployeeModificationModel) : Task =
+        transport.PutAsync<EmployeeModificationModel>(
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee; id ] [],
+            model
+        )
+
+    member _.ManageEmployeeAsync(id: int64, model: EmployeeManagementModel) : Task =
+        transport.PutAsync<EmployeeManagementModel>(
+            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employees; id ] [],
             model
         )
 
     member _.DeleteEmployeeAsync(id: int64) : Task =
         transport.DeleteAsync(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee; id ] [])
+
+    member _.DeleteCurrentEmployeeAsync() : Task =
+        transport.DeleteAsync(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee ] [])
 
     interface IEmployeeClient with
         member this.GetEmployeesAsync(query) = this.GetEmployeesAsync(query)
@@ -70,4 +79,6 @@ type EmployeeClient(transport: IHttpTransport) =
         member this.GetEmployeeAsync(id) = this.GetEmployeeAsync(id)
         member this.CreateEmployeeAsync(model) = this.CreateEmployeeAsync(model)
         member this.UpdateEmployeeAsync(id, model) = this.UpdateEmployeeAsync(id, model)
+        member this.ManageEmployeeAsync(id, model) = this.ManageEmployeeAsync(id, model)
         member this.DeleteEmployeeAsync(id) = this.DeleteEmployeeAsync(id)
+        member this.DeleteCurrentEmployeeAsync() = this.DeleteCurrentEmployeeAsync()

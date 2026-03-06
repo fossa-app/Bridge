@@ -33,14 +33,14 @@ type DepartmentClient(transport: IHttpTransport) =
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.Departments; id ] []
         )
 
-    member _.CreateDepartmentAsync(model: DepartmentModificationModel) : Task<DepartmentRetrievalModel> =
-        transport.PostAsync<DepartmentModificationModel, DepartmentRetrievalModel>(
+    member _.CreateDepartmentAsync(model: DepartmentModificationModel) : Task =
+        transport.PostAsync<DepartmentModificationModel>(
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.Departments ] [],
             model
         )
 
-    member _.UpdateDepartmentAsync(id: int64, model: DepartmentModificationModel) : Task<DepartmentRetrievalModel> =
-        transport.PutAsync<DepartmentModificationModel, DepartmentRetrievalModel>(
+    member _.UpdateDepartmentAsync(id: int64, model: DepartmentModificationModel) : Task =
+        transport.PutAsync<DepartmentModificationModel>(
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.Departments; id ] [],
             model
         )
