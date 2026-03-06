@@ -11,11 +11,8 @@ type CompanyLicenseClient(transport: IHttpTransport) =
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.CompanyLicense ] []
         )
 
-    member _.CreateLicenseAsync(model: string) : Task<LicenseResponseModel<CompanyEntitlementsModel>> =
-        transport.PostAsync<string, LicenseResponseModel<CompanyEntitlementsModel>>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.CompanyLicense ] [],
-            model
-        )
+    member _.CreateLicenseAsync(model: string) : Task =
+        transport.PostAsync<string>(composeRelativeUrl [ Endpoints.BasePath; Endpoints.CompanyLicense ] [], model)
 
     interface ICompanyLicenseClient with
         member this.GetLicenseAsync() = this.GetLicenseAsync()

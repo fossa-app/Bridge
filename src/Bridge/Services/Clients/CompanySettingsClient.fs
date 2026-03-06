@@ -11,14 +11,14 @@ type CompanySettingsClient(transport: IHttpTransport) =
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.CompanySettings ] []
         )
 
-    member _.CreateCompanySettingsAsync(model: CompanySettingsModificationModel) : Task<CompanySettingsRetrievalModel> =
-        transport.PostAsync<CompanySettingsModificationModel, CompanySettingsRetrievalModel>(
+    member _.CreateCompanySettingsAsync(model: CompanySettingsModificationModel) : Task =
+        transport.PostAsync<CompanySettingsModificationModel>(
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.CompanySettings ] [],
             model
         )
 
-    member _.UpdateCompanySettingsAsync(model: CompanySettingsModificationModel) : Task<CompanySettingsRetrievalModel> =
-        transport.PutAsync<CompanySettingsModificationModel, CompanySettingsRetrievalModel>(
+    member _.UpdateCompanySettingsAsync(model: CompanySettingsModificationModel) : Task =
+        transport.PutAsync<CompanySettingsModificationModel>(
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.CompanySettings ] [],
             model
         )

@@ -8,8 +8,8 @@ type IDepartmentClient =
         query: DepartmentQueryRequestModel -> Task<PagingResponseModel<DepartmentRetrievalModel>>
 
     abstract GetDepartmentAsync: id: int64 -> Task<DepartmentRetrievalModel>
-    abstract CreateDepartmentAsync: model: DepartmentModificationModel -> Task<DepartmentRetrievalModel>
+    abstract CreateDepartmentAsync: model: DepartmentModificationModel -> Task
 
-    abstract UpdateDepartmentAsync: id: int64 * model: DepartmentModificationModel -> Task<DepartmentRetrievalModel>
+    abstract UpdateDepartmentAsync: id: int64 * model: DepartmentModificationModel -> Task
 
     abstract DeleteDepartmentAsync: id: int64 -> Task

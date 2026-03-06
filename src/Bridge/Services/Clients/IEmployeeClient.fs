@@ -10,6 +10,8 @@ type IEmployeeClient =
         query: EmployeePagingRequestModel -> Task<PagingResponseModel<EmployeeRetrievalModel>>
 
     abstract GetEmployeeAsync: id: int64 -> Task<EmployeeRetrievalModel>
-    abstract CreateEmployeeAsync: model: EmployeeModificationModel -> Task<EmployeeRetrievalModel>
-    abstract UpdateEmployeeAsync: id: int64 * model: EmployeeModificationModel -> Task<EmployeeRetrievalModel>
+    abstract CreateEmployeeAsync: model: EmployeeModificationModel -> Task
+    abstract UpdateEmployeeAsync: id: int64 * model: EmployeeModificationModel -> Task
+    abstract ManageEmployeeAsync: id: int64 * model: EmployeeManagementModel -> Task
     abstract DeleteEmployeeAsync: id: int64 -> Task
+    abstract DeleteCurrentEmployeeAsync: unit -> Task

@@ -29,14 +29,14 @@ type BranchClient(transport: IHttpTransport) =
     member _.GetBranchAsync(id: int64) : Task<BranchRetrievalModel> =
         transport.GetAsync<BranchRetrievalModel>(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Branches; id ] [])
 
-    member _.CreateBranchAsync(model: BranchModificationModel) : Task<BranchRetrievalModel> =
-        transport.PostAsync<BranchModificationModel, BranchRetrievalModel>(
+    member _.CreateBranchAsync(model: BranchModificationModel) : Task =
+        transport.PostAsync<BranchModificationModel>(
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.Branches ] [],
             model
         )
 
-    member _.UpdateBranchAsync(id: int64, model: BranchModificationModel) : Task<BranchRetrievalModel> =
-        transport.PutAsync<BranchModificationModel, BranchRetrievalModel>(
+    member _.UpdateBranchAsync(id: int64, model: BranchModificationModel) : Task =
+        transport.PutAsync<BranchModificationModel>(
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.Branches; id ] [],
             model
         )

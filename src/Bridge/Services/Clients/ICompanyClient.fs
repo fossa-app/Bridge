@@ -5,6 +5,6 @@ open Fossa.Bridge.Models.ApiModels
 
 type ICompanyClient =
     abstract GetCompanyAsync: unit -> Task<CompanyRetrievalModel>
-    abstract CreateCompanyAsync: model: CompanyModificationModel -> Task<CompanyRetrievalModel>
-    abstract UpdateCompanyAsync: model: CompanyModificationModel -> Task<CompanyRetrievalModel>
+    abstract CreateCompanyAsync: model: CompanyModificationModel -> Task
+    abstract UpdateCompanyAsync: model: CompanyModificationModel -> Task
     abstract DeleteCompanyAsync: unit -> Task
