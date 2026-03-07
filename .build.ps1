@@ -250,19 +250,23 @@ Task PackNPM Build, Test, {
 {
   `"extends`": `"$baseTsConfig`",
   "compilerOptions": {
-    "outDir": "$distPath",
+    "outDir": "$fablePath",
     "rootDir": "$fablePath",
+    "noEmit": false,
+    "allowImportingTsExtensions": false,
+    "rewriteRelativeImportExtensions": true
   },
   `"include`": [
     `"$fablePattern`"
-  ]
+  ],
+  `"exclude`": []
 }
 "@
     Set-Content -Path $tempTsConfigPath -Value $tempTsConfig
 
     Exec { npm run build -- --project $tempTsConfigPath }
 
-    Copy-Item -Path $distArtifactsFolder -Destination 'dist' -Recurse -Force
+    Copy-Item -Path $fableOutputArtifactsFolder -Destination 'dist' -Recurse -Force
     Exec { npm pack --pack-destination $buildArtifactsFolder }
     Remove-Item -Path 'dist' -Recurse -Force
 
