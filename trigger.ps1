@@ -9,12 +9,15 @@ param (
     $Instance,
     [Parameter()]
     [string]
-    $Version
+    $Version,
+    [Parameter()]
+    [switch]
+    $Fast
 )
 
 if ([System.String]::IsNullOrWhiteSpace($Instance)) {
     $Instance = Get-Date -Format 'yyyyMMddHHmmss'
-    Invoke-Build -Task $Task -Instance $Instance -Version $Version
+    Invoke-Build -Task $Task -Instance $Instance -Version $Version -Fast:$Fast
 }
 else {
     $trashFolder = Join-Path -Path . -ChildPath '.trash'
@@ -28,5 +31,5 @@ else {
         $checkpointData.Task = @($Task)
         $checkpointData | Export-Clixml -Path $checkpointFile
     }
-    Build-Checkpoint -Checkpoint $checkpointFile -Build @{Task = $Task; Instance = $Instance; Version = $Version } -Preserve -Auto
+    Build-Checkpoint -Checkpoint $checkpointFile -Build @{Task = $Task; Instance = $Instance; Version = $Version; Fast = $Fast.IsPresent } -Preserve -Auto
 }
