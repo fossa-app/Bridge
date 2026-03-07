@@ -5,7 +5,10 @@ param (
     $Version,
     [Parameter()]
     [string]
-    $Instance
+    $Instance,
+    [Parameter()]
+    [switch]
+    $Fast
 )
 
-.\trigger.ps1 -Task Restore -Instance $Instance -Version $Version
+.\trigger.ps1 -Task Restore -Instance $Instance -Version $Version -Fast:$Fast

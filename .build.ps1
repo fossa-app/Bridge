@@ -22,7 +22,11 @@ param(
     # Build Instance
     [Parameter()]
     [string]
-    $Instance
+    $Instance,
+    # Fast mode
+    [Parameter()]
+    [switch]
+    $Fast
 )
 
 Set-StrictMode -Version Latest
@@ -104,7 +108,7 @@ Task EnsureCentralPackageVersions Clean, {
 }
 
 # Synopsis: Restore workloads
-Task RestoreWorkloads Clean, {
+Task RestoreWorkloads -If { -not $Fast } Clean, {
     Exec { dotnet workload restore }
 }
 
@@ -155,7 +159,7 @@ Task FormatFantomas Restore, {
 }
 
 # Synopsis: Format
-Task Format Restore, FormatXmlFiles, FormatFantomas
+Task Format -If { -not $Fast } Restore, FormatXmlFiles, FormatFantomas
 
 # Synopsis: Estimate Next Version
 Task EstimateVersion Restore, {
