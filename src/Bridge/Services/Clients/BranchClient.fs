@@ -1,5 +1,6 @@
 namespace Fossa.Bridge.Services.Clients
 
+open System.Threading
 open System.Threading.Tasks
 open Fossa.Bridge.Models.ApiModels
 open Fossa.Bridge.Services
@@ -23,24 +24,43 @@ type BranchClient(transport: IHttpTransport) =
 
         composeRelativeUrl [ Endpoints.Branches ] parameters
 
-    member _.GetBranchesAsync(query: BranchQueryRequestModel) : Task<PagingResponseModel<BranchRetrievalModel>> =
-        transport.GetAsync<PagingResponseModel<BranchRetrievalModel>>(buildUrl query)
+    member _.GetBranchesAsync
+        (query: BranchQueryRequestModel, cancellationToken: CancellationToken)
+        : Task<PagingResponseModel<BranchRetrievalModel>> =
+        transport.GetAsync<PagingResponseModel<BranchRetrievalModel>>(buildUrl query, cancellationToken)
 
-    member _.GetBranchAsync(id: int64) : Task<BranchRetrievalModel> =
-        transport.GetAsync<BranchRetrievalModel>(composeRelativeUrl [ Endpoints.Branches; id ] [])
+    member _.GetBranchAsync(id: int64, cancellationToken: CancellationToken) : Task<BranchRetrievalModel> =
+        transport.GetAsync<BranchRetrievalModel>(composeRelativeUrl [ Endpoints.Branches; id ] [], cancellationToken)
 
-    member _.CreateBranchAsync(model: BranchModificationModel) : Task =
-        transport.PostAsync<BranchModificationModel>(composeRelativeUrl [ Endpoints.Branches ] [], model)
+    member _.CreateBranchAsync(model: BranchModificationModel, cancellationToken: CancellationToken) : Task =
+        transport.PostAsync<BranchModificationModel>(
+            composeRelativeUrl [ Endpoints.Branches ] [],
+            model,
+            cancellationToken
+        )
 
-    member _.UpdateBranchAsync(id: int64, model: BranchModificationModel) : Task =
-        transport.PutAsync<BranchModificationModel>(composeRelativeUrl [ Endpoints.Branches; id ] [], model)
+    member _.UpdateBranchAsync(id: int64, model: BranchModificationModel, cancellationToken: CancellationToken) : Task =
+        transport.PutAsync<BranchModificationModel>(
+            composeRelativeUrl [ Endpoints.Branches; id ] [],
+            model,
+            cancellationToken
+        )
 
-    member _.DeleteBranchAsync(id: int64) : Task =
-        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Branches; id ] [])
+    member _.DeleteBranchAsync(id: int64, cancellationToken: CancellationToken) : Task =
+        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Branches; id ] [], cancellationToken)
 
     interface IBranchClient with
-        member this.GetBranchesAsync(query) = this.GetBranchesAsync(query)
-        member this.GetBranchAsync(id) = this.GetBranchAsync(id)
-        member this.CreateBranchAsync(model) = this.CreateBranchAsync(model)
-        member this.UpdateBranchAsync(id, model) = this.UpdateBranchAsync(id, model)
-        member this.DeleteBranchAsync(id) = this.DeleteBranchAsync(id)
+        member this.GetBranchesAsync(query, cancellationToken) =
+            this.GetBranchesAsync(query, cancellationToken)
+
+        member this.GetBranchAsync(id, cancellationToken) =
+            this.GetBranchAsync(id, cancellationToken)
+
+        member this.CreateBranchAsync(model, cancellationToken) =
+            this.CreateBranchAsync(model, cancellationToken)
+
+        member this.UpdateBranchAsync(id, model, cancellationToken) =
+            this.UpdateBranchAsync(id, model, cancellationToken)
+
+        member this.DeleteBranchAsync(id, cancellationToken) =
+            this.DeleteBranchAsync(id, cancellationToken)
