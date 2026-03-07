@@ -8,11 +8,11 @@ open Fossa.Bridge.Services.UrlHelpers
 type CompanyLicenseClient(transport: IHttpTransport) =
     member _.GetLicenseAsync() : Task<LicenseResponseModel<CompanyEntitlementsModel>> =
         transport.GetAsync<LicenseResponseModel<CompanyEntitlementsModel>>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.CompanyLicense ] []
+            composeRelativeUrl [ Endpoints.CompanyLicense ] []
         )
 
     member _.CreateLicenseAsync(model: string) : Task =
-        transport.PostAsync<string>(composeRelativeUrl [ Endpoints.BasePath; Endpoints.CompanyLicense ] [], model)
+        transport.PostAsync<string>(composeRelativeUrl [ Endpoints.CompanyLicense ] [], model)
 
     interface ICompanyLicenseClient with
         member this.GetLicenseAsync() = this.GetLicenseAsync()

@@ -7,24 +7,19 @@ open Fossa.Bridge.Services.UrlHelpers
 
 type CompanySettingsClient(transport: IHttpTransport) =
     member _.GetCompanySettingsAsync() : Task<CompanySettingsRetrievalModel> =
-        transport.GetAsync<CompanySettingsRetrievalModel>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.CompanySettings ] []
-        )
+        transport.GetAsync<CompanySettingsRetrievalModel>(composeRelativeUrl [ Endpoints.CompanySettings ] [])
 
     member _.CreateCompanySettingsAsync(model: CompanySettingsModificationModel) : Task =
         transport.PostAsync<CompanySettingsModificationModel>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.CompanySettings ] [],
+            composeRelativeUrl [ Endpoints.CompanySettings ] [],
             model
         )
 
     member _.UpdateCompanySettingsAsync(model: CompanySettingsModificationModel) : Task =
-        transport.PutAsync<CompanySettingsModificationModel>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.CompanySettings ] [],
-            model
-        )
+        transport.PutAsync<CompanySettingsModificationModel>(composeRelativeUrl [ Endpoints.CompanySettings ] [], model)
 
     member _.DeleteCompanySettingsAsync() : Task =
-        transport.DeleteAsync(composeRelativeUrl [ Endpoints.BasePath; Endpoints.CompanySettings ] [])
+        transport.DeleteAsync(composeRelativeUrl [ Endpoints.CompanySettings ] [])
 
     interface ICompanySettingsClient with
         member this.GetCompanySettingsAsync() = this.GetCompanySettingsAsync()

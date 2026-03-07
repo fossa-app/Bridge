@@ -21,28 +21,22 @@ type BranchClient(transport: IHttpTransport) =
               if queryParams.PageSize.HasValue then
                   yield "PageSize", (queryParams.PageSize.Value: UrlPart) ]
 
-        composeRelativeUrl [ Endpoints.BasePath; Endpoints.Branches ] parameters
+        composeRelativeUrl [ Endpoints.Branches ] parameters
 
     member _.GetBranchesAsync(query: BranchQueryRequestModel) : Task<PagingResponseModel<BranchRetrievalModel>> =
         transport.GetAsync<PagingResponseModel<BranchRetrievalModel>>(buildUrl query)
 
     member _.GetBranchAsync(id: int64) : Task<BranchRetrievalModel> =
-        transport.GetAsync<BranchRetrievalModel>(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Branches; id ] [])
+        transport.GetAsync<BranchRetrievalModel>(composeRelativeUrl [ Endpoints.Branches; id ] [])
 
     member _.CreateBranchAsync(model: BranchModificationModel) : Task =
-        transport.PostAsync<BranchModificationModel>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Branches ] [],
-            model
-        )
+        transport.PostAsync<BranchModificationModel>(composeRelativeUrl [ Endpoints.Branches ] [], model)
 
     member _.UpdateBranchAsync(id: int64, model: BranchModificationModel) : Task =
-        transport.PutAsync<BranchModificationModel>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Branches; id ] [],
-            model
-        )
+        transport.PutAsync<BranchModificationModel>(composeRelativeUrl [ Endpoints.Branches; id ] [], model)
 
     member _.DeleteBranchAsync(id: int64) : Task =
-        transport.DeleteAsync(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Branches; id ] [])
+        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Branches; id ] [])
 
     interface IBranchClient with
         member this.GetBranchesAsync(query) = this.GetBranchesAsync(query)

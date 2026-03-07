@@ -25,7 +25,7 @@ type EmployeeClient(transport: IHttpTransport) =
               if queryParams.TopLevelOnly.HasValue then
                   yield "TopLevelOnly", (queryParams.TopLevelOnly.Value: UrlPart) ]
 
-        composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employees ] parameters
+        composeRelativeUrl [ Endpoints.Employees ] parameters
 
     let buildPagingUrl (queryParams: EmployeePagingRequestModel) =
         let parameters =
@@ -36,7 +36,7 @@ type EmployeeClient(transport: IHttpTransport) =
               if queryParams.PageSize.HasValue then
                   yield "PageSize", (queryParams.PageSize.Value: UrlPart) ]
 
-        composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employees ] parameters
+        composeRelativeUrl [ Endpoints.Employees ] parameters
 
     member _.GetEmployeesAsync(query: EmployeeQueryRequestModel) : Task<PagingResponseModel<EmployeeRetrievalModel>> =
         transport.GetAsync<PagingResponseModel<EmployeeRetrievalModel>>(buildUrl query)
@@ -47,42 +47,28 @@ type EmployeeClient(transport: IHttpTransport) =
         transport.GetAsync<PagingResponseModel<EmployeeRetrievalModel>>(buildPagingUrl query)
 
     member _.GetEmployeeAsync(id: int64) : Task<EmployeeRetrievalModel> =
-        transport.GetAsync<EmployeeRetrievalModel>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employees; id ] []
-        )
+        transport.GetAsync<EmployeeRetrievalModel>(composeRelativeUrl [ Endpoints.Employees; id ] [])
 
     member _.GetCurrentEmployeeAsync() : Task<EmployeeRetrievalModel> =
-        transport.GetAsync<EmployeeRetrievalModel>(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee ] [])
+        transport.GetAsync<EmployeeRetrievalModel>(composeRelativeUrl [ Endpoints.Employee ] [])
 
     member _.CreateEmployeeAsync(model: EmployeeModificationModel) : Task =
-        transport.PostAsync<EmployeeModificationModel>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee ] [],
-            model
-        )
+        transport.PostAsync<EmployeeModificationModel>(composeRelativeUrl [ Endpoints.Employee ] [], model)
 
     member _.UpdateEmployeeAsync(id: int64, model: EmployeeModificationModel) : Task =
-        transport.PutAsync<EmployeeModificationModel>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee; id ] [],
-            model
-        )
+        transport.PutAsync<EmployeeModificationModel>(composeRelativeUrl [ Endpoints.Employee; id ] [], model)
 
     member _.UpdateCurrentEmployeeAsync(model: EmployeeModificationModel) : Task =
-        transport.PutAsync<EmployeeModificationModel>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee ] [],
-            model
-        )
+        transport.PutAsync<EmployeeModificationModel>(composeRelativeUrl [ Endpoints.Employee ] [], model)
 
     member _.ManageEmployeeAsync(id: int64, model: EmployeeManagementModel) : Task =
-        transport.PutAsync<EmployeeManagementModel>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employees; id ] [],
-            model
-        )
+        transport.PutAsync<EmployeeManagementModel>(composeRelativeUrl [ Endpoints.Employees; id ] [], model)
 
     member _.DeleteEmployeeAsync(id: int64) : Task =
-        transport.DeleteAsync(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee; id ] [])
+        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Employee; id ] [])
 
     member _.DeleteCurrentEmployeeAsync() : Task =
-        transport.DeleteAsync(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee ] [])
+        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Employee ] [])
 
     interface IEmployeeClient with
         member this.GetEmployeesAsync(query) = this.GetEmployeesAsync(query)

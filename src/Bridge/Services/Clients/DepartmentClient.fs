@@ -21,7 +21,7 @@ type DepartmentClient(transport: IHttpTransport) =
               if queryParams.PageSize.HasValue then
                   yield "PageSize", (queryParams.PageSize.Value: UrlPart) ]
 
-        composeRelativeUrl [ Endpoints.BasePath; Endpoints.Departments ] parameters
+        composeRelativeUrl [ Endpoints.Departments ] parameters
 
     member _.GetDepartmentsAsync
         (query: DepartmentQueryRequestModel)
@@ -29,24 +29,16 @@ type DepartmentClient(transport: IHttpTransport) =
         transport.GetAsync<PagingResponseModel<DepartmentRetrievalModel>>(buildUrl query)
 
     member _.GetDepartmentAsync(id: int64) : Task<DepartmentRetrievalModel> =
-        transport.GetAsync<DepartmentRetrievalModel>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Departments; id ] []
-        )
+        transport.GetAsync<DepartmentRetrievalModel>(composeRelativeUrl [ Endpoints.Departments; id ] [])
 
     member _.CreateDepartmentAsync(model: DepartmentModificationModel) : Task =
-        transport.PostAsync<DepartmentModificationModel>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Departments ] [],
-            model
-        )
+        transport.PostAsync<DepartmentModificationModel>(composeRelativeUrl [ Endpoints.Departments ] [], model)
 
     member _.UpdateDepartmentAsync(id: int64, model: DepartmentModificationModel) : Task =
-        transport.PutAsync<DepartmentModificationModel>(
-            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Departments; id ] [],
-            model
-        )
+        transport.PutAsync<DepartmentModificationModel>(composeRelativeUrl [ Endpoints.Departments; id ] [], model)
 
     member _.DeleteDepartmentAsync(id: int64) : Task =
-        transport.DeleteAsync(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Departments; id ] [])
+        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Departments; id ] [])
 
     interface IDepartmentClient with
         member this.GetDepartmentsAsync(query) = this.GetDepartmentsAsync(query)
