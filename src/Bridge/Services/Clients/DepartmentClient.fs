@@ -1,5 +1,6 @@
 namespace Fossa.Bridge.Services.Clients
 
+open System.Threading
 open System.Threading.Tasks
 open Fossa.Bridge.Models.ApiModels
 open Fossa.Bridge.Services
@@ -24,25 +25,47 @@ type DepartmentClient(transport: IHttpTransport) =
         composeRelativeUrl [ Endpoints.Departments ] parameters
 
     member _.GetDepartmentsAsync
-        (query: DepartmentQueryRequestModel)
+        (query: DepartmentQueryRequestModel, cancellationToken: CancellationToken)
         : Task<PagingResponseModel<DepartmentRetrievalModel>> =
-        transport.GetAsync<PagingResponseModel<DepartmentRetrievalModel>>(buildUrl query)
+        transport.GetAsync<PagingResponseModel<DepartmentRetrievalModel>>(buildUrl query, cancellationToken)
 
-    member _.GetDepartmentAsync(id: int64) : Task<DepartmentRetrievalModel> =
-        transport.GetAsync<DepartmentRetrievalModel>(composeRelativeUrl [ Endpoints.Departments; id ] [])
+    member _.GetDepartmentAsync(id: int64, cancellationToken: CancellationToken) : Task<DepartmentRetrievalModel> =
+        transport.GetAsync<DepartmentRetrievalModel>(
+            composeRelativeUrl [ Endpoints.Departments; id ] [],
+            cancellationToken
+        )
 
-    member _.CreateDepartmentAsync(model: DepartmentModificationModel) : Task =
-        transport.PostAsync<DepartmentModificationModel>(composeRelativeUrl [ Endpoints.Departments ] [], model)
+    member _.CreateDepartmentAsync(model: DepartmentModificationModel, cancellationToken: CancellationToken) : Task =
+        transport.PostAsync<DepartmentModificationModel>(
+            composeRelativeUrl [ Endpoints.Departments ] [],
+            model,
+            cancellationToken
+        )
 
-    member _.UpdateDepartmentAsync(id: int64, model: DepartmentModificationModel) : Task =
-        transport.PutAsync<DepartmentModificationModel>(composeRelativeUrl [ Endpoints.Departments; id ] [], model)
+    member _.UpdateDepartmentAsync
+        (id: int64, model: DepartmentModificationModel, cancellationToken: CancellationToken)
+        : Task =
+        transport.PutAsync<DepartmentModificationModel>(
+            composeRelativeUrl [ Endpoints.Departments; id ] [],
+            model,
+            cancellationToken
+        )
 
-    member _.DeleteDepartmentAsync(id: int64) : Task =
-        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Departments; id ] [])
+    member _.DeleteDepartmentAsync(id: int64, cancellationToken: CancellationToken) : Task =
+        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Departments; id ] [], cancellationToken)
 
     interface IDepartmentClient with
-        member this.GetDepartmentsAsync(query) = this.GetDepartmentsAsync(query)
-        member this.GetDepartmentAsync(id) = this.GetDepartmentAsync(id)
-        member this.CreateDepartmentAsync(model) = this.CreateDepartmentAsync(model)
-        member this.UpdateDepartmentAsync(id, model) = this.UpdateDepartmentAsync(id, model)
-        member this.DeleteDepartmentAsync(id) = this.DeleteDepartmentAsync(id)
+        member this.GetDepartmentsAsync(query, cancellationToken) =
+            this.GetDepartmentsAsync(query, cancellationToken)
+
+        member this.GetDepartmentAsync(id, cancellationToken) =
+            this.GetDepartmentAsync(id, cancellationToken)
+
+        member this.CreateDepartmentAsync(model, cancellationToken) =
+            this.CreateDepartmentAsync(model, cancellationToken)
+
+        member this.UpdateDepartmentAsync(id, model, cancellationToken) =
+            this.UpdateDepartmentAsync(id, model, cancellationToken)
+
+        member this.DeleteDepartmentAsync(id, cancellationToken) =
+            this.DeleteDepartmentAsync(id, cancellationToken)

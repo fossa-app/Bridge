@@ -1,13 +1,16 @@
 namespace Fossa.Bridge.Services.Clients
 
+open System.Threading
 open System.Threading.Tasks
 open Fossa.Bridge.Models.ApiModels
 
 type ICompanySettingsClient =
-    abstract GetCompanySettingsAsync: unit -> Task<CompanySettingsRetrievalModel>
+    abstract GetCompanySettingsAsync: cancellationToken: CancellationToken -> Task<CompanySettingsRetrievalModel>
 
-    abstract CreateCompanySettingsAsync: model: CompanySettingsModificationModel -> Task
+    abstract CreateCompanySettingsAsync:
+        model: CompanySettingsModificationModel * cancellationToken: CancellationToken -> Task
 
-    abstract UpdateCompanySettingsAsync: model: CompanySettingsModificationModel -> Task
+    abstract UpdateCompanySettingsAsync:
+        model: CompanySettingsModificationModel * cancellationToken: CancellationToken -> Task
 
-    abstract DeleteCompanySettingsAsync: unit -> Task
+    abstract DeleteCompanySettingsAsync: cancellationToken: CancellationToken -> Task

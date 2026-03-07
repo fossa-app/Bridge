@@ -1,5 +1,6 @@
 namespace Fossa.Bridge.Services.Clients
 
+open System.Threading
 open System.Threading.Tasks
 open Fossa.Bridge.Models.ApiModels
 open Fossa.Bridge.Services
@@ -38,46 +39,87 @@ type EmployeeClient(transport: IHttpTransport) =
 
         composeRelativeUrl [ Endpoints.Employees ] parameters
 
-    member _.GetEmployeesAsync(query: EmployeeQueryRequestModel) : Task<PagingResponseModel<EmployeeRetrievalModel>> =
-        transport.GetAsync<PagingResponseModel<EmployeeRetrievalModel>>(buildUrl query)
+    member _.GetEmployeesAsync
+        (query: EmployeeQueryRequestModel, cancellationToken: CancellationToken)
+        : Task<PagingResponseModel<EmployeeRetrievalModel>> =
+        transport.GetAsync<PagingResponseModel<EmployeeRetrievalModel>>(buildUrl query, cancellationToken)
 
     member _.GetEmployeesPagingAsync
-        (query: EmployeePagingRequestModel)
+        (query: EmployeePagingRequestModel, cancellationToken: CancellationToken)
         : Task<PagingResponseModel<EmployeeRetrievalModel>> =
-        transport.GetAsync<PagingResponseModel<EmployeeRetrievalModel>>(buildPagingUrl query)
+        transport.GetAsync<PagingResponseModel<EmployeeRetrievalModel>>(buildPagingUrl query, cancellationToken)
 
-    member _.GetEmployeeAsync(id: int64) : Task<EmployeeRetrievalModel> =
-        transport.GetAsync<EmployeeRetrievalModel>(composeRelativeUrl [ Endpoints.Employees; id ] [])
+    member _.GetEmployeeAsync(id: int64, cancellationToken: CancellationToken) : Task<EmployeeRetrievalModel> =
+        transport.GetAsync<EmployeeRetrievalModel>(composeRelativeUrl [ Endpoints.Employees; id ] [], cancellationToken)
 
-    member _.GetCurrentEmployeeAsync() : Task<EmployeeRetrievalModel> =
-        transport.GetAsync<EmployeeRetrievalModel>(composeRelativeUrl [ Endpoints.Employee ] [])
+    member _.GetCurrentEmployeeAsync(cancellationToken: CancellationToken) : Task<EmployeeRetrievalModel> =
+        transport.GetAsync<EmployeeRetrievalModel>(composeRelativeUrl [ Endpoints.Employee ] [], cancellationToken)
 
-    member _.CreateEmployeeAsync(model: EmployeeModificationModel) : Task =
-        transport.PostAsync<EmployeeModificationModel>(composeRelativeUrl [ Endpoints.Employee ] [], model)
+    member _.CreateEmployeeAsync(model: EmployeeModificationModel, cancellationToken: CancellationToken) : Task =
+        transport.PostAsync<EmployeeModificationModel>(
+            composeRelativeUrl [ Endpoints.Employee ] [],
+            model,
+            cancellationToken
+        )
 
-    member _.UpdateEmployeeAsync(id: int64, model: EmployeeModificationModel) : Task =
-        transport.PutAsync<EmployeeModificationModel>(composeRelativeUrl [ Endpoints.Employee; id ] [], model)
+    member _.UpdateEmployeeAsync
+        (id: int64, model: EmployeeModificationModel, cancellationToken: CancellationToken)
+        : Task =
+        transport.PutAsync<EmployeeModificationModel>(
+            composeRelativeUrl [ Endpoints.Employee; id ] [],
+            model,
+            cancellationToken
+        )
 
-    member _.UpdateCurrentEmployeeAsync(model: EmployeeModificationModel) : Task =
-        transport.PutAsync<EmployeeModificationModel>(composeRelativeUrl [ Endpoints.Employee ] [], model)
+    member _.UpdateCurrentEmployeeAsync(model: EmployeeModificationModel, cancellationToken: CancellationToken) : Task =
+        transport.PutAsync<EmployeeModificationModel>(
+            composeRelativeUrl [ Endpoints.Employee ] [],
+            model,
+            cancellationToken
+        )
 
-    member _.ManageEmployeeAsync(id: int64, model: EmployeeManagementModel) : Task =
-        transport.PutAsync<EmployeeManagementModel>(composeRelativeUrl [ Endpoints.Employees; id ] [], model)
+    member _.ManageEmployeeAsync
+        (id: int64, model: EmployeeManagementModel, cancellationToken: CancellationToken)
+        : Task =
+        transport.PutAsync<EmployeeManagementModel>(
+            composeRelativeUrl [ Endpoints.Employees; id ] [],
+            model,
+            cancellationToken
+        )
 
-    member _.DeleteEmployeeAsync(id: int64) : Task =
-        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Employee; id ] [])
+    member _.DeleteEmployeeAsync(id: int64, cancellationToken: CancellationToken) : Task =
+        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Employee; id ] [], cancellationToken)
 
-    member _.DeleteCurrentEmployeeAsync() : Task =
-        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Employee ] [])
+    member _.DeleteCurrentEmployeeAsync(cancellationToken: CancellationToken) : Task =
+        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Employee ] [], cancellationToken)
 
     interface IEmployeeClient with
-        member this.GetEmployeesAsync(query) = this.GetEmployeesAsync(query)
-        member this.GetEmployeesPagingAsync(query) = this.GetEmployeesPagingAsync(query)
-        member this.GetEmployeeAsync(id) = this.GetEmployeeAsync(id)
-        member this.GetCurrentEmployeeAsync() = this.GetCurrentEmployeeAsync()
-        member this.CreateEmployeeAsync(model) = this.CreateEmployeeAsync(model)
-        member this.UpdateEmployeeAsync(id, model) = this.UpdateEmployeeAsync(id, model)
-        member this.UpdateCurrentEmployeeAsync(model) = this.UpdateCurrentEmployeeAsync(model)
-        member this.ManageEmployeeAsync(id, model) = this.ManageEmployeeAsync(id, model)
-        member this.DeleteEmployeeAsync(id) = this.DeleteEmployeeAsync(id)
-        member this.DeleteCurrentEmployeeAsync() = this.DeleteCurrentEmployeeAsync()
+        member this.GetEmployeesAsync(query, cancellationToken) =
+            this.GetEmployeesAsync(query, cancellationToken)
+
+        member this.GetEmployeesPagingAsync(query, cancellationToken) =
+            this.GetEmployeesPagingAsync(query, cancellationToken)
+
+        member this.GetEmployeeAsync(id, cancellationToken) =
+            this.GetEmployeeAsync(id, cancellationToken)
+
+        member this.GetCurrentEmployeeAsync(cancellationToken) =
+            this.GetCurrentEmployeeAsync(cancellationToken)
+
+        member this.CreateEmployeeAsync(model, cancellationToken) =
+            this.CreateEmployeeAsync(model, cancellationToken)
+
+        member this.UpdateEmployeeAsync(id, model, cancellationToken) =
+            this.UpdateEmployeeAsync(id, model, cancellationToken)
+
+        member this.UpdateCurrentEmployeeAsync(model, cancellationToken) =
+            this.UpdateCurrentEmployeeAsync(model, cancellationToken)
+
+        member this.ManageEmployeeAsync(id, model, cancellationToken) =
+            this.ManageEmployeeAsync(id, model, cancellationToken)
+
+        member this.DeleteEmployeeAsync(id, cancellationToken) =
+            this.DeleteEmployeeAsync(id, cancellationToken)
+
+        member this.DeleteCurrentEmployeeAsync(cancellationToken) =
+            this.DeleteCurrentEmployeeAsync(cancellationToken)
