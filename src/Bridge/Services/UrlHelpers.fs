@@ -50,14 +50,15 @@ type UrlPart(value: Choice<string, ISpanFormattable>) =
         UrlPart(Choice2Of2(dto :> ISpanFormattable))
 
 let composeRelativeUrl (relativePathSections: UrlPart list) (queryParameters: (string * UrlPart) list) : string =
-    let relativePath =
+    let sections =
         relativePathSections
         |> List.map (fun section ->
             match section.Value with
             | Choice1Of2 str -> str
             | Choice2Of2 formattable -> string formattable)
         |> List.map Uri.EscapeDataString
-        |> String.concat "/"
+
+    let relativePath = Endpoints.BasePath :: sections |> String.concat "/"
 
     let queryString =
         match queryParameters with
