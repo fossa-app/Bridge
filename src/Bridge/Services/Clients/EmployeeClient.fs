@@ -47,7 +47,12 @@ type EmployeeClient(transport: IHttpTransport) =
         transport.GetAsync<PagingResponseModel<EmployeeRetrievalModel>>(buildPagingUrl query)
 
     member _.GetEmployeeAsync(id: int64) : Task<EmployeeRetrievalModel> =
-        transport.GetAsync<EmployeeRetrievalModel>(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee; id ] [])
+        transport.GetAsync<EmployeeRetrievalModel>(
+            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employees; id ] []
+        )
+
+    member _.GetCurrentEmployeeAsync() : Task<EmployeeRetrievalModel> =
+        transport.GetAsync<EmployeeRetrievalModel>(composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee ] [])
 
     member _.CreateEmployeeAsync(model: EmployeeModificationModel) : Task =
         transport.PostAsync<EmployeeModificationModel>(
@@ -58,6 +63,12 @@ type EmployeeClient(transport: IHttpTransport) =
     member _.UpdateEmployeeAsync(id: int64, model: EmployeeModificationModel) : Task =
         transport.PutAsync<EmployeeModificationModel>(
             composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee; id ] [],
+            model
+        )
+
+    member _.UpdateCurrentEmployeeAsync(model: EmployeeModificationModel) : Task =
+        transport.PutAsync<EmployeeModificationModel>(
+            composeRelativeUrl [ Endpoints.BasePath; Endpoints.Employee ] [],
             model
         )
 
@@ -77,8 +88,10 @@ type EmployeeClient(transport: IHttpTransport) =
         member this.GetEmployeesAsync(query) = this.GetEmployeesAsync(query)
         member this.GetEmployeesPagingAsync(query) = this.GetEmployeesPagingAsync(query)
         member this.GetEmployeeAsync(id) = this.GetEmployeeAsync(id)
+        member this.GetCurrentEmployeeAsync() = this.GetCurrentEmployeeAsync()
         member this.CreateEmployeeAsync(model) = this.CreateEmployeeAsync(model)
         member this.UpdateEmployeeAsync(id, model) = this.UpdateEmployeeAsync(id, model)
+        member this.UpdateCurrentEmployeeAsync(model) = this.UpdateCurrentEmployeeAsync(model)
         member this.ManageEmployeeAsync(id, model) = this.ManageEmployeeAsync(id, model)
         member this.DeleteEmployeeAsync(id) = this.DeleteEmployeeAsync(id)
         member this.DeleteCurrentEmployeeAsync() = this.DeleteCurrentEmployeeAsync()
