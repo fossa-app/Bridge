@@ -252,9 +252,6 @@ Task PackNPM Build, Test, {
   "compilerOptions": {
     "outDir": "$distPath",
     "rootDir": "$fablePath",
-    "noEmit": false,
-    "allowImportingTsExtensions": false,
-    "rewriteRelativeImportExtensions": true
   },
   `"include`": [
     `"$fablePattern`"
