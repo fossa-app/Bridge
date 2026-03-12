@@ -7,6 +7,7 @@
     <Description>Shared Domain Models and DTOs for Fossa UI and API</Description>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Fable.fs" />
     <Compile Include="Models\ApiModels\SharedModels.fs" />
     <Compile Include="Models\ApiModels\EnvelopeModels.fs" />
     <Compile Include="Models\ApiModels\PayloadModels.fs" />

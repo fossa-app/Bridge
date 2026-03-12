@@ -1,5 +1,7 @@
 namespace Fossa.Bridge.Services
 
+open Fossa.Bridge
+
 open System.Threading
 open System.Threading.Tasks
 
