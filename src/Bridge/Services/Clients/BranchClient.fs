@@ -1,5 +1,7 @@
 namespace Fossa.Bridge.Services.Clients
 
+open Fossa.Bridge
+
 open System.Threading
 open System.Threading.Tasks
 open Fossa.Bridge.Models.ApiModels
@@ -11,7 +13,7 @@ type BranchClient(transport: IHttpTransport) =
     let buildUrl (queryParams: BranchQueryRequestModel) =
         let parameters =
             [ match Option.ofObj queryParams.Id with
-              | Some ids when ids.Count > 0 ->
+              | Some ids when not (Seq.isEmpty ids) ->
                   for id in ids do
                       yield "Id", (id: UrlPart)
               | _ -> ()

@@ -1,5 +1,7 @@
 namespace Fossa.Bridge.Services
 
+open Fossa.Bridge
+
 module Endpoints =
     let BasePath = "api/1.0"
     let Client = "Identity/Client"
