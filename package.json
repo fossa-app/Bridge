@@ -21,7 +21,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@fable-org/fable-library-ts": "^2.0.0-rc.2"
+    "@fable-org/fable-library-ts": "^2.0.0-rc.4"
   },
   "devDependencies": {
     "typescript": "^5.9.3"
