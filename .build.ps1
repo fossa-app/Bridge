@@ -168,8 +168,8 @@ Task EstimateVersion Restore, {
         $state.NextVersion = [System.Management.Automation.SemanticVersion]$Version
     }
     else {
-        $gitversion = Exec { dotnet tool run dotnet-gitversion } | ConvertFrom-Json
-        $state.NextVersion = [System.Management.Automation.SemanticVersion]::Parse($gitversion.SemVer)
+        $gitversion = Exec { dotnet tool run dotnet-gitversion -- /overrideconfig assembly-versioning-format='{Major}.{Minor}.{Patch}-preview.{CommitsSinceVersionSource}' } | ConvertFrom-Json
+        $state.NextVersion = [System.Management.Automation.SemanticVersion]::Parse($gitversion.AssemblySemVer)
     }
 
     $state | Export-Clixml -Path ".\.trash\$Instance\state.clixml"

@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - preview
   pull_request:
   release:
     types:
@@ -60,7 +61,7 @@ jobs:
   cd:
     name: CD
     needs: ci
-    if: github.event_name == 'release'
+    # if: github.event_name == 'release'
     environment:
       name: "Release"
       url: "https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }}"
