@@ -1,6 +1,5 @@
 module Fossa.Bridge.Services.UrlHelpers
 
-open Fossa.Bridge
 
 open System
 
@@ -18,7 +17,7 @@ let getBackendOrigin (frontendOrigin: string) : string =
     match mapping with
     | Some(frontendSuffix, backendSuffix) ->
         let prefixLength = frontendOrigin.Length - frontendSuffix.Length
-        frontendOrigin.Substring(0, prefixLength) + backendSuffix
+        $"{frontendOrigin.Substring(0, prefixLength)}{backendSuffix}"
     | None -> frontendOrigin
 
 type UrlPart(value: string) =
@@ -42,21 +41,30 @@ type UrlPart(value: string) =
 
     static member op_Implicit(dto: DateTimeOffset) = UrlPart(string dto)
 
-let composeRelativeUrl (relativePathSections: UrlPart list) (queryParameters: (string * UrlPart) list) : string =
+let composeRelativeUrl
+    (endpointUrl: string)
+    (requiresToken: EndpointSecurity)
+    (relativePathSections: UrlPart list)
+    (queryParameters: (string * UrlPart) list)
+    : string * EndpointSecurity =
+
     let sections =
         relativePathSections
         |> List.map (fun section -> section.Value)
         |> List.map Uri.EscapeDataString
 
-    let relativePath = Endpoints.BasePath :: sections |> String.concat "/"
+    let relativePath =
+        Endpoints.BasePath :: endpointUrl :: sections |> String.concat "/"
 
     let queryString =
         match queryParameters with
         | [] -> ""
         | _ ->
-            "?"
-            + (queryParameters
-               |> List.map (fun (key, value) -> Uri.EscapeDataString key + "=" + Uri.EscapeDataString value.Value)
-               |> String.concat "&")
+            let queryParamsStr =
+                queryParameters
+                |> List.map (fun (key, value) -> $"{Uri.EscapeDataString key}={Uri.EscapeDataString value.Value}")
+                |> String.concat "&"
 
-    relativePath + queryString
+            $"?{queryParamsStr}"
+
+    ($"{relativePath}{queryString}", requiresToken)

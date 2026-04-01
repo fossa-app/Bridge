@@ -1,6 +1,5 @@
 namespace Fossa.Bridge.Services.Clients
 
-open Fossa.Bridge
 
 open System.Threading
 open System.Threading.Tasks
@@ -12,13 +11,24 @@ type CompanyLicenseClient(transport: IHttpTransport) =
     member _.GetLicenseAsync
         (cancellationToken: CancellationToken)
         : Task<LicenseResponseModel<CompanyEntitlementsModel>> =
+        let endpointPath, securityRequirement = Endpoints.CompanyLicense
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
         transport.GetAsync<LicenseResponseModel<CompanyEntitlementsModel>>(
-            composeRelativeUrl [ Endpoints.CompanyLicense ] [],
+            endpointUrl,
+            endpointSecurity,
             cancellationToken
         )
 
     member _.CreateLicenseAsync(model: string, cancellationToken: CancellationToken) : Task =
-        transport.PostAsync<string>(composeRelativeUrl [ Endpoints.CompanyLicense ] [], model, cancellationToken)
+        let endpointPath, securityRequirement = Endpoints.CompanyLicense
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
+        transport.PostAsync<string>(endpointUrl, endpointSecurity, model, cancellationToken)
 
     interface ICompanyLicenseClient with
         member this.GetLicenseAsync(cancellationToken) = this.GetLicenseAsync(cancellationToken)

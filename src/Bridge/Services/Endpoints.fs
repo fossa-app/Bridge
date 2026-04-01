@@ -1,15 +1,17 @@
 namespace Fossa.Bridge.Services
 
-open Fossa.Bridge
+type EndpointSecurity =
+    | Anonymous
+    | RequireToken
 
 module Endpoints =
     let BasePath = "api/1.0"
-    let Client = "Identity/Client"
-    let SystemLicense = "License/System"
-    let CompanyLicense = "License/Company"
-    let Company = "Company"
-    let CompanySettings = "CompanySettings"
-    let Branches = "Branches"
-    let Departments = "Departments"
-    let Employee = "Employee"
-    let Employees = "Employees"
+    let Client = "Identity/Client", Anonymous
+    let SystemLicense = "License/System", Anonymous
+    let CompanyLicense = "License/Company", RequireToken
+    let Company = "Company", RequireToken
+    let CompanySettings = "CompanySettings", RequireToken
+    let Branches = "Branches", RequireToken
+    let Departments = "Departments", RequireToken
+    let Employee = "Employee", RequireToken
+    let Employees = "Employees", RequireToken

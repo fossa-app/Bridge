@@ -1,6 +1,5 @@
 namespace Fossa.Bridge.Services.Clients
 
-open Fossa.Bridge
 
 open System.Threading
 open System.Threading.Tasks
@@ -28,7 +27,8 @@ type EmployeeClient(transport: IHttpTransport) =
               if queryParams.TopLevelOnly.HasValue then
                   yield "TopLevelOnly", (queryParams.TopLevelOnly.Value: UrlPart) ]
 
-        composeRelativeUrl [ Endpoints.Employees ] parameters
+        let endpointPath, securityRequirement = Endpoints.Employees
+        composeRelativeUrl endpointPath securityRequirement [] parameters
 
     let buildPagingUrl (queryParams: EmployeePagingRequestModel) =
         let parameters =
@@ -39,61 +39,98 @@ type EmployeeClient(transport: IHttpTransport) =
               if queryParams.PageSize.HasValue then
                   yield "PageSize", (queryParams.PageSize.Value: UrlPart) ]
 
-        composeRelativeUrl [ Endpoints.Employees ] parameters
+        let endpointPath, securityRequirement = Endpoints.Employees
+        composeRelativeUrl endpointPath securityRequirement [] parameters
 
     member _.GetEmployeesAsync
         (query: EmployeeQueryRequestModel, cancellationToken: CancellationToken)
         : Task<PagingResponseModel<EmployeeRetrievalModel>> =
-        transport.GetAsync<PagingResponseModel<EmployeeRetrievalModel>>(buildUrl query, cancellationToken)
+        let endpointUrl, endpointSecurity = buildUrl query
+
+        transport.GetAsync<PagingResponseModel<EmployeeRetrievalModel>>(
+            endpointUrl,
+            endpointSecurity,
+            cancellationToken
+        )
 
     member _.GetEmployeesPagingAsync
         (query: EmployeePagingRequestModel, cancellationToken: CancellationToken)
         : Task<PagingResponseModel<EmployeeRetrievalModel>> =
-        transport.GetAsync<PagingResponseModel<EmployeeRetrievalModel>>(buildPagingUrl query, cancellationToken)
+        let endpointUrl, endpointSecurity = buildPagingUrl query
 
-    member _.GetEmployeeAsync(id: int64, cancellationToken: CancellationToken) : Task<EmployeeRetrievalModel> =
-        transport.GetAsync<EmployeeRetrievalModel>(composeRelativeUrl [ Endpoints.Employees; id ] [], cancellationToken)
-
-    member _.GetCurrentEmployeeAsync(cancellationToken: CancellationToken) : Task<EmployeeRetrievalModel> =
-        transport.GetAsync<EmployeeRetrievalModel>(composeRelativeUrl [ Endpoints.Employee ] [], cancellationToken)
-
-    member _.CreateEmployeeAsync(model: EmployeeModificationModel, cancellationToken: CancellationToken) : Task =
-        transport.PostAsync<EmployeeModificationModel>(
-            composeRelativeUrl [ Endpoints.Employee ] [],
-            model,
+        transport.GetAsync<PagingResponseModel<EmployeeRetrievalModel>>(
+            endpointUrl,
+            endpointSecurity,
             cancellationToken
         )
+
+    member _.GetEmployeeAsync(id: int64, cancellationToken: CancellationToken) : Task<EmployeeRetrievalModel> =
+        let endpointPath, securityRequirement = Endpoints.Employees
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [ UrlPart(string id) ] []
+
+        transport.GetAsync<EmployeeRetrievalModel>(endpointUrl, endpointSecurity, cancellationToken)
+
+    member _.GetCurrentEmployeeAsync(cancellationToken: CancellationToken) : Task<EmployeeRetrievalModel> =
+        let endpointPath, securityRequirement = Endpoints.Employee
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
+        transport.GetAsync<EmployeeRetrievalModel>(endpointUrl, endpointSecurity, cancellationToken)
+
+    member _.CreateEmployeeAsync(model: EmployeeModificationModel, cancellationToken: CancellationToken) : Task =
+        let endpointPath, securityRequirement = Endpoints.Employee
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
+        transport.PostAsync<EmployeeModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
     member _.UpdateEmployeeAsync
         (id: int64, model: EmployeeModificationModel, cancellationToken: CancellationToken)
         : Task =
-        transport.PutAsync<EmployeeModificationModel>(
-            composeRelativeUrl [ Endpoints.Employee; id ] [],
-            model,
-            cancellationToken
-        )
+        let endpointPath, securityRequirement = Endpoints.Employee
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [ UrlPart(string id) ] []
+
+        transport.PutAsync<EmployeeModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
     member _.UpdateCurrentEmployeeAsync(model: EmployeeModificationModel, cancellationToken: CancellationToken) : Task =
-        transport.PutAsync<EmployeeModificationModel>(
-            composeRelativeUrl [ Endpoints.Employee ] [],
-            model,
-            cancellationToken
-        )
+        let endpointPath, securityRequirement = Endpoints.Employee
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
+        transport.PutAsync<EmployeeModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
     member _.ManageEmployeeAsync
         (id: int64, model: EmployeeManagementModel, cancellationToken: CancellationToken)
         : Task =
-        transport.PutAsync<EmployeeManagementModel>(
-            composeRelativeUrl [ Endpoints.Employees; id ] [],
-            model,
-            cancellationToken
-        )
+        let endpointPath, securityRequirement = Endpoints.Employees
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [ UrlPart(string id) ] []
+
+        transport.PutAsync<EmployeeManagementModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
     member _.DeleteEmployeeAsync(id: int64, cancellationToken: CancellationToken) : Task =
-        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Employee; id ] [], cancellationToken)
+        let endpointPath, securityRequirement = Endpoints.Employee
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [ UrlPart(string id) ] []
+
+        transport.DeleteAsync(endpointUrl, endpointSecurity, cancellationToken)
 
     member _.DeleteCurrentEmployeeAsync(cancellationToken: CancellationToken) : Task =
-        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Employee ] [], cancellationToken)
+        let endpointPath, securityRequirement = Endpoints.Employee
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
+        transport.DeleteAsync(endpointUrl, endpointSecurity, cancellationToken)
 
     interface IEmployeeClient with
         member this.GetEmployeesAsync(query, cancellationToken) =
