@@ -2,6 +2,7 @@ module UrlHelpersTests
 
 open System
 open Expecto
+open Fossa.Bridge.Services
 open Fossa.Bridge.Services.UrlHelpers
 
 [<Tests>]
@@ -39,12 +40,12 @@ let tests =
               "composeRelativeUrl"
               [ testCase "string sections and no query parameters"
                 <| fun _ ->
-                    let result = composeRelativeUrl [ "users" ] []
+                    let result, _ = composeRelativeUrl ("users") Anonymous [] []
                     Expect.equal result "api/1.0/users" "Should compose simple string paths correctly"
 
                 testCase "string sections with numeric string and no query parameters"
                 <| fun _ ->
-                    let result = composeRelativeUrl [ "users"; 123 ] []
+                    let result, _ = composeRelativeUrl ("users") Anonymous [ 123 ] []
 
                     Expect.equal
                         result
@@ -53,7 +54,7 @@ let tests =
 
                 testCase "api/1.0/users/123 homogeneously built natively with integer types"
                 <| fun _ ->
-                    let result = composeRelativeUrl [ ("users": UrlPart); (123: UrlPart) ] []
+                    let result, _ = composeRelativeUrl ("users") Anonymous [ (123: UrlPart) ] []
 
                     Expect.equal
                         result
@@ -62,14 +63,14 @@ let tests =
 
                 testCase "query parameters"
                 <| fun _ ->
-                    let result = composeRelativeUrl [ "users" ] [ "sort", "desc" ]
+                    let result, _ = composeRelativeUrl ("users") Anonymous [] [ "sort", "desc" ]
 
                     Expect.equal result "api/1.0/users?sort=desc" "Should compose query parameters correctly"
 
                 testCase "numeric query parameters natively"
                 <| fun _ ->
-                    let result =
-                        composeRelativeUrl [ "users" ] [ "limit", (10: UrlPart); "offset", (20: UrlPart) ]
+                    let result, _ =
+                        composeRelativeUrl ("users") Anonymous [] [ "limit", (10: UrlPart); "offset", (20: UrlPart) ]
 
                     Expect.equal
                         result
@@ -78,8 +79,8 @@ let tests =
 
                 testCase "multiple query parameters with the same name"
                 <| fun _ ->
-                    let result =
-                        composeRelativeUrl [ "users" ] [ "filter", "active"; "filter", "admin" ]
+                    let result, _ =
+                        composeRelativeUrl ("users") Anonymous [] [ "filter", "active"; "filter", "admin" ]
 
                     Expect.equal
                         result
@@ -88,17 +89,22 @@ let tests =
 
                 testCase "url encoding"
                 <| fun _ ->
-                    let result = composeRelativeUrl [ "special paths" ] [ "q", "test query" ]
+                    let result, _ =
+                        composeRelativeUrl ("endpoint") Anonymous [ "special paths" ] [ "q", "test query" ]
 
                     Expect.equal
                         result
-                        "api/1.0/special%20paths?q=test%20query"
+                        "api/1.0/endpoint/special%20paths?q=test%20query"
                         "Should url encode paths and query parameters correctly"
 
                 testCase "int64 paths and query parameters"
                 <| fun _ ->
-                    let result =
-                        composeRelativeUrl [ (9223372036854775807L: UrlPart) ] [ "id", (1234567890123456789L: UrlPart) ]
+                    let result, _ =
+                        composeRelativeUrl
+                            (string 9223372036854775807L)
+                            Anonymous
+                            []
+                            [ "id", (1234567890123456789L: UrlPart) ]
 
                     Expect.equal
                         result
@@ -107,13 +113,15 @@ let tests =
 
                 testCase "float paths and query parameters"
                 <| fun _ ->
-                    let result = composeRelativeUrl [ (123.45: UrlPart) ] [ "val", (67.89: UrlPart) ]
+                    let result, _ =
+                        composeRelativeUrl ("123.45") Anonymous [] [ "val", (67.89: UrlPart) ]
 
                     Expect.equal result "api/1.0/123.45?val=67.89" "Should compose float correctly"
 
                 testCase "decimal paths and query parameters"
                 <| fun _ ->
-                    let result = composeRelativeUrl [ (123.45m: UrlPart) ] [ "val", (67.89m: UrlPart) ]
+                    let result, _ =
+                        composeRelativeUrl ("123.45") Anonymous [] [ "val", (67.89m: UrlPart) ]
 
                     Expect.equal result "api/1.0/123.45?val=67.89" "Should compose decimal correctly"
 
@@ -121,7 +129,9 @@ let tests =
                 <| fun _ ->
                     let id1 = Guid.Parse("12345678-1234-1234-1234-123456789012")
                     let id2 = Guid.Parse("87654321-4321-4321-4321-210987654321")
-                    let result = composeRelativeUrl [ (id1: UrlPart) ] [ "ref", (id2: UrlPart) ]
+
+                    let result, _ =
+                        composeRelativeUrl (string id1) Anonymous [] [ "ref", (id2: UrlPart) ]
 
                     Expect.equal
                         result

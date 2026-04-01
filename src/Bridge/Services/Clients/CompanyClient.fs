@@ -1,6 +1,5 @@
 namespace Fossa.Bridge.Services.Clients
 
-open Fossa.Bridge
 
 open System.Threading
 open System.Threading.Tasks
@@ -10,24 +9,36 @@ open Fossa.Bridge.Services.UrlHelpers
 
 type CompanyClient(transport: IHttpTransport) =
     member _.GetCompanyAsync(cancellationToken: CancellationToken) : Task<CompanyRetrievalModel> =
-        transport.GetAsync<CompanyRetrievalModel>(composeRelativeUrl [ Endpoints.Company ] [], cancellationToken)
+        let endpointPath, securityRequirement = Endpoints.Company
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
+        transport.GetAsync<CompanyRetrievalModel>(endpointUrl, endpointSecurity, cancellationToken)
 
     member _.CreateCompanyAsync(model: CompanyModificationModel, cancellationToken: CancellationToken) : Task =
-        transport.PostAsync<CompanyModificationModel>(
-            composeRelativeUrl [ Endpoints.Company ] [],
-            model,
-            cancellationToken
-        )
+        let endpointPath, securityRequirement = Endpoints.Company
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
+        transport.PostAsync<CompanyModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
     member _.UpdateCompanyAsync(model: CompanyModificationModel, cancellationToken: CancellationToken) : Task =
-        transport.PutAsync<CompanyModificationModel>(
-            composeRelativeUrl [ Endpoints.Company ] [],
-            model,
-            cancellationToken
-        )
+        let endpointPath, securityRequirement = Endpoints.Company
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
+        transport.PutAsync<CompanyModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
     member _.DeleteCompanyAsync(cancellationToken: CancellationToken) : Task =
-        transport.DeleteAsync(composeRelativeUrl [ Endpoints.Company ] [], cancellationToken)
+        let endpointPath, securityRequirement = Endpoints.Company
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
+        transport.DeleteAsync(endpointUrl, endpointSecurity, cancellationToken)
 
     interface ICompanyClient with
         member this.GetCompanyAsync(cancellationToken) = this.GetCompanyAsync(cancellationToken)

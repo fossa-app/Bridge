@@ -1,6 +1,5 @@
 namespace Fossa.Bridge.Services.Clients
 
-open Fossa.Bridge
 
 open System.Threading
 open System.Threading.Tasks
@@ -10,31 +9,40 @@ open Fossa.Bridge.Services.UrlHelpers
 
 type CompanySettingsClient(transport: IHttpTransport) =
     member _.GetCompanySettingsAsync(cancellationToken: CancellationToken) : Task<CompanySettingsRetrievalModel> =
-        transport.GetAsync<CompanySettingsRetrievalModel>(
-            composeRelativeUrl [ Endpoints.CompanySettings ] [],
-            cancellationToken
-        )
+        let endpointPath, securityRequirement = Endpoints.CompanySettings
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
+        transport.GetAsync<CompanySettingsRetrievalModel>(endpointUrl, endpointSecurity, cancellationToken)
 
     member _.CreateCompanySettingsAsync
         (model: CompanySettingsModificationModel, cancellationToken: CancellationToken)
         : Task =
-        transport.PostAsync<CompanySettingsModificationModel>(
-            composeRelativeUrl [ Endpoints.CompanySettings ] [],
-            model,
-            cancellationToken
-        )
+        let endpointPath, securityRequirement = Endpoints.CompanySettings
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
+        transport.PostAsync<CompanySettingsModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
     member _.UpdateCompanySettingsAsync
         (model: CompanySettingsModificationModel, cancellationToken: CancellationToken)
         : Task =
-        transport.PutAsync<CompanySettingsModificationModel>(
-            composeRelativeUrl [ Endpoints.CompanySettings ] [],
-            model,
-            cancellationToken
-        )
+        let endpointPath, securityRequirement = Endpoints.CompanySettings
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
+        transport.PutAsync<CompanySettingsModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
     member _.DeleteCompanySettingsAsync(cancellationToken: CancellationToken) : Task =
-        transport.DeleteAsync(composeRelativeUrl [ Endpoints.CompanySettings ] [], cancellationToken)
+        let endpointPath, securityRequirement = Endpoints.CompanySettings
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
+        transport.DeleteAsync(endpointUrl, endpointSecurity, cancellationToken)
 
     interface ICompanySettingsClient with
         member this.GetCompanySettingsAsync(cancellationToken) =

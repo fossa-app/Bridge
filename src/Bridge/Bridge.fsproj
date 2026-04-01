@@ -13,7 +13,12 @@
     <Compile Include="Models\ApiModels\PayloadModels.fs" />
     <Compile Include="Services\Endpoints.fs" />
     <Compile Include="Services\UrlHelpers.fs" />
+    <Compile Include="Services\IHttpRequestSender.fs" />
+    <Compile Include="Services\IJsonSerializer.fs" />
+    <Compile Include="Services\IAccessTokenProvider.fs" />
     <Compile Include="Services\IHttpTransport.fs" />
+    <Compile Include="Services\AsyncHelpers.fs" />
+    <Compile Include="Services\HttpTransport.fs" />
     <Compile Include="Services\Clients\ICompanyClient.fs" />
     <Compile Include="Services\Clients\CompanyClient.fs" />
     <Compile Include="Services\Clients\ICompanySettingsClient.fs" />

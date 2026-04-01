@@ -1,6 +1,5 @@
 namespace Fossa.Bridge.Models.ApiModels
 
-open Fossa.Bridge
 
 open System
 open System.Collections.Generic

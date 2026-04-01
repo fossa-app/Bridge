@@ -1,6 +1,5 @@
 namespace Fossa.Bridge.Services.Clients
 
-open Fossa.Bridge
 
 open System.Threading
 open System.Threading.Tasks
@@ -12,8 +11,14 @@ type SystemLicenseClient(transport: IHttpTransport) =
     member _.GetLicenseAsync
         (cancellationToken: CancellationToken)
         : Task<LicenseResponseModel<SystemEntitlementsModel>> =
+        let endpointPath, securityRequirement = Endpoints.SystemLicense
+
+        let endpointUrl, endpointSecurity =
+            composeRelativeUrl endpointPath securityRequirement [] []
+
         transport.GetAsync<LicenseResponseModel<SystemEntitlementsModel>>(
-            composeRelativeUrl [ Endpoints.SystemLicense ] [],
+            endpointUrl,
+            endpointSecurity,
             cancellationToken
         )
 
