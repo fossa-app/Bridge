@@ -5,25 +5,25 @@ open System.Threading
 open System.Threading.Tasks
 
 type IHttpTransport =
-    abstract GetAsync<'TResponse> :
+    abstract GetAsync<'TResponse when 'TResponse: not null> :
         endpointUrl: string * endpointSecurity: EndpointSecurity * cancellationToken: CancellationToken ->
             Task<'TResponse>
 
-    abstract PostAsync<'TRequest> :
+    abstract PostAsync<'TRequest when 'TRequest: not null> :
         endpointUrl: string *
         endpointSecurity: EndpointSecurity *
         request: 'TRequest *
         cancellationToken: CancellationToken ->
             Task
 
-    abstract PutAsync<'TRequest> :
+    abstract PutAsync<'TRequest when 'TRequest: not null> :
         endpointUrl: string *
         endpointSecurity: EndpointSecurity *
         request: 'TRequest *
         cancellationToken: CancellationToken ->
             Task
 
-    abstract PatchAsync<'TRequest> :
+    abstract PatchAsync<'TRequest when 'TRequest: not null> :
         endpointUrl: string *
         endpointSecurity: EndpointSecurity *
         request: 'TRequest *

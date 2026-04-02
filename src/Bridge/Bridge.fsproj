@@ -15,6 +15,7 @@
     <Compile Include="Services\UrlHelpers.fs" />
     <Compile Include="Services\IHttpRequestSender.fs" />
     <Compile Include="Services\IJsonSerializer.fs" />
+    <Compile Include="Services\JsonSerializer.fs" />
     <Compile Include="Services\IAccessTokenProvider.fs" />
     <Compile Include="Services\IHttpTransport.fs" />
     <Compile Include="Services\AsyncHelpers.fs" />
