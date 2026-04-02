@@ -5,6 +5,7 @@
     <GenerateProgramFile>false</GenerateProgramFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="JsonSerializerTests.fs" />
     <Compile Include="UrlHelpersTests.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>

@@ -23,7 +23,7 @@ type HttpTransport(sender: IHttpRequestSender, serializer: IJsonSerializer, toke
         AsyncHelpers.startAsTaskGeneric (computation, cancellationToken)
 
     interface IHttpTransport with
-        member _.GetAsync<'TResponse>
+        member _.GetAsync<'TResponse when 'TResponse: not null>
             (endpointUrl: string, endpointSecurity: EndpointSecurity, cancellationToken: CancellationToken)
             =
             let computation =
@@ -42,7 +42,7 @@ type HttpTransport(sender: IHttpRequestSender, serializer: IJsonSerializer, toke
 
             AsyncHelpers.startAsTaskGeneric (computation, cancellationToken)
 
-        member _.PostAsync<'TRequest>
+        member _.PostAsync<'TRequest when 'TRequest: not null>
             (
                 endpointUrl: string,
                 endpointSecurity: EndpointSecurity,
@@ -66,7 +66,7 @@ type HttpTransport(sender: IHttpRequestSender, serializer: IJsonSerializer, toke
 
             AsyncHelpers.startAsTaskUnit (computation, cancellationToken)
 
-        member _.PutAsync<'TRequest>
+        member _.PutAsync<'TRequest when 'TRequest: not null>
             (
                 endpointUrl: string,
                 endpointSecurity: EndpointSecurity,
@@ -90,7 +90,7 @@ type HttpTransport(sender: IHttpRequestSender, serializer: IJsonSerializer, toke
 
             AsyncHelpers.startAsTaskUnit (computation, cancellationToken)
 
-        member _.PatchAsync<'TRequest>
+        member _.PatchAsync<'TRequest when 'TRequest: not null>
             (
                 endpointUrl: string,
                 endpointSecurity: EndpointSecurity,

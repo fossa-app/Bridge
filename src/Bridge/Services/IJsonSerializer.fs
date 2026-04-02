@@ -1,5 +1,5 @@
 namespace Fossa.Bridge.Services
 
 type IJsonSerializer =
-    abstract Serialize<'T> : value: 'T -> string
-    abstract Deserialize<'T> : json: string -> 'T
+    abstract Serialize<'T when 'T: not null> : value: 'T -> string
+    abstract Deserialize<'T when 'T: not null> : json: string -> 'T
