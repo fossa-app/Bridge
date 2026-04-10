@@ -36,6 +36,8 @@
     <Compile Include="Services\Clients\CompanyLicenseClient.fs" />
     <Compile Include="Services\Clients\ISystemLicenseClient.fs" />
     <Compile Include="Services\Clients\SystemLicenseClient.fs" />
+    <Compile Include="Services\IClients.fs" />
+    <Compile Include="Services\Clients.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Fable.Core" Version="4.5.0" />

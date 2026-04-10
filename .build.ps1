@@ -246,7 +246,7 @@ Task PackNPM Build, Test, {
     $fablePattern = "$($fableOutputArtifactsFolder.Replace('\', '/'))/**/*"
     $distPath = $distArtifactsFolder.Replace('\', '/')
     $fablePath = $fableOutputArtifactsFolder.Replace('\', '/')
-    
+
     $tempTsConfig = @"
 {
   `"extends`": `"$baseTsConfig`",
@@ -270,15 +270,15 @@ Task PackNPM Build, Test, {
     $packageJsonPath = Resolve-Path -Path 'package.json'
     $packageJsonContent = Get-Content -Path $packageJsonPath -Raw | ConvertFrom-Json
     $packageJsonContent.version = $nextVersion.ToString()
-    
+
     $packageJsonContent | ConvertTo-Json -Depth 10 | Set-Content -Path (Join-Path -Path $distArtifactsFolder -ChildPath 'package.json')
-    
+
     Get-ChildItem -Path 'README.md', 'LICENSE' -File | Copy-Item -Destination $distArtifactsFolder
-    
+
     Exec { npm version '1.0.0' --no-git-tag-version --allow-same-version }
 
     Exec { npm pack $distArtifactsFolder --pack-destination $buildArtifactsFolder }
-    
+
     $npmPackage = Get-ChildItem -Path $buildArtifactsFolder -Filter '*.tgz' | Select-Object -First 1
 
     $state.NPMPackagePath = $npmPackage.FullName
