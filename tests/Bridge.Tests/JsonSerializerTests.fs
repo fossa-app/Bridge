@@ -2,9 +2,14 @@ module JsonSerializerTests
 
 open System
 open Expecto
+open Fossa.Bridge.Models.ApiModels
 open Fossa.Bridge.Services
 
 type TestModel = { Id: int64; Name: string }
+
+type NullableTestModel =
+    { RequiredName: string
+      OptionalName: string | null }
 
 type ComplexModel =
     { Id: int64
@@ -54,4 +59,72 @@ let tests =
               Expect.equal deserialized.Id 123456789012345L "ID conversion"
               Expect.equal deserialized.Guid model.Guid "Guid conversion"
               Expect.equal deserialized.CreatedAt model.CreatedAt "DateTimeOffset conversion"
-              Expect.equal deserialized.Count 42 "Int conversion" ]
+              Expect.equal deserialized.Count 42 "Int conversion"
+
+          testCase "Serializer applies shared camelCase policy"
+          <| fun _ ->
+              let serializer = JsonSerializer() :> IJsonSerializer
+
+              let json =
+                  serializer.Serialize(
+                      { RequiredName = "Required"
+                        OptionalName = null }
+                  )
+
+              Expect.equal
+                  json
+                  "{\"requiredName\":\"Required\",\"optionalName\":null}"
+                  "Serializer should apply common API JSON policy"
+
+          testCase "ProblemDetailsModel serializes with RFC field names"
+          <| fun _ ->
+              let serializer = JsonSerializer() :> IJsonSerializer
+
+              let model =
+                  { Type = "https://example.com/problems/conflict"
+                    Title = "Conflict"
+                    Status = Nullable 409
+                    Detail = "The requested change conflicts with current state."
+                    Instance = "/companies/42" }
+
+              let json = serializer.Serialize(model)
+
+              Expect.isTrue (json.Contains("\"type\"")) "JSON should contain lowercase type"
+              Expect.isTrue (json.Contains("\"title\"")) "JSON should contain lowercase title"
+              Expect.isTrue (json.Contains("\"status\"")) "JSON should contain lowercase status"
+              Expect.isTrue (json.Contains("\"detail\"")) "JSON should contain lowercase detail"
+              Expect.isTrue (json.Contains("\"instance\"")) "JSON should contain lowercase instance"
+              Expect.isFalse (json.Contains("\"Type\"")) "JSON should not contain PascalCase Type"
+
+          testCase "ProblemDetailsModel serializes null core fields"
+          <| fun _ ->
+              let serializer = JsonSerializer() :> IJsonSerializer
+
+              let model =
+                  { Type = null
+                    Title = null
+                    Status = Nullable 404
+                    Detail = null
+                    Instance = null }
+
+              let json = serializer.Serialize(model)
+
+              Expect.equal
+                  json
+                  "{\"type\":null,\"title\":null,\"status\":404,\"detail\":null,\"instance\":null}"
+                  "Null core fields should be serialized"
+
+          testCase "ProblemDetailsModel deserializes known fields"
+          <| fun _ ->
+              let serializer = JsonSerializer() :> IJsonSerializer
+
+              let json =
+                  "{\"type\":\"https://example.com/problems/not-found\",\"title\":\"Not Found\",\"status\":404,\"detail\":\"Missing.\",\"instance\":\"/companies/99\"}"
+
+              let model = serializer.Deserialize<ProblemDetailsModel>(json)
+
+              Expect.equal model.Type "https://example.com/problems/not-found" "Type should deserialize"
+              Expect.equal model.Title "Not Found" "Title should deserialize"
+              Expect.equal model.Status (Nullable 404) "Status should deserialize"
+              Expect.equal model.Detail "Missing." "Detail should deserialize"
+              Expect.equal model.Instance "/companies/99" "Instance should deserialize" ]
