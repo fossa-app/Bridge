@@ -3,6 +3,14 @@ namespace Fossa.Bridge.Models.ApiModels
 open System
 
 [<CLIMutable>]
+type ProblemDetailsModel =
+    { Type: string | null
+      Title: string | null
+      Status: Nullable<int>
+      Detail: string | null
+      Instance: string | null }
+
+[<CLIMutable>]
 type AddressModel =
     { Line1: string | null
       Line2: string | null
