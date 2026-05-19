@@ -31,6 +31,123 @@ param(
 
 Set-StrictMode -Version Latest
 
+function Update-FableNullableReferenceTypes {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]
+        $ProjectPath,
+        [Parameter(Mandatory = $true)]
+        [string]
+        $FableOutputPath
+    )
+
+    $projectFolder = Split-Path -Path $ProjectPath -Parent
+    [xml]$projectXml = Get-Content -Path $ProjectPath -Raw
+    $nullableFieldsByType = @{}
+
+    foreach ($compileItem in $projectXml.SelectNodes('//Compile')) {
+        $sourcePath = Join-Path -Path $projectFolder -ChildPath $compileItem.Include
+        if (-not (Test-Path -Path $sourcePath)) {
+            continue
+        }
+
+        $currentType = $null
+
+        foreach ($line in Get-Content -Path $sourcePath) {
+            if ($line -match '^\s*type\s+([A-Za-z_][A-Za-z0-9_''`]*)') {
+                $currentType = $Matches[1] -replace '`.*$', ''
+            }
+
+            if ($currentType -and ($line -match '^\s*\{?\s*([A-Za-z_][A-Za-z0-9_]*)\s*:\s*(?!Nullable<)(.+?)\s*\|\s*null\b')) {
+                if (-not $nullableFieldsByType.ContainsKey($currentType)) {
+                    $nullableFieldsByType[$currentType] = [System.Collections.Generic.HashSet[string]]::new()
+                }
+
+                [void]$nullableFieldsByType[$currentType].Add($Matches[1])
+            }
+        }
+    }
+
+    if ($nullableFieldsByType.Count -eq 0) {
+        return
+    }
+
+    foreach ($typescriptFile in Get-ChildItem -Path $FableOutputPath -Filter '*.ts' -Recurse -File) {
+        $currentType = $null
+        $fileChanged = $false
+        $usesNullable = $false
+        $usesNonNullValue = $false
+        $updatedLines = foreach ($line in Get-Content -Path $typescriptFile.FullName) {
+            $updatedLine = $line
+
+            if ($updatedLine -match '^\s*export\s+class\s+([A-Za-z_][A-Za-z0-9_$]*)\b') {
+                $currentType = $Matches[1] -replace '\$.*$', ''
+            }
+
+            if ($currentType -and $nullableFieldsByType.ContainsKey($currentType)) {
+                foreach ($fieldName in $nullableFieldsByType[$currentType]) {
+                    $escapedFieldName = [regex]::Escape($fieldName)
+
+                    $fieldPattern = "^(\s*readonly\s+$escapedFieldName\s*:\s*)(?!Nullable<)([^;]+)(;.*)$"
+                    if ($updatedLine -match $fieldPattern) {
+                        $updatedLine = [regex]::Replace($updatedLine, $fieldPattern, '$1Nullable<$2>$3')
+                        $fileChanged = $true
+                        $usesNullable = $true
+                    }
+
+                    if ($updatedLine -match '^\s*constructor\(') {
+                        $parameterPattern = "(\b$escapedFieldName\s*:\s*)(?!Nullable<)([^,)]+)"
+                        $nextLine = [regex]::Replace($updatedLine, $parameterPattern, '$1Nullable<$2>')
+
+                        if ($nextLine -ne $updatedLine) {
+                            $updatedLine = $nextLine
+                            $fileChanged = $true
+                            $usesNullable = $true
+                        }
+                    }
+                }
+            }
+
+            $nonNullValuePattern = 'UrlPart_op_Implicit_Z721C83C5\((?!nonNullValue\()([A-Za-z_][A-Za-z0-9_]*\.[A-Za-z_][A-Za-z0-9_]*)\)'
+            $nextLine = [regex]::Replace($updatedLine, $nonNullValuePattern, 'UrlPart_op_Implicit_Z721C83C5(nonNullValue($1))')
+
+            if ($nextLine -ne $updatedLine) {
+                $updatedLine = $nextLine
+                $fileChanged = $true
+                $usesNonNullValue = $true
+            }
+
+            $updatedLine
+        }
+
+        if ($fileChanged) {
+            if ($usesNullable -and -not ($updatedLines -match 'import\s+\{[^}]*\bNullable\b[^}]*\}\s+from\s+"@fable-org/fable-library-ts/Util\.ts"')) {
+                $updatedLines = foreach ($line in $updatedLines) {
+                    if ($line -match '^(import\s+\{)([^}]+)(\}\s+from\s+"@fable-org/fable-library-ts/Util\.ts";)$') {
+                        "$($Matches[1])$($Matches[2]), Nullable $($Matches[3])"
+                    }
+                    else {
+                        $line
+                    }
+                }
+            }
+
+            if ($usesNonNullValue -and -not ($updatedLines -match 'import\s+\{[^}]*\bnonNullValue\b[^}]*\}\s+from\s+"@fable-org/fable-library-ts/Option\.ts"')) {
+                $updatedLines = foreach ($line in $updatedLines) {
+                    if ($line -match '^(import\s+\{)([^}]+)(\}\s+from\s+"@fable-org/fable-library-ts/Option\.ts";)$') {
+                        "$($Matches[1])$($Matches[2]), nonNullValue $($Matches[3])"
+                    }
+                    else {
+                        $line
+                    }
+                }
+            }
+
+            Set-Content -Path $typescriptFile.FullName -Value $updatedLines
+        }
+    }
+}
+
 # Synopsis: Initialize folders and variables
 Task Init {
     $trashFolder = Join-Path -Path . -ChildPath '.trash'
@@ -238,6 +355,7 @@ Task PackNPM Build, Test, {
     $projectPath = Resolve-Path -Path 'src/Bridge/Bridge.fsproj'
 
     Exec { dotnet fable $projectPath --outDir $fableOutputArtifactsFolder --language typescript --fableLib @fable-org/fable-library-ts }
+    Update-FableNullableReferenceTypes -ProjectPath $projectPath -FableOutputPath $fableOutputArtifactsFolder
     Exec { npm version $nextVersion --no-git-tag-version --allow-same-version }
     Exec { npm install }
 
