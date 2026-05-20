@@ -28,7 +28,7 @@ type DepartmentClient(transport: IHttpTransport) =
 
     member _.GetDepartmentsAsync
         (query: DepartmentQueryRequestModel, cancellationToken: CancellationToken)
-        : Task<PagingResponseModel<DepartmentRetrievalModel>> =
+        : Task<ClientResult<PagingResponseModel<DepartmentRetrievalModel>>> =
         let endpointUrl, endpointSecurity = buildUrl query
 
         transport.GetAsync<PagingResponseModel<DepartmentRetrievalModel>>(
@@ -37,7 +37,9 @@ type DepartmentClient(transport: IHttpTransport) =
             cancellationToken
         )
 
-    member _.GetDepartmentAsync(id: int64, cancellationToken: CancellationToken) : Task<DepartmentRetrievalModel> =
+    member _.GetDepartmentAsync
+        (id: int64, cancellationToken: CancellationToken)
+        : Task<ClientResult<DepartmentRetrievalModel>> =
         let endpointPath, securityRequirement = Endpoints.Departments
 
         let endpointUrl, endpointSecurity =
@@ -45,7 +47,9 @@ type DepartmentClient(transport: IHttpTransport) =
 
         transport.GetAsync<DepartmentRetrievalModel>(endpointUrl, endpointSecurity, cancellationToken)
 
-    member _.CreateDepartmentAsync(model: DepartmentModificationModel, cancellationToken: CancellationToken) : Task =
+    member _.CreateDepartmentAsync
+        (model: DepartmentModificationModel, cancellationToken: CancellationToken)
+        : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Departments
 
         let endpointUrl, endpointSecurity =
@@ -55,7 +59,7 @@ type DepartmentClient(transport: IHttpTransport) =
 
     member _.UpdateDepartmentAsync
         (id: int64, model: DepartmentModificationModel, cancellationToken: CancellationToken)
-        : Task =
+        : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Departments
 
         let endpointUrl, endpointSecurity =
@@ -63,7 +67,7 @@ type DepartmentClient(transport: IHttpTransport) =
 
         transport.PutAsync<DepartmentModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
-    member _.DeleteDepartmentAsync(id: int64, cancellationToken: CancellationToken) : Task =
+    member _.DeleteDepartmentAsync(id: int64, cancellationToken: CancellationToken) : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Departments
 
         let endpointUrl, endpointSecurity =

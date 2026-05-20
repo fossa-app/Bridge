@@ -8,12 +8,15 @@ open Fossa.Bridge.Models.ApiModels
 type IDepartmentClient =
     abstract GetDepartmentsAsync:
         query: DepartmentQueryRequestModel * cancellationToken: CancellationToken ->
-            Task<PagingResponseModel<DepartmentRetrievalModel>>
+            Task<ClientResult<PagingResponseModel<DepartmentRetrievalModel>>>
 
-    abstract GetDepartmentAsync: id: int64 * cancellationToken: CancellationToken -> Task<DepartmentRetrievalModel>
-    abstract CreateDepartmentAsync: model: DepartmentModificationModel * cancellationToken: CancellationToken -> Task
+    abstract GetDepartmentAsync:
+        id: int64 * cancellationToken: CancellationToken -> Task<ClientResult<DepartmentRetrievalModel>>
+
+    abstract CreateDepartmentAsync:
+        model: DepartmentModificationModel * cancellationToken: CancellationToken -> Task<ClientUnitResult>
 
     abstract UpdateDepartmentAsync:
-        id: int64 * model: DepartmentModificationModel * cancellationToken: CancellationToken -> Task
+        id: int64 * model: DepartmentModificationModel * cancellationToken: CancellationToken -> Task<ClientUnitResult>
 
-    abstract DeleteDepartmentAsync: id: int64 * cancellationToken: CancellationToken -> Task
+    abstract DeleteDepartmentAsync: id: int64 * cancellationToken: CancellationToken -> Task<ClientUnitResult>

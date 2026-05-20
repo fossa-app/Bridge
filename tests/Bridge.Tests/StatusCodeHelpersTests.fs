@@ -44,6 +44,20 @@ let tests =
                 <| fun _ -> Expect.isFalse (isStatusCodeServerError 600) "600 should not be a server error" ]
 
           testList
+              "isStatusCodeSuccess"
+              [ testCase "returns false below 200"
+                <| fun _ -> Expect.isFalse (isStatusCodeSuccess 199) "199 should not be success"
+
+                testCase "returns true at 200"
+                <| fun _ -> Expect.isTrue (isStatusCodeSuccess 200) "200 should be success"
+
+                testCase "returns true at 299"
+                <| fun _ -> Expect.isTrue (isStatusCodeSuccess 299) "299 should be success"
+
+                testCase "returns false at 300"
+                <| fun _ -> Expect.isFalse (isStatusCodeSuccess 300) "300 should not be success" ]
+
+          testList
               "ProblemDetailsModel helpers"
               [ testCase "client problem returns client true and server false"
                 <| fun _ ->

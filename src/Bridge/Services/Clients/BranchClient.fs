@@ -28,11 +28,13 @@ type BranchClient(transport: IHttpTransport) =
 
     member _.GetBranchesAsync
         (query: BranchQueryRequestModel, cancellationToken: CancellationToken)
-        : Task<PagingResponseModel<BranchRetrievalModel>> =
+        : Task<ClientResult<PagingResponseModel<BranchRetrievalModel>>> =
         let endpointUrl, endpointSecurity = buildUrl query
         transport.GetAsync<PagingResponseModel<BranchRetrievalModel>>(endpointUrl, endpointSecurity, cancellationToken)
 
-    member _.GetBranchAsync(id: int64, cancellationToken: CancellationToken) : Task<BranchRetrievalModel> =
+    member _.GetBranchAsync
+        (id: int64, cancellationToken: CancellationToken)
+        : Task<ClientResult<BranchRetrievalModel>> =
         let endpointPath, securityRequirement = Endpoints.Branches
 
         let endpointUrl, endpointSecurity =
@@ -40,7 +42,9 @@ type BranchClient(transport: IHttpTransport) =
 
         transport.GetAsync<BranchRetrievalModel>(endpointUrl, endpointSecurity, cancellationToken)
 
-    member _.CreateBranchAsync(model: BranchModificationModel, cancellationToken: CancellationToken) : Task =
+    member _.CreateBranchAsync
+        (model: BranchModificationModel, cancellationToken: CancellationToken)
+        : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Branches
 
         let endpointUrl, endpointSecurity =
@@ -48,7 +52,9 @@ type BranchClient(transport: IHttpTransport) =
 
         transport.PostAsync<BranchModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
-    member _.UpdateBranchAsync(id: int64, model: BranchModificationModel, cancellationToken: CancellationToken) : Task =
+    member _.UpdateBranchAsync
+        (id: int64, model: BranchModificationModel, cancellationToken: CancellationToken)
+        : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Branches
 
         let endpointUrl, endpointSecurity =
@@ -56,7 +62,7 @@ type BranchClient(transport: IHttpTransport) =
 
         transport.PutAsync<BranchModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
-    member _.DeleteBranchAsync(id: int64, cancellationToken: CancellationToken) : Task =
+    member _.DeleteBranchAsync(id: int64, cancellationToken: CancellationToken) : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Branches
 
         let endpointUrl, endpointSecurity =

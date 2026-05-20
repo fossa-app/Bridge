@@ -8,7 +8,7 @@ open Fossa.Bridge.Services
 open Fossa.Bridge.Services.UrlHelpers
 
 type CompanyClient(transport: IHttpTransport) =
-    member _.GetCompanyAsync(cancellationToken: CancellationToken) : Task<CompanyRetrievalModel> =
+    member _.GetCompanyAsync(cancellationToken: CancellationToken) : Task<ClientResult<CompanyRetrievalModel>> =
         let endpointPath, securityRequirement = Endpoints.Company
 
         let endpointUrl, endpointSecurity =
@@ -16,7 +16,9 @@ type CompanyClient(transport: IHttpTransport) =
 
         transport.GetAsync<CompanyRetrievalModel>(endpointUrl, endpointSecurity, cancellationToken)
 
-    member _.CreateCompanyAsync(model: CompanyModificationModel, cancellationToken: CancellationToken) : Task =
+    member _.CreateCompanyAsync
+        (model: CompanyModificationModel, cancellationToken: CancellationToken)
+        : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Company
 
         let endpointUrl, endpointSecurity =
@@ -24,7 +26,9 @@ type CompanyClient(transport: IHttpTransport) =
 
         transport.PostAsync<CompanyModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
-    member _.UpdateCompanyAsync(model: CompanyModificationModel, cancellationToken: CancellationToken) : Task =
+    member _.UpdateCompanyAsync
+        (model: CompanyModificationModel, cancellationToken: CancellationToken)
+        : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Company
 
         let endpointUrl, endpointSecurity =
@@ -32,7 +36,7 @@ type CompanyClient(transport: IHttpTransport) =
 
         transport.PutAsync<CompanyModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
-    member _.DeleteCompanyAsync(cancellationToken: CancellationToken) : Task =
+    member _.DeleteCompanyAsync(cancellationToken: CancellationToken) : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Company
 
         let endpointUrl, endpointSecurity =
