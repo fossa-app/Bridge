@@ -6,7 +6,7 @@ open System.Threading.Tasks
 open Fossa.Bridge.Models.ApiModels
 
 type IHttpTransport =
-    abstract GetAsync<'TResponse when 'TResponse: not null> :
+    abstract GetAsync<'TResponse when 'TResponse: not struct and 'TResponse: not null> :
         endpointUrl: string * endpointSecurity: EndpointSecurity * cancellationToken: CancellationToken ->
             Task<ClientResult<'TResponse>>
 

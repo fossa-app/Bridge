@@ -4,6 +4,7 @@ open System.Threading
 open System.Threading.Tasks
 open Expecto
 open Fossa.Bridge.Models.ApiModels
+open Fossa.Bridge.Models.ApiModels.Helpers
 open Fossa.Bridge.Services
 
 type private StubSender(response: HttpResponseMessage) =
@@ -39,11 +40,11 @@ let tests =
                       .GetAwaiter()
                       .GetResult()
 
-              match result with
-              | ClientResult.Success value ->
-                  Expect.equal value.Status 200 "Status should deserialize"
-                  Expect.equal value.Title "OK" "Title should deserialize"
-              | ClientResult.Problem problem -> failtestf "Expected success, got problem %A" problem
+              Expect.isTrue result.Succeeded "Expected success"
+              let value = result.Value |> Option.ofObj |> Option.get
+              Expect.equal value.Status 200 "Status should deserialize"
+              Expect.equal value.Title "OK" "Title should deserialize"
+              Expect.isNull result.Problem "Problem should be absent"
 
           testCase "GetAsync returns problem for non-2xx response"
           <| fun _ ->
@@ -58,11 +59,11 @@ let tests =
                       .GetAwaiter()
                       .GetResult()
 
-              match result with
-              | ClientResult.Success value -> failtestf "Expected problem, got success %A" value
-              | ClientResult.Problem problem ->
-                  Expect.equal problem.Status 404 "Status should deserialize"
-                  Expect.equal problem.Title "Not Found" "Title should deserialize"
+              Expect.isFalse result.Succeeded "Expected problem"
+              Expect.isNull result.Value "Value should be absent"
+              let problem = result.Problem |> Option.ofObj |> Option.get
+              Expect.equal problem.Status 404 "Status should deserialize"
+              Expect.equal problem.Title "Not Found" "Title should deserialize"
 
           testCase "PostAsync returns unit success for 2xx response"
           <| fun _ ->
@@ -74,7 +75,7 @@ let tests =
                       .GetAwaiter()
                       .GetResult()
 
-              Expect.equal result ClientUnitResult.Success "No-body success should return unit success"
+              Expect.equal result ClientUnitResultHelpers.success "No-body success should return unit success"
 
           testCase "PostAsync returns unit problem for non-2xx response"
           <| fun _ ->
@@ -89,8 +90,7 @@ let tests =
                       .GetAwaiter()
                       .GetResult()
 
-              match result with
-              | ClientUnitResult.Success -> failtest "Expected problem, got success"
-              | ClientUnitResult.Problem problem ->
-                  Expect.equal problem.Status 404 "Status should deserialize"
-                  Expect.equal problem.Title "Not Found" "Title should deserialize" ]
+              Expect.isFalse result.Succeeded "Expected problem"
+              let problem = result.Problem |> Option.ofObj |> Option.get
+              Expect.equal problem.Status 404 "Status should deserialize"
+              Expect.equal problem.Title "Not Found" "Title should deserialize" ]
