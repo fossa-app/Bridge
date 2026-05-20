@@ -4,6 +4,7 @@ namespace Fossa.Bridge.Services
 open System.Threading
 open System.Threading.Tasks
 open Fossa.Bridge.Models.ApiModels
+open Fossa.Bridge.Models.ApiModels.Helpers
 open Fossa.Bridge.Services.StatusCodeHelpers
 
 
@@ -25,14 +26,14 @@ type HttpTransport(sender: IHttpRequestSender, serializer: IJsonSerializer, toke
 
     let toClientUnitResult (response: HttpResponseMessage) =
         if isStatusCodeSuccess response.StatusCode then
-            ClientUnitResult.Success
+            ClientUnitResultHelpers.success
         else
             response.Content
             |> serializer.Deserialize<ProblemDetailsModel>
-            |> ClientUnitResult.Problem
+            |> ClientUnitResultHelpers.problem
 
     interface IHttpTransport with
-        member _.GetAsync<'TResponse when 'TResponse: not null>
+        member _.GetAsync<'TResponse when 'TResponse: not struct and 'TResponse: not null>
             (endpointUrl: string, endpointSecurity: EndpointSecurity, cancellationToken: CancellationToken)
             =
             let computation =
@@ -48,12 +49,15 @@ type HttpTransport(sender: IHttpRequestSender, serializer: IJsonSerializer, toke
                     let! response = sender.SendAsync(req, cancellationToken) |> AsyncHelpers.awaitTask
 
                     if isStatusCodeSuccess response.StatusCode then
-                        return response.Content |> serializer.Deserialize<'TResponse> |> ClientResult.Success
+                        return
+                            response.Content
+                            |> serializer.Deserialize<'TResponse>
+                            |> ClientResultHelpers.success
                     else
                         return
                             response.Content
                             |> serializer.Deserialize<ProblemDetailsModel>
-                            |> ClientResult.Problem
+                            |> ClientResultHelpers.problem
                 }
 
             AsyncHelpers.startAsTaskGeneric (computation, cancellationToken)
