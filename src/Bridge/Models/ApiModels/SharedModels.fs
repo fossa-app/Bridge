@@ -6,7 +6,7 @@ open System
 type ProblemDetailsModel =
     { Type: string | null
       Title: string | null
-      Status: Nullable<int>
+      Status: int
       Detail: string | null
       Instance: string | null }
 

@@ -13,6 +13,7 @@
     <Compile Include="Models\ApiModels\PayloadModels.fs" />
     <Compile Include="Services\Endpoints.fs" />
     <Compile Include="Services\UrlHelpers.fs" />
+    <Compile Include="Services\StatusCodeHelpers.fs" />
     <Compile Include="Services\IHttpRequestSender.fs" />
     <Compile Include="Services\IJsonSerializer.fs" />
     <Compile Include="Services\JsonSerializer.fs" />
