@@ -83,7 +83,7 @@ let tests =
               let model =
                   { Type = "https://example.com/problems/conflict"
                     Title = "Conflict"
-                    Status = Nullable 409
+                    Status = 409
                     Detail = "The requested change conflicts with current state."
                     Instance = "/companies/42" }
 
@@ -103,7 +103,7 @@ let tests =
               let model =
                   { Type = null
                     Title = null
-                    Status = Nullable 404
+                    Status = 404
                     Detail = null
                     Instance = null }
 
@@ -125,6 +125,17 @@ let tests =
 
               Expect.equal model.Type "https://example.com/problems/not-found" "Type should deserialize"
               Expect.equal model.Title "Not Found" "Title should deserialize"
-              Expect.equal model.Status (Nullable 404) "Status should deserialize"
+              Expect.equal model.Status 404 "Status should deserialize"
               Expect.equal model.Detail "Missing." "Detail should deserialize"
-              Expect.equal model.Instance "/companies/99" "Instance should deserialize" ]
+              Expect.equal model.Instance "/companies/99" "Instance should deserialize"
+
+          testCase "ProblemDetailsModel deserializes missing status as default int"
+          <| fun _ ->
+              let serializer = JsonSerializer() :> IJsonSerializer
+
+              let json =
+                  "{\"type\":\"https://example.com/problems/not-found\",\"title\":\"Not Found\",\"detail\":\"Missing.\",\"instance\":\"/companies/99\"}"
+
+              let model = serializer.Deserialize<ProblemDetailsModel>(json)
+
+              Expect.equal model.Status 0 "Missing status should deserialize to default int value" ]
