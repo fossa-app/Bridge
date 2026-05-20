@@ -8,7 +8,9 @@ open Fossa.Bridge.Services
 open Fossa.Bridge.Services.UrlHelpers
 
 type CompanySettingsClient(transport: IHttpTransport) =
-    member _.GetCompanySettingsAsync(cancellationToken: CancellationToken) : Task<CompanySettingsRetrievalModel> =
+    member _.GetCompanySettingsAsync
+        (cancellationToken: CancellationToken)
+        : Task<ClientResult<CompanySettingsRetrievalModel>> =
         let endpointPath, securityRequirement = Endpoints.CompanySettings
 
         let endpointUrl, endpointSecurity =
@@ -18,7 +20,7 @@ type CompanySettingsClient(transport: IHttpTransport) =
 
     member _.CreateCompanySettingsAsync
         (model: CompanySettingsModificationModel, cancellationToken: CancellationToken)
-        : Task =
+        : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.CompanySettings
 
         let endpointUrl, endpointSecurity =
@@ -28,7 +30,7 @@ type CompanySettingsClient(transport: IHttpTransport) =
 
     member _.UpdateCompanySettingsAsync
         (model: CompanySettingsModificationModel, cancellationToken: CancellationToken)
-        : Task =
+        : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.CompanySettings
 
         let endpointUrl, endpointSecurity =
@@ -36,7 +38,7 @@ type CompanySettingsClient(transport: IHttpTransport) =
 
         transport.PutAsync<CompanySettingsModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
-    member _.DeleteCompanySettingsAsync(cancellationToken: CancellationToken) : Task =
+    member _.DeleteCompanySettingsAsync(cancellationToken: CancellationToken) : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.CompanySettings
 
         let endpointUrl, endpointSecurity =

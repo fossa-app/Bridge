@@ -10,7 +10,7 @@ open Fossa.Bridge.Services.UrlHelpers
 type CompanyLicenseClient(transport: IHttpTransport) =
     member _.GetLicenseAsync
         (cancellationToken: CancellationToken)
-        : Task<LicenseResponseModel<CompanyEntitlementsModel>> =
+        : Task<ClientResult<LicenseResponseModel<CompanyEntitlementsModel>>> =
         let endpointPath, securityRequirement = Endpoints.CompanyLicense
 
         let endpointUrl, endpointSecurity =
@@ -22,7 +22,7 @@ type CompanyLicenseClient(transport: IHttpTransport) =
             cancellationToken
         )
 
-    member _.CreateLicenseAsync(model: string, cancellationToken: CancellationToken) : Task =
+    member _.CreateLicenseAsync(model: string, cancellationToken: CancellationToken) : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.CompanyLicense
 
         let endpointUrl, endpointSecurity =

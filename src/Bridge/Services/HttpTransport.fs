@@ -3,7 +3,8 @@ namespace Fossa.Bridge.Services
 
 open System.Threading
 open System.Threading.Tasks
-open Fable.Core
+open Fossa.Bridge.Models.ApiModels
+open Fossa.Bridge.Services.StatusCodeHelpers
 
 
 type HttpTransport(sender: IHttpRequestSender, serializer: IJsonSerializer, tokenProvider: IAccessTokenProvider) =
@@ -22,6 +23,14 @@ type HttpTransport(sender: IHttpRequestSender, serializer: IJsonSerializer, toke
 
         AsyncHelpers.startAsTaskGeneric (computation, cancellationToken)
 
+    let toClientUnitResult (response: HttpResponseMessage) =
+        if isStatusCodeSuccess response.StatusCode then
+            ClientUnitResult.Success
+        else
+            response.Content
+            |> serializer.Deserialize<ProblemDetailsModel>
+            |> ClientUnitResult.Problem
+
     interface IHttpTransport with
         member _.GetAsync<'TResponse when 'TResponse: not null>
             (endpointUrl: string, endpointSecurity: EndpointSecurity, cancellationToken: CancellationToken)
@@ -36,8 +45,15 @@ type HttpTransport(sender: IHttpRequestSender, serializer: IJsonSerializer, toke
                           Content = None
                           Headers = headers }
 
-                    let! stringResponse = sender.SendAsync(req, cancellationToken) |> AsyncHelpers.awaitTask
-                    return serializer.Deserialize<'TResponse>(stringResponse)
+                    let! response = sender.SendAsync(req, cancellationToken) |> AsyncHelpers.awaitTask
+
+                    if isStatusCodeSuccess response.StatusCode then
+                        return response.Content |> serializer.Deserialize<'TResponse> |> ClientResult.Success
+                    else
+                        return
+                            response.Content
+                            |> serializer.Deserialize<ProblemDetailsModel>
+                            |> ClientResult.Problem
                 }
 
             AsyncHelpers.startAsTaskGeneric (computation, cancellationToken)
@@ -60,11 +76,11 @@ type HttpTransport(sender: IHttpRequestSender, serializer: IJsonSerializer, toke
                           Content = Some stringBody
                           Headers = headers }
 
-                    let! _ = sender.SendAsync(req, cancellationToken) |> AsyncHelpers.awaitTask
-                    return ()
+                    let! response = sender.SendAsync(req, cancellationToken) |> AsyncHelpers.awaitTask
+                    return toClientUnitResult response
                 }
 
-            AsyncHelpers.startAsTaskUnit (computation, cancellationToken)
+            AsyncHelpers.startAsTaskGeneric (computation, cancellationToken)
 
         member _.PutAsync<'TRequest when 'TRequest: not null>
             (
@@ -84,11 +100,11 @@ type HttpTransport(sender: IHttpRequestSender, serializer: IJsonSerializer, toke
                           Content = Some stringBody
                           Headers = headers }
 
-                    let! _ = sender.SendAsync(req, cancellationToken) |> AsyncHelpers.awaitTask
-                    return ()
+                    let! response = sender.SendAsync(req, cancellationToken) |> AsyncHelpers.awaitTask
+                    return toClientUnitResult response
                 }
 
-            AsyncHelpers.startAsTaskUnit (computation, cancellationToken)
+            AsyncHelpers.startAsTaskGeneric (computation, cancellationToken)
 
         member _.PatchAsync<'TRequest when 'TRequest: not null>
             (
@@ -108,11 +124,11 @@ type HttpTransport(sender: IHttpRequestSender, serializer: IJsonSerializer, toke
                           Content = Some stringBody
                           Headers = headers }
 
-                    let! _ = sender.SendAsync(req, cancellationToken) |> AsyncHelpers.awaitTask
-                    return ()
+                    let! response = sender.SendAsync(req, cancellationToken) |> AsyncHelpers.awaitTask
+                    return toClientUnitResult response
                 }
 
-            AsyncHelpers.startAsTaskUnit (computation, cancellationToken)
+            AsyncHelpers.startAsTaskGeneric (computation, cancellationToken)
 
         member _.DeleteAsync
             (endpointUrl: string, endpointSecurity: EndpointSecurity, cancellationToken: CancellationToken)
@@ -127,8 +143,8 @@ type HttpTransport(sender: IHttpRequestSender, serializer: IJsonSerializer, toke
                           Content = None
                           Headers = headers }
 
-                    let! _ = sender.SendAsync(req, cancellationToken) |> AsyncHelpers.awaitTask
-                    return ()
+                    let! response = sender.SendAsync(req, cancellationToken) |> AsyncHelpers.awaitTask
+                    return toClientUnitResult response
                 }
 
-            AsyncHelpers.startAsTaskUnit (computation, cancellationToken)
+            AsyncHelpers.startAsTaskGeneric (computation, cancellationToken)

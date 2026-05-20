@@ -8,12 +8,15 @@ open Fossa.Bridge.Models.ApiModels
 type IBranchClient =
     abstract GetBranchesAsync:
         query: BranchQueryRequestModel * cancellationToken: CancellationToken ->
-            Task<PagingResponseModel<BranchRetrievalModel>>
+            Task<ClientResult<PagingResponseModel<BranchRetrievalModel>>>
 
-    abstract GetBranchAsync: id: int64 * cancellationToken: CancellationToken -> Task<BranchRetrievalModel>
-    abstract CreateBranchAsync: model: BranchModificationModel * cancellationToken: CancellationToken -> Task
+    abstract GetBranchAsync:
+        id: int64 * cancellationToken: CancellationToken -> Task<ClientResult<BranchRetrievalModel>>
+
+    abstract CreateBranchAsync:
+        model: BranchModificationModel * cancellationToken: CancellationToken -> Task<ClientUnitResult>
 
     abstract UpdateBranchAsync:
-        id: int64 * model: BranchModificationModel * cancellationToken: CancellationToken -> Task
+        id: int64 * model: BranchModificationModel * cancellationToken: CancellationToken -> Task<ClientUnitResult>
 
-    abstract DeleteBranchAsync: id: int64 * cancellationToken: CancellationToken -> Task
+    abstract DeleteBranchAsync: id: int64 * cancellationToken: CancellationToken -> Task<ClientUnitResult>

@@ -16,5 +16,7 @@ type HttpRequestMessage =
       Content: string option
       Headers: (string * string) list }
 
+type HttpResponseMessage = { StatusCode: int; Content: string }
+
 type IHttpRequestSender =
-    abstract SendAsync: request: HttpRequestMessage * cancellationToken: CancellationToken -> Task<string>
+    abstract SendAsync: request: HttpRequestMessage * cancellationToken: CancellationToken -> Task<HttpResponseMessage>

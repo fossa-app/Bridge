@@ -6,8 +6,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="JsonSerializerTests.fs" />
+    <Compile Include="ClientResultTests.fs" />
     <Compile Include="UrlHelpersTests.fs" />
     <Compile Include="StatusCodeHelpersTests.fs" />
+    <Compile Include="HttpTransportTests.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>
   <ItemGroup>
