@@ -14,14 +14,14 @@ type BranchClient(transport: IHttpTransport) =
             [ match Option.ofObj queryParams.Id with
               | Some ids when not (Seq.isEmpty ids) ->
                   for id in ids do
-                      yield "Id", (id: UrlPart)
+                      yield "id", (id: UrlPart)
               | _ -> ()
               if not (String.IsNullOrEmpty(queryParams.Search)) then
-                  yield "Search", (queryParams.Search: UrlPart)
+                  yield "search", (queryParams.Search: UrlPart)
               if queryParams.PageNumber.HasValue then
-                  yield "PageNumber", (queryParams.PageNumber.Value: UrlPart)
+                  yield "pageNumber", (queryParams.PageNumber.Value: UrlPart)
               if queryParams.PageSize.HasValue then
-                  yield "PageSize", (queryParams.PageSize.Value: UrlPart) ]
+                  yield "pageSize", (queryParams.PageSize.Value: UrlPart) ]
 
         let endpointPath, securityRequirement = Endpoints.Branches
         composeRelativeUrl endpointPath securityRequirement [] parameters
