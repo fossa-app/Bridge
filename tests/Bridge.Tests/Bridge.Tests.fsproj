@@ -9,6 +9,7 @@
     <Compile Include="ClientResultTests.fs" />
     <Compile Include="ClientUnitResultTests.fs" />
     <Compile Include="UrlHelpersTests.fs" />
+    <Compile Include="ClientQueryParameterTests.fs" />
     <Compile Include="StatusCodeHelpersTests.fs" />
     <Compile Include="HttpTransportTests.fs" />
     <Compile Include="Main.fs" />
