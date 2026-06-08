@@ -1,6 +1,7 @@
 module JsonSerializerTests
 
 open System
+open System.Collections.Generic
 open Expecto
 open Fossa.Bridge.Models.ApiModels
 open Fossa.Bridge.Services
@@ -85,7 +86,9 @@ let tests =
                     Title = "Conflict"
                     Status = 409
                     Detail = "The requested change conflicts with current state."
-                    Instance = "/companies/42" }
+                    Instance = "/companies/42"
+                    Errors = Unchecked.defaultof<Dictionary<string, string array>>
+                    TraceId = null }
 
               let json = serializer.Serialize(model)
 
@@ -94,6 +97,8 @@ let tests =
               Expect.isTrue (json.Contains("\"status\"")) "JSON should contain lowercase status"
               Expect.isTrue (json.Contains("\"detail\"")) "JSON should contain lowercase detail"
               Expect.isTrue (json.Contains("\"instance\"")) "JSON should contain lowercase instance"
+              Expect.isTrue (json.Contains("\"errors\"")) "JSON should contain lowercase errors"
+              Expect.isTrue (json.Contains("\"traceId\"")) "JSON should contain camelCase traceId"
               Expect.isFalse (json.Contains("\"Type\"")) "JSON should not contain PascalCase Type"
 
           testCase "ProblemDetailsModel serializes null core fields"
@@ -105,14 +110,39 @@ let tests =
                     Title = null
                     Status = 404
                     Detail = null
-                    Instance = null }
+                    Instance = null
+                    Errors = Unchecked.defaultof<Dictionary<string, string array>>
+                    TraceId = null }
 
               let json = serializer.Serialize(model)
 
               Expect.equal
                   json
-                  "{\"type\":null,\"title\":null,\"status\":404,\"detail\":null,\"instance\":null}"
+                  "{\"type\":null,\"title\":null,\"status\":404,\"detail\":null,\"instance\":null,\"errors\":null,\"traceId\":null}"
                   "Null core fields should be serialized"
+
+          testCase "ProblemDetailsModel serializes validation problem details"
+          <| fun _ ->
+              let serializer = JsonSerializer() :> IJsonSerializer
+              let errors = Dictionary<string, string array>()
+              errors.Add("Name", [| "The Name field is required." |])
+
+              let model =
+                  { Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+                    Title = "One or more validation errors occurred."
+                    Status = 400
+                    Detail = null
+                    Instance = null
+                    Errors = errors
+                    TraceId = "00-abc-123-00" }
+
+              let json = serializer.Serialize(model)
+
+              Expect.isTrue
+                  (json.Contains("\"errors\":{\"Name\":[\"The Name field is required.\"]}"))
+                  "Errors should serialize"
+
+              Expect.isTrue (json.Contains("\"traceId\":\"00-abc-123-00\"")) "TraceId should serialize"
 
           testCase "ProblemDetailsModel deserializes known fields"
           <| fun _ ->
@@ -128,6 +158,29 @@ let tests =
               Expect.equal model.Status 404 "Status should deserialize"
               Expect.equal model.Detail "Missing." "Detail should deserialize"
               Expect.equal model.Instance "/companies/99" "Instance should deserialize"
+
+          testCase "ProblemDetailsModel deserializes validation problem details"
+          <| fun _ ->
+              let serializer = JsonSerializer() :> IJsonSerializer
+
+              let json =
+                  "{\"type\":\"https://tools.ietf.org/html/rfc7231#section-6.5.1\",\"title\":\"One or more validation errors occurred.\",\"status\":400,\"errors\":{\"Name\":[\"The Name field is required.\"]},\"traceId\":\"00-abc-123-00\"}"
+
+              let model = serializer.Deserialize<ProblemDetailsModel>(json)
+
+              Expect.equal model.Type "https://tools.ietf.org/html/rfc7231#section-6.5.1" "Type should deserialize"
+              Expect.equal model.Title "One or more validation errors occurred." "Title should deserialize"
+              Expect.equal model.Status 400 "Status should deserialize"
+              Expect.isNull model.Detail "Missing detail should deserialize to null"
+              Expect.isNull model.Instance "Missing instance should deserialize to null"
+              Expect.isTrue (model.Errors.ContainsKey "Name") "Errors should contain Name"
+
+              Expect.sequenceEqual
+                  model.Errors["Name"]
+                  [| "The Name field is required." |]
+                  "Name errors should deserialize"
+
+              Expect.equal model.TraceId "00-abc-123-00" "TraceId should deserialize"
 
           testCase "ProblemDetailsModel deserializes missing status as default int"
           <| fun _ ->

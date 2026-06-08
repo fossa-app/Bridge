@@ -1,5 +1,6 @@
 module StatusCodeHelpersTests
 
+open System.Collections.Generic
 open Expecto
 open Fossa.Bridge.Models.ApiModels
 open Fossa.Bridge.Services.StatusCodeHelpers
@@ -9,7 +10,9 @@ let private problemWithStatus status =
       Title = null
       Status = status
       Detail = null
-      Instance = null }
+      Instance = null
+      Errors = Unchecked.defaultof<Dictionary<string, string array>>
+      TraceId = null }
 
 [<Tests>]
 let tests =
