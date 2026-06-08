@@ -19,14 +19,14 @@ let tests =
           <| fun _ ->
               let result = ClientResultHelpers.success "bridge"
 
-              Expect.isTrue result.Succeeded "Success should be success"
-              Expect.equal result.Value "bridge" "Value should be set"
-              Expect.isNull result.Problem "Problem should be absent"
+              match result with
+              | ClientResult.Success value -> Expect.equal value "bridge" "Value should be set"
+              | ClientResult.Failure _ -> failtest "Expected success"
 
           testCase "problem helper creates problem result"
           <| fun _ ->
               let result: ClientResult<string> = ClientResultHelpers.problem problem
 
-              Expect.isFalse result.Succeeded "Problem should not be success"
-              Expect.isNull (box result.Value) "Value should be absent"
-              Expect.equal result.Problem problem "Problem should be set" ]
+              match result with
+              | ClientResult.Success _ -> failtest "Expected problem"
+              | ClientResult.Failure actual -> Expect.equal actual problem "Problem should be set" ]

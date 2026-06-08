@@ -40,11 +40,11 @@ let tests =
                       .GetAwaiter()
                       .GetResult()
 
-              Expect.isTrue result.Succeeded "Expected success"
-              let value = result.Value |> Option.ofObj |> Option.get
-              Expect.equal value.Status 200 "Status should deserialize"
-              Expect.equal value.Title "OK" "Title should deserialize"
-              Expect.isNull result.Problem "Problem should be absent"
+              match result with
+              | ClientResult.Success value ->
+                  Expect.equal value.Status 200 "Status should deserialize"
+                  Expect.equal value.Title "OK" "Title should deserialize"
+              | ClientResult.Failure _ -> failtest "Expected success"
 
           testCase "GetAsync returns problem for non-2xx response"
           <| fun _ ->
@@ -59,11 +59,11 @@ let tests =
                       .GetAwaiter()
                       .GetResult()
 
-              Expect.isFalse result.Succeeded "Expected problem"
-              Expect.isNull result.Value "Value should be absent"
-              let problem = result.Problem |> Option.ofObj |> Option.get
-              Expect.equal problem.Status 404 "Status should deserialize"
-              Expect.equal problem.Title "Not Found" "Title should deserialize"
+              match result with
+              | ClientResult.Success _ -> failtest "Expected problem"
+              | ClientResult.Failure problem ->
+                  Expect.equal problem.Status 404 "Status should deserialize"
+                  Expect.equal problem.Title "Not Found" "Title should deserialize"
 
           testCase "PostAsync returns unit success for 2xx response"
           <| fun _ ->
@@ -90,7 +90,8 @@ let tests =
                       .GetAwaiter()
                       .GetResult()
 
-              Expect.isFalse result.Succeeded "Expected problem"
-              let problem = result.Problem |> Option.ofObj |> Option.get
-              Expect.equal problem.Status 404 "Status should deserialize"
-              Expect.equal problem.Title "Not Found" "Title should deserialize" ]
+              match result with
+              | ClientUnitResult.Success -> failtest "Expected problem"
+              | ClientUnitResult.Failure problem ->
+                  Expect.equal problem.Status 404 "Status should deserialize"
+                  Expect.equal problem.Title "Not Found" "Title should deserialize" ]

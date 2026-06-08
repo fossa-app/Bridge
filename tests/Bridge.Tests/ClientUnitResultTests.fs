@@ -19,12 +19,14 @@ let tests =
           <| fun _ ->
               let result = ClientUnitResultHelpers.success
 
-              Expect.isTrue result.Succeeded "Success should be success"
-              Expect.isNull result.Problem "Problem should be absent"
+              match result with
+              | ClientUnitResult.Success -> ()
+              | ClientUnitResult.Failure _ -> failtest "Expected success"
 
           testCase "problem helper creates problem result"
           <| fun _ ->
               let result = ClientUnitResultHelpers.problem problem
 
-              Expect.isFalse result.Succeeded "Problem should not be success"
-              Expect.equal result.Problem problem "Problem should be set" ]
+              match result with
+              | ClientUnitResult.Success -> failtest "Expected problem"
+              | ClientUnitResult.Failure actual -> Expect.equal actual problem "Problem should be set" ]
