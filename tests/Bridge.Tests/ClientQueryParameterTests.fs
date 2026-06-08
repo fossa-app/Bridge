@@ -20,11 +20,7 @@ type private CapturingTransport() =
             : Task<ClientResult<'TResponse>> =
             lastUrl <- endpointUrl
 
-            Task.FromResult(
-                { Succeeded = true
-                  Value = Unchecked.defaultof<'TResponse>
-                  Problem = null }
-            )
+            Task.FromResult(ClientResult.Success Unchecked.defaultof<'TResponse>)
 
         member _.PostAsync<'TRequest when 'TRequest: not null>
             (
@@ -34,7 +30,7 @@ type private CapturingTransport() =
                 _cancellationToken: CancellationToken
             ) : Task<ClientUnitResult> =
             lastUrl <- endpointUrl
-            Task.FromResult({ Succeeded = true; Problem = null })
+            Task.FromResult(ClientUnitResult.Success)
 
         member _.PutAsync<'TRequest when 'TRequest: not null>
             (
@@ -44,7 +40,7 @@ type private CapturingTransport() =
                 _cancellationToken: CancellationToken
             ) : Task<ClientUnitResult> =
             lastUrl <- endpointUrl
-            Task.FromResult({ Succeeded = true; Problem = null })
+            Task.FromResult(ClientUnitResult.Success)
 
         member _.PatchAsync<'TRequest when 'TRequest: not null>
             (
@@ -54,13 +50,13 @@ type private CapturingTransport() =
                 _cancellationToken: CancellationToken
             ) : Task<ClientUnitResult> =
             lastUrl <- endpointUrl
-            Task.FromResult({ Succeeded = true; Problem = null })
+            Task.FromResult(ClientUnitResult.Success)
 
         member _.DeleteAsync
             (endpointUrl: string, _endpointSecurity: EndpointSecurity, _cancellationToken: CancellationToken)
             : Task<ClientUnitResult> =
             lastUrl <- endpointUrl
-            Task.FromResult({ Succeeded = true; Problem = null })
+            Task.FromResult(ClientUnitResult.Success)
 
 let private idList (values: int64 seq) =
     ResizeArray<int64>(values) :> IReadOnlyList<int64>
