@@ -1,6 +1,7 @@
 namespace Fossa.Bridge.Models.ApiModels
 
 open System
+open System.Collections.Generic
 
 [<CLIMutable>]
 type ProblemDetailsModel =
@@ -8,7 +9,9 @@ type ProblemDetailsModel =
       Title: string | null
       Status: int
       Detail: string | null
-      Instance: string | null }
+      Instance: string | null
+      Errors: Dictionary<string, string array>
+      TraceId: string | null }
 
 [<CLIMutable>]
 type AddressModel =

@@ -1,5 +1,6 @@
 module ClientResultTests
 
+open System.Collections.Generic
 open Expecto
 open Fossa.Bridge.Models.ApiModels
 open Fossa.Bridge.Models.ApiModels.Helpers
@@ -9,7 +10,9 @@ let private problem =
       Title = "Conflict"
       Status = 409
       Detail = "The requested change conflicts with current state."
-      Instance = "/companies/42" }
+      Instance = "/companies/42"
+      Errors = Unchecked.defaultof<Dictionary<string, string array>>
+      TraceId = null }
 
 [<Tests>]
 let tests =
