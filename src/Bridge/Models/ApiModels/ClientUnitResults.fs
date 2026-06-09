@@ -9,3 +9,14 @@ type ClientUnitResult =
         match this with
         | Success -> onSuccess ()
         | Failure problem -> onFailure problem
+
+    interface IClientResult with
+        member this.IsSuccess =
+            match this with
+            | Success -> true
+            | Failure _ -> false
+
+        member this.GetClientProblem() =
+            match this with
+            | Success -> None
+            | Failure problem -> Some problem

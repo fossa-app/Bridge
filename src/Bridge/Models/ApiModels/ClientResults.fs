@@ -9,3 +9,14 @@ type ClientResult<'T when 'T: not struct and 'T: not null> =
         match this with
         | Success value -> onSuccess value
         | Failure problem -> onFailure problem
+
+    interface IClientResult with
+        member this.IsSuccess =
+            match this with
+            | Success _ -> true
+            | Failure _ -> false
+
+        member this.GetClientProblem() =
+            match this with
+            | Success _ -> None
+            | Failure problem -> Some problem
