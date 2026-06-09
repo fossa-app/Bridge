@@ -1,6 +1,5 @@
 namespace Fossa.Bridge.Models.ApiModels.Helpers
 
-open System
 open Fossa.Bridge.Models.ApiModels
 
 module ClientResultHelpers =
@@ -34,20 +33,12 @@ module ClientResultHelpers =
         | ClientResult.Success value -> Some value
         | ClientResult.Failure _ -> None
 
-    let private problemMessage (problem: ProblemDetailsModel) =
-        let title = problem.Title
-
-        if String.IsNullOrWhiteSpace title then
-            "Client result failed."
-        else
-            string title
-
     let unwrapClientResult<'T when 'T: not struct and 'T: not null> (result: ClientResult<'T>) : 'T =
         match result with
         | ClientResult.Success value -> value
-        | ClientResult.Failure problem -> invalidOp (problemMessage problem)
+        | ClientResult.Failure _ -> invalidOp "Client result failed."
 
     let unwrapClientUnitResult (result: ClientUnitResult) : unit =
         match result with
         | ClientUnitResult.Success -> ()
-        | ClientUnitResult.Failure problem -> invalidOp (problemMessage problem)
+        | ClientUnitResult.Failure _ -> invalidOp "Client result failed."
