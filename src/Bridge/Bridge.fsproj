@@ -9,6 +9,7 @@
   <ItemGroup>
     <Compile Include="Fable.fs" />
     <Compile Include="Models\ApiModels\SharedModels.fs" />
+    <Compile Include="Models\ApiModels\ClientResultContracts.fs" />
     <Compile Include="Models\ApiModels\ClientResults.fs" />
     <Compile Include="Models\ApiModels\ClientUnitResults.fs" />
     <Compile Include="Models\ApiModels\Helpers\ClientResultHelpers.fs" />
