@@ -46,6 +46,6 @@
     <Compile Include="Services\Clients.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Fable.Core" Version="5.0.0" />
+    <PackageReference Include="Fable.Core" Version="5.1.0" />
   </ItemGroup>
 </Project>
