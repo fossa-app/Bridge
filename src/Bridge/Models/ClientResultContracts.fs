@@ -1,4 +1,6 @@
-namespace Fossa.Bridge.Models.ApiModels
+namespace Fossa.Bridge.Models
+
+open Fossa.Bridge.Models.ApiModels
 
 type IClientResult =
     abstract IsSuccess: bool

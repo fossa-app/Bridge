@@ -1,5 +1,6 @@
-namespace Fossa.Bridge.Models.ApiModels.Helpers
+namespace Fossa.Bridge.Models.Helpers
 
+open Fossa.Bridge.Models
 open Fossa.Bridge.Models.ApiModels
 
 module ClientResultHelpers =

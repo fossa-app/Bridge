@@ -2,17 +2,18 @@ module ClientResultTests
 
 open System.Collections.Generic
 open Expecto
+open Fossa.Bridge.Models
 open Fossa.Bridge.Models.ApiModels
-open Fossa.Bridge.Models.ApiModels.Helpers
+open Fossa.Bridge.Models.Helpers
 
 let private problem =
-    { Type = "https://example.com/problems/conflict"
-      Title = "Conflict"
-      Status = 409
-      Detail = "The requested change conflicts with current state."
-      Instance = "/companies/42"
-      Errors = Unchecked.defaultof<Dictionary<string, string array>>
-      TraceId = null }
+    { ``type`` = "https://example.com/problems/conflict"
+      title = "Conflict"
+      status = 409
+      detail = "The requested change conflicts with current state."
+      instance = "/companies/42"
+      errors = Unchecked.defaultof<Dictionary<string, string array>>
+      traceId = null }
 
 [<Tests>]
 let tests =
@@ -52,9 +53,9 @@ let tests =
               let result: ClientResult<string> = ClientResultHelpers.problem problem
 
               let matched =
-                  ClientResultHelpers.matchClientResult result id (fun actual -> string actual.Title)
+                  ClientResultHelpers.matchClientResult result id (fun actual -> string actual.title)
 
-              Expect.equal matched (string problem.Title) "Match should return problem projection"
+              Expect.equal matched (string problem.title) "Match should return problem projection"
               Expect.isFalse (ClientResultHelpers.isClientSuccess result) "Result should not be success"
               Expect.isTrue (ClientResultHelpers.isClientFailure result) "Result should be failure"
               Expect.equal (ClientResultHelpers.getClientValue result) None "Value should not be available"

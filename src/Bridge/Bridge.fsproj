@@ -9,13 +9,13 @@
   <ItemGroup>
     <Compile Include="Fable.fs" />
     <Compile Include="Models\ApiModels\SharedModels.fs" />
-    <Compile Include="Models\ApiModels\ClientResultContracts.fs" />
-    <Compile Include="Models\ApiModels\ClientResults.fs" />
-    <Compile Include="Models\ApiModels\ClientUnitResults.fs" />
-    <Compile Include="Models\ApiModels\Helpers\ClientResultHelpers.fs" />
-    <Compile Include="Models\ApiModels\Helpers\ClientUnitResultHelpers.fs" />
     <Compile Include="Models\ApiModels\EnvelopeModels.fs" />
     <Compile Include="Models\ApiModels\PayloadModels.fs" />
+    <Compile Include="Models\ClientResultContracts.fs" />
+    <Compile Include="Models\ClientResults.fs" />
+    <Compile Include="Models\ClientUnitResults.fs" />
+    <Compile Include="Models\Helpers\ClientResultHelpers.fs" />
+    <Compile Include="Models\Helpers\ClientUnitResultHelpers.fs" />
     <Compile Include="Services\Endpoints.fs" />
     <Compile Include="Services\UrlHelpers.fs" />
     <Compile Include="Services\StatusCodeHelpers.fs" />

@@ -6,13 +6,13 @@ open System.Collections.Generic
 
 [<CLIMutable>]
 type LicenseResponseModel<'TEntitlementsModel> =
-    { Terms: LicenseTermsModel
-      Entitlements: 'TEntitlementsModel }
+    { terms: LicenseTermsModel
+      entitlements: 'TEntitlementsModel }
 
 [<CLIMutable>]
 type PagingResponseModel<'T> =
-    { PageNumber: Nullable<int>
-      PageSize: Nullable<int>
-      Items: IReadOnlyCollection<'T>
-      TotalItems: Nullable<int64>
-      TotalPages: Nullable<int64> }
+    { pageNumber: Nullable<int>
+      pageSize: Nullable<int>
+      items: IReadOnlyCollection<'T>
+      totalItems: Nullable<int64>
+      totalPages: Nullable<int64> }

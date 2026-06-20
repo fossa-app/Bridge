@@ -3,6 +3,7 @@ namespace Fossa.Bridge.Services.Clients
 
 open System.Threading
 open System.Threading.Tasks
+open Fossa.Bridge.Models
 open Fossa.Bridge.Models.ApiModels
 open Fossa.Bridge.Services
 open System
@@ -11,17 +12,17 @@ open Fossa.Bridge.Services.UrlHelpers
 type BranchClient(transport: IHttpTransport) =
     let buildUrl (queryParams: BranchQueryRequestModel) =
         let parameters =
-            [ match Option.ofObj queryParams.Id with
+            [ match Option.ofObj queryParams.id with
               | Some ids when not (Seq.isEmpty ids) ->
                   for id in ids do
                       yield "id", (id: UrlPart)
               | _ -> ()
-              if not (String.IsNullOrEmpty(queryParams.Search)) then
-                  yield "search", (queryParams.Search: UrlPart)
-              if queryParams.PageNumber.HasValue then
-                  yield "pageNumber", (queryParams.PageNumber.Value: UrlPart)
-              if queryParams.PageSize.HasValue then
-                  yield "pageSize", (queryParams.PageSize.Value: UrlPart) ]
+              if not (String.IsNullOrEmpty(queryParams.search)) then
+                  yield "search", (queryParams.search: UrlPart)
+              if queryParams.pageNumber.HasValue then
+                  yield "pageNumber", (queryParams.pageNumber.Value: UrlPart)
+              if queryParams.pageSize.HasValue then
+                  yield "pageSize", (queryParams.pageSize.Value: UrlPart) ]
 
         let endpointPath, securityRequirement = Endpoints.Branches
         composeRelativeUrl endpointPath securityRequirement [] parameters
