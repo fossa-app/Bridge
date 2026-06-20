@@ -1,22 +1,24 @@
-namespace Fossa.Bridge.Models.ApiModels
+namespace Fossa.Bridge.Models
+
+open Fossa.Bridge.Models.ApiModels
 
 [<RequireQualifiedAccess>]
-type ClientResult<'T when 'T: not struct and 'T: not null> =
-    | Success of 'T
+type ClientUnitResult =
+    | Success
     | Failure of ProblemDetailsModel
 
     member this.Match(onSuccess, onFailure) =
         match this with
-        | Success value -> onSuccess value
+        | Success -> onSuccess ()
         | Failure problem -> onFailure problem
 
     interface IClientResult with
         member this.IsSuccess =
             match this with
-            | Success _ -> true
+            | Success -> true
             | Failure _ -> false
 
         member this.GetClientProblem() =
             match this with
-            | Success _ -> None
+            | Success -> None
             | Failure problem -> Some problem

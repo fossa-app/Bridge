@@ -5,43 +5,43 @@ open System.Collections.Generic
 
 [<CLIMutable>]
 type ProblemDetailsModel =
-    { Type: string | null
-      Title: string | null
-      Status: int
-      Detail: string | null
-      Instance: string | null
-      Errors: Dictionary<string, string array>
-      TraceId: string | null }
+    { ``type``: string | null
+      title: string | null
+      status: int
+      detail: string | null
+      instance: string | null
+      errors: Dictionary<string, string array>
+      traceId: string | null }
 
 [<CLIMutable>]
 type AddressModel =
-    { Line1: string | null
-      Line2: string | null
-      City: string | null
-      Subdivision: string | null
-      PostalCode: string | null
-      CountryCode: string | null }
+    { line1: string | null
+      line2: string | null
+      city: string | null
+      subdivision: string | null
+      postalCode: string | null
+      countryCode: string | null }
 
 [<CLIMutable>]
 type CountryModel =
-    { Name: string | null
-      Code: string | null }
+    { name: string | null
+      code: string | null }
 
 [<CLIMutable>]
 type TimeZoneModel =
-    { Id: string | null
-      Name: string | null
-      CountryCode: string | null
-      CurrentOffset: Nullable<TimeSpan> }
+    { id: string | null
+      name: string | null
+      countryCode: string | null
+      currentOffset: Nullable<TimeSpan> }
 
 [<CLIMutable>]
 type PartyModel =
-    { LongName: string | null
-      ShortName: string | null }
+    { longName: string | null
+      shortName: string | null }
 
 [<CLIMutable>]
 type LicenseTermsModel =
-    { Licensor: PartyModel | null
-      Licensee: PartyModel | null
-      NotBefore: Nullable<DateTimeOffset>
-      NotAfter: Nullable<DateTimeOffset> }
+    { licensor: PartyModel | null
+      licensee: PartyModel | null
+      notBefore: Nullable<DateTimeOffset>
+      notAfter: Nullable<DateTimeOffset> }

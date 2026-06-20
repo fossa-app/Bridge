@@ -3,6 +3,7 @@ namespace Fossa.Bridge.Services.Clients
 
 open System.Threading
 open System.Threading.Tasks
+open Fossa.Bridge.Models
 open Fossa.Bridge.Models.ApiModels
 open Fossa.Bridge.Services
 open Fossa.Bridge.Services.UrlHelpers

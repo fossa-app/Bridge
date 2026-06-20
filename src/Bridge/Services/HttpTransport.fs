@@ -3,8 +3,9 @@ namespace Fossa.Bridge.Services
 
 open System.Threading
 open System.Threading.Tasks
+open Fossa.Bridge.Models
 open Fossa.Bridge.Models.ApiModels
-open Fossa.Bridge.Models.ApiModels.Helpers
+open Fossa.Bridge.Models.Helpers
 open Fossa.Bridge.Services.StatusCodeHelpers
 
 

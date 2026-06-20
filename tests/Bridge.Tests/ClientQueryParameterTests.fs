@@ -5,6 +5,7 @@ open System.Collections.Generic
 open System.Threading
 open System.Threading.Tasks
 open Expecto
+open Fossa.Bridge.Models
 open Fossa.Bridge.Models.ApiModels
 open Fossa.Bridge.Services
 open Fossa.Bridge.Services.Clients
@@ -90,10 +91,10 @@ let tests =
 
               client
                   .GetBranchesAsync(
-                      { Id = idList [ 1L; 2L ]
-                        Search = "north"
-                        PageNumber = Nullable 3
-                        PageSize = Nullable 25 },
+                      { id = idList [ 1L; 2L ]
+                        search = "north"
+                        pageNumber = Nullable 3
+                        pageSize = Nullable 25 },
                       CancellationToken.None
                   )
                   .GetAwaiter()
@@ -116,10 +117,10 @@ let tests =
 
               client
                   .GetDepartmentsAsync(
-                      { Id = idList [ 10L; 20L ]
-                        Search = "ops"
-                        PageNumber = Nullable 2
-                        PageSize = Nullable 50 },
+                      { id = idList [ 10L; 20L ]
+                        search = "ops"
+                        pageNumber = Nullable 2
+                        pageSize = Nullable 50 },
                       CancellationToken.None
                   )
                   .GetAwaiter()
@@ -142,12 +143,12 @@ let tests =
 
               client
                   .GetEmployeesAsync(
-                      { Id = idList [ 99L ]
-                        Search = "casey"
-                        PageNumber = Nullable 4
-                        PageSize = Nullable 15
-                        ReportsToId = Nullable 7L
-                        TopLevelOnly = Nullable true },
+                      { id = idList [ 99L ]
+                        search = "casey"
+                        pageNumber = Nullable 4
+                        pageSize = Nullable 15
+                        reportsToId = Nullable 7L
+                        topLevelOnly = Nullable true },
                       CancellationToken.None
                   )
                   .GetAwaiter()
@@ -170,9 +171,9 @@ let tests =
 
               client
                   .GetEmployeesPagingAsync(
-                      { Search = "casey"
-                        PageNumber = Nullable 5
-                        PageSize = Nullable 30 },
+                      { search = "casey"
+                        pageNumber = Nullable 5
+                        pageSize = Nullable 30 },
                       CancellationToken.None
                   )
                   .GetAwaiter()

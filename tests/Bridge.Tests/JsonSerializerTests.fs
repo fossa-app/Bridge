@@ -82,13 +82,13 @@ let tests =
               let serializer = JsonSerializer() :> IJsonSerializer
 
               let model =
-                  { Type = "https://example.com/problems/conflict"
-                    Title = "Conflict"
-                    Status = 409
-                    Detail = "The requested change conflicts with current state."
-                    Instance = "/companies/42"
-                    Errors = Unchecked.defaultof<Dictionary<string, string array>>
-                    TraceId = null }
+                  { ``type`` = "https://example.com/problems/conflict"
+                    title = "Conflict"
+                    status = 409
+                    detail = "The requested change conflicts with current state."
+                    instance = "/companies/42"
+                    errors = Unchecked.defaultof<Dictionary<string, string array>>
+                    traceId = null }
 
               let json = serializer.Serialize(model)
 
@@ -106,13 +106,13 @@ let tests =
               let serializer = JsonSerializer() :> IJsonSerializer
 
               let model =
-                  { Type = null
-                    Title = null
-                    Status = 404
-                    Detail = null
-                    Instance = null
-                    Errors = Unchecked.defaultof<Dictionary<string, string array>>
-                    TraceId = null }
+                  { ``type`` = null
+                    title = null
+                    status = 404
+                    detail = null
+                    instance = null
+                    errors = Unchecked.defaultof<Dictionary<string, string array>>
+                    traceId = null }
 
               let json = serializer.Serialize(model)
 
@@ -128,13 +128,13 @@ let tests =
               errors.Add("Name", [| "The Name field is required." |])
 
               let model =
-                  { Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
-                    Title = "One or more validation errors occurred."
-                    Status = 400
-                    Detail = null
-                    Instance = null
-                    Errors = errors
-                    TraceId = "00-abc-123-00" }
+                  { ``type`` = "https://tools.ietf.org/html/rfc7231#section-6.5.1"
+                    title = "One or more validation errors occurred."
+                    status = 400
+                    detail = null
+                    instance = null
+                    errors = errors
+                    traceId = "00-abc-123-00" }
 
               let json = serializer.Serialize(model)
 
@@ -153,11 +153,11 @@ let tests =
 
               let model = serializer.Deserialize<ProblemDetailsModel>(json)
 
-              Expect.equal model.Type "https://example.com/problems/not-found" "Type should deserialize"
-              Expect.equal model.Title "Not Found" "Title should deserialize"
-              Expect.equal model.Status 404 "Status should deserialize"
-              Expect.equal model.Detail "Missing." "Detail should deserialize"
-              Expect.equal model.Instance "/companies/99" "Instance should deserialize"
+              Expect.equal model.``type`` "https://example.com/problems/not-found" "Type should deserialize"
+              Expect.equal model.title "Not Found" "Title should deserialize"
+              Expect.equal model.status 404 "Status should deserialize"
+              Expect.equal model.detail "Missing." "Detail should deserialize"
+              Expect.equal model.instance "/companies/99" "Instance should deserialize"
 
           testCase "ProblemDetailsModel deserializes validation problem details"
           <| fun _ ->
@@ -168,19 +168,19 @@ let tests =
 
               let model = serializer.Deserialize<ProblemDetailsModel>(json)
 
-              Expect.equal model.Type "https://tools.ietf.org/html/rfc7231#section-6.5.1" "Type should deserialize"
-              Expect.equal model.Title "One or more validation errors occurred." "Title should deserialize"
-              Expect.equal model.Status 400 "Status should deserialize"
-              Expect.isNull model.Detail "Missing detail should deserialize to null"
-              Expect.isNull model.Instance "Missing instance should deserialize to null"
-              Expect.isTrue (model.Errors.ContainsKey "Name") "Errors should contain Name"
+              Expect.equal model.``type`` "https://tools.ietf.org/html/rfc7231#section-6.5.1" "Type should deserialize"
+              Expect.equal model.title "One or more validation errors occurred." "Title should deserialize"
+              Expect.equal model.status 400 "Status should deserialize"
+              Expect.isNull model.detail "Missing detail should deserialize to null"
+              Expect.isNull model.instance "Missing instance should deserialize to null"
+              Expect.isTrue (model.errors.ContainsKey "Name") "Errors should contain Name"
 
               Expect.sequenceEqual
-                  model.Errors["Name"]
+                  model.errors["Name"]
                   [| "The Name field is required." |]
                   "Name errors should deserialize"
 
-              Expect.equal model.TraceId "00-abc-123-00" "TraceId should deserialize"
+              Expect.equal model.traceId "00-abc-123-00" "TraceId should deserialize"
 
           testCase "ProblemDetailsModel deserializes missing status as default int"
           <| fun _ ->
@@ -191,4 +191,4 @@ let tests =
 
               let model = serializer.Deserialize<ProblemDetailsModel>(json)
 
-              Expect.equal model.Status 0 "Missing status should deserialize to default int value" ]
+              Expect.equal model.status 0 "Missing status should deserialize to default int value" ]
