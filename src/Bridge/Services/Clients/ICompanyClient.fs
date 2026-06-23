@@ -7,12 +7,12 @@ open Fossa.Bridge.Models
 open Fossa.Bridge.Models.ApiModels
 
 type ICompanyClient =
-    abstract GetCompanyAsync: cancellationToken: CancellationToken -> Task<ClientResult<CompanyRetrievalModel>>
+    abstract getCompanyAsync: cancellationToken: CancellationToken -> Task<ClientResult<CompanyRetrievalModel>>
 
-    abstract CreateCompanyAsync:
+    abstract createCompanyAsync:
         model: CompanyModificationModel * cancellationToken: CancellationToken -> Task<ClientUnitResult>
 
-    abstract UpdateCompanyAsync:
+    abstract updateCompanyAsync:
         model: CompanyModificationModel * cancellationToken: CancellationToken -> Task<ClientUnitResult>
 
-    abstract DeleteCompanyAsync: cancellationToken: CancellationToken -> Task<ClientUnitResult>
+    abstract deleteCompanyAsync: cancellationToken: CancellationToken -> Task<ClientUnitResult>

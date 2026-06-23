@@ -90,7 +90,7 @@ let tests =
               let client = BranchClient(transport)
 
               client
-                  .GetBranchesAsync(
+                  .getBranchesAsync(
                       { id = idList [ 1L; 2L ]
                         search = "north"
                         pageNumber = Nullable 3
@@ -116,7 +116,7 @@ let tests =
               let client = DepartmentClient(transport)
 
               client
-                  .GetDepartmentsAsync(
+                  .getDepartmentsAsync(
                       { id = idList [ 10L; 20L ]
                         search = "ops"
                         pageNumber = Nullable 2
@@ -142,7 +142,7 @@ let tests =
               let client = EmployeeClient(transport)
 
               client
-                  .GetEmployeesAsync(
+                  .getEmployeesAsync(
                       { id = idList [ 99L ]
                         search = "casey"
                         pageNumber = Nullable 4
@@ -170,7 +170,7 @@ let tests =
               let client = EmployeeClient(transport)
 
               client
-                  .GetEmployeesPagingAsync(
+                  .getEmployeesPagingAsync(
                       { search = "casey"
                         pageNumber = Nullable 5
                         pageSize = Nullable 30 },

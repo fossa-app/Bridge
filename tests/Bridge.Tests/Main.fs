@@ -1,4 +1,4 @@
-﻿module Fossa.Bridge.Tests
+module Fossa.Bridge.Tests
 
 open Expecto
 

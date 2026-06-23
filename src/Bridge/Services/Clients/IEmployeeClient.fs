@@ -7,30 +7,30 @@ open Fossa.Bridge.Models
 open Fossa.Bridge.Models.ApiModels
 
 type IEmployeeClient =
-    abstract GetEmployeesAsync:
+    abstract getEmployeesAsync:
         query: EmployeeQueryRequestModel * cancellationToken: CancellationToken ->
             Task<ClientResult<PagingResponseModel<EmployeeRetrievalModel>>>
 
-    abstract GetEmployeesPagingAsync:
+    abstract getEmployeesPagingAsync:
         query: EmployeePagingRequestModel * cancellationToken: CancellationToken ->
             Task<ClientResult<PagingResponseModel<EmployeeRetrievalModel>>>
 
-    abstract GetEmployeeAsync:
+    abstract getEmployeeAsync:
         id: int64 * cancellationToken: CancellationToken -> Task<ClientResult<EmployeeRetrievalModel>>
 
-    abstract GetCurrentEmployeeAsync: cancellationToken: CancellationToken -> Task<ClientResult<EmployeeRetrievalModel>>
+    abstract getCurrentEmployeeAsync: cancellationToken: CancellationToken -> Task<ClientResult<EmployeeRetrievalModel>>
 
-    abstract CreateEmployeeAsync:
+    abstract createEmployeeAsync:
         model: EmployeeModificationModel * cancellationToken: CancellationToken -> Task<ClientUnitResult>
 
-    abstract UpdateEmployeeAsync:
+    abstract updateEmployeeAsync:
         id: int64 * model: EmployeeModificationModel * cancellationToken: CancellationToken -> Task<ClientUnitResult>
 
-    abstract UpdateCurrentEmployeeAsync:
+    abstract updateCurrentEmployeeAsync:
         model: EmployeeModificationModel * cancellationToken: CancellationToken -> Task<ClientUnitResult>
 
-    abstract ManageEmployeeAsync:
+    abstract manageEmployeeAsync:
         id: int64 * model: EmployeeManagementModel * cancellationToken: CancellationToken -> Task<ClientUnitResult>
 
-    abstract DeleteEmployeeAsync: id: int64 * cancellationToken: CancellationToken -> Task<ClientUnitResult>
-    abstract DeleteCurrentEmployeeAsync: cancellationToken: CancellationToken -> Task<ClientUnitResult>
+    abstract deleteEmployeeAsync: id: int64 * cancellationToken: CancellationToken -> Task<ClientUnitResult>
+    abstract deleteCurrentEmployeeAsync: cancellationToken: CancellationToken -> Task<ClientUnitResult>

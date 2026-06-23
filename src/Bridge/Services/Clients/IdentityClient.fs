@@ -9,7 +9,7 @@ open Fossa.Bridge.Services
 open Fossa.Bridge.Services.UrlHelpers
 
 type IdentityClient(transport: IHttpTransport) =
-    member _.GetClientAsync
+    member _.getClientAsync
         (origin: string, cancellationToken: CancellationToken)
         : Task<ClientResult<IdentityClientRetrievalModel>> =
         let endpointPath, securityRequirement = Endpoints.Client
@@ -20,5 +20,5 @@ type IdentityClient(transport: IHttpTransport) =
         transport.GetAsync<IdentityClientRetrievalModel>(endpointUrl, endpointSecurity, cancellationToken)
 
     interface IIdentityClient with
-        member this.GetClientAsync(origin, cancellationToken) =
-            this.GetClientAsync(origin, cancellationToken)
+        member this.getClientAsync(origin, cancellationToken) =
+            this.getClientAsync (origin, cancellationToken)

@@ -9,7 +9,7 @@ open Fossa.Bridge.Services
 open Fossa.Bridge.Services.UrlHelpers
 
 type CompanyClient(transport: IHttpTransport) =
-    member _.GetCompanyAsync(cancellationToken: CancellationToken) : Task<ClientResult<CompanyRetrievalModel>> =
+    member _.getCompanyAsync(cancellationToken: CancellationToken) : Task<ClientResult<CompanyRetrievalModel>> =
         let endpointPath, securityRequirement = Endpoints.Company
 
         let endpointUrl, endpointSecurity =
@@ -17,7 +17,7 @@ type CompanyClient(transport: IHttpTransport) =
 
         transport.GetAsync<CompanyRetrievalModel>(endpointUrl, endpointSecurity, cancellationToken)
 
-    member _.CreateCompanyAsync
+    member _.createCompanyAsync
         (model: CompanyModificationModel, cancellationToken: CancellationToken)
         : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Company
@@ -27,7 +27,7 @@ type CompanyClient(transport: IHttpTransport) =
 
         transport.PostAsync<CompanyModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
-    member _.UpdateCompanyAsync
+    member _.updateCompanyAsync
         (model: CompanyModificationModel, cancellationToken: CancellationToken)
         : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Company
@@ -37,7 +37,7 @@ type CompanyClient(transport: IHttpTransport) =
 
         transport.PutAsync<CompanyModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
-    member _.DeleteCompanyAsync(cancellationToken: CancellationToken) : Task<ClientUnitResult> =
+    member _.deleteCompanyAsync(cancellationToken: CancellationToken) : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Company
 
         let endpointUrl, endpointSecurity =
@@ -46,13 +46,14 @@ type CompanyClient(transport: IHttpTransport) =
         transport.DeleteAsync(endpointUrl, endpointSecurity, cancellationToken)
 
     interface ICompanyClient with
-        member this.GetCompanyAsync(cancellationToken) = this.GetCompanyAsync(cancellationToken)
+        member this.getCompanyAsync(cancellationToken) =
+            this.getCompanyAsync (cancellationToken)
 
-        member this.CreateCompanyAsync(model, cancellationToken) =
-            this.CreateCompanyAsync(model, cancellationToken)
+        member this.createCompanyAsync(model, cancellationToken) =
+            this.createCompanyAsync (model, cancellationToken)
 
-        member this.UpdateCompanyAsync(model, cancellationToken) =
-            this.UpdateCompanyAsync(model, cancellationToken)
+        member this.updateCompanyAsync(model, cancellationToken) =
+            this.updateCompanyAsync (model, cancellationToken)
 
-        member this.DeleteCompanyAsync(cancellationToken) =
-            this.DeleteCompanyAsync(cancellationToken)
+        member this.deleteCompanyAsync(cancellationToken) =
+            this.deleteCompanyAsync (cancellationToken)
