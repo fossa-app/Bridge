@@ -9,7 +9,7 @@ open Fossa.Bridge.Services
 open Fossa.Bridge.Services.UrlHelpers
 
 type SystemLicenseClient(transport: IHttpTransport) =
-    member _.GetLicenseAsync
+    member _.getLicenseAsync
         (cancellationToken: CancellationToken)
         : Task<ClientResult<LicenseResponseModel<SystemEntitlementsModel>>> =
         let endpointPath, securityRequirement = Endpoints.SystemLicense
@@ -24,4 +24,5 @@ type SystemLicenseClient(transport: IHttpTransport) =
         )
 
     interface ISystemLicenseClient with
-        member this.GetLicenseAsync(cancellationToken) = this.GetLicenseAsync(cancellationToken)
+        member this.getLicenseAsync(cancellationToken) =
+            this.getLicenseAsync (cancellationToken)

@@ -43,7 +43,7 @@ type EmployeeClient(transport: IHttpTransport) =
         let endpointPath, securityRequirement = Endpoints.Employees
         composeRelativeUrl endpointPath securityRequirement [] parameters
 
-    member _.GetEmployeesAsync
+    member _.getEmployeesAsync
         (query: EmployeeQueryRequestModel, cancellationToken: CancellationToken)
         : Task<ClientResult<PagingResponseModel<EmployeeRetrievalModel>>> =
         let endpointUrl, endpointSecurity = buildUrl query
@@ -54,7 +54,7 @@ type EmployeeClient(transport: IHttpTransport) =
             cancellationToken
         )
 
-    member _.GetEmployeesPagingAsync
+    member _.getEmployeesPagingAsync
         (query: EmployeePagingRequestModel, cancellationToken: CancellationToken)
         : Task<ClientResult<PagingResponseModel<EmployeeRetrievalModel>>> =
         let endpointUrl, endpointSecurity = buildPagingUrl query
@@ -65,7 +65,7 @@ type EmployeeClient(transport: IHttpTransport) =
             cancellationToken
         )
 
-    member _.GetEmployeeAsync
+    member _.getEmployeeAsync
         (id: int64, cancellationToken: CancellationToken)
         : Task<ClientResult<EmployeeRetrievalModel>> =
         let endpointPath, securityRequirement = Endpoints.Employees
@@ -75,7 +75,7 @@ type EmployeeClient(transport: IHttpTransport) =
 
         transport.GetAsync<EmployeeRetrievalModel>(endpointUrl, endpointSecurity, cancellationToken)
 
-    member _.GetCurrentEmployeeAsync
+    member _.getCurrentEmployeeAsync
         (cancellationToken: CancellationToken)
         : Task<ClientResult<EmployeeRetrievalModel>> =
         let endpointPath, securityRequirement = Endpoints.Employee
@@ -85,7 +85,7 @@ type EmployeeClient(transport: IHttpTransport) =
 
         transport.GetAsync<EmployeeRetrievalModel>(endpointUrl, endpointSecurity, cancellationToken)
 
-    member _.CreateEmployeeAsync
+    member _.createEmployeeAsync
         (model: EmployeeModificationModel, cancellationToken: CancellationToken)
         : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Employee
@@ -95,7 +95,7 @@ type EmployeeClient(transport: IHttpTransport) =
 
         transport.PostAsync<EmployeeModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
-    member _.UpdateEmployeeAsync
+    member _.updateEmployeeAsync
         (id: int64, model: EmployeeModificationModel, cancellationToken: CancellationToken)
         : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Employee
@@ -105,7 +105,7 @@ type EmployeeClient(transport: IHttpTransport) =
 
         transport.PutAsync<EmployeeModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
-    member _.UpdateCurrentEmployeeAsync
+    member _.updateCurrentEmployeeAsync
         (model: EmployeeModificationModel, cancellationToken: CancellationToken)
         : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Employee
@@ -115,7 +115,7 @@ type EmployeeClient(transport: IHttpTransport) =
 
         transport.PutAsync<EmployeeModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
-    member _.ManageEmployeeAsync
+    member _.manageEmployeeAsync
         (id: int64, model: EmployeeManagementModel, cancellationToken: CancellationToken)
         : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Employees
@@ -125,7 +125,7 @@ type EmployeeClient(transport: IHttpTransport) =
 
         transport.PutAsync<EmployeeManagementModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
-    member _.DeleteEmployeeAsync(id: int64, cancellationToken: CancellationToken) : Task<ClientUnitResult> =
+    member _.deleteEmployeeAsync(id: int64, cancellationToken: CancellationToken) : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Employee
 
         let endpointUrl, endpointSecurity =
@@ -133,7 +133,7 @@ type EmployeeClient(transport: IHttpTransport) =
 
         transport.DeleteAsync(endpointUrl, endpointSecurity, cancellationToken)
 
-    member _.DeleteCurrentEmployeeAsync(cancellationToken: CancellationToken) : Task<ClientUnitResult> =
+    member _.deleteCurrentEmployeeAsync(cancellationToken: CancellationToken) : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.Employee
 
         let endpointUrl, endpointSecurity =
@@ -142,32 +142,32 @@ type EmployeeClient(transport: IHttpTransport) =
         transport.DeleteAsync(endpointUrl, endpointSecurity, cancellationToken)
 
     interface IEmployeeClient with
-        member this.GetEmployeesAsync(query, cancellationToken) =
-            this.GetEmployeesAsync(query, cancellationToken)
+        member this.getEmployeesAsync(query, cancellationToken) =
+            this.getEmployeesAsync (query, cancellationToken)
 
-        member this.GetEmployeesPagingAsync(query, cancellationToken) =
-            this.GetEmployeesPagingAsync(query, cancellationToken)
+        member this.getEmployeesPagingAsync(query, cancellationToken) =
+            this.getEmployeesPagingAsync (query, cancellationToken)
 
-        member this.GetEmployeeAsync(id, cancellationToken) =
-            this.GetEmployeeAsync(id, cancellationToken)
+        member this.getEmployeeAsync(id, cancellationToken) =
+            this.getEmployeeAsync (id, cancellationToken)
 
-        member this.GetCurrentEmployeeAsync(cancellationToken) =
-            this.GetCurrentEmployeeAsync(cancellationToken)
+        member this.getCurrentEmployeeAsync(cancellationToken) =
+            this.getCurrentEmployeeAsync (cancellationToken)
 
-        member this.CreateEmployeeAsync(model, cancellationToken) =
-            this.CreateEmployeeAsync(model, cancellationToken)
+        member this.createEmployeeAsync(model, cancellationToken) =
+            this.createEmployeeAsync (model, cancellationToken)
 
-        member this.UpdateEmployeeAsync(id, model, cancellationToken) =
-            this.UpdateEmployeeAsync(id, model, cancellationToken)
+        member this.updateEmployeeAsync(id, model, cancellationToken) =
+            this.updateEmployeeAsync (id, model, cancellationToken)
 
-        member this.UpdateCurrentEmployeeAsync(model, cancellationToken) =
-            this.UpdateCurrentEmployeeAsync(model, cancellationToken)
+        member this.updateCurrentEmployeeAsync(model, cancellationToken) =
+            this.updateCurrentEmployeeAsync (model, cancellationToken)
 
-        member this.ManageEmployeeAsync(id, model, cancellationToken) =
-            this.ManageEmployeeAsync(id, model, cancellationToken)
+        member this.manageEmployeeAsync(id, model, cancellationToken) =
+            this.manageEmployeeAsync (id, model, cancellationToken)
 
-        member this.DeleteEmployeeAsync(id, cancellationToken) =
-            this.DeleteEmployeeAsync(id, cancellationToken)
+        member this.deleteEmployeeAsync(id, cancellationToken) =
+            this.deleteEmployeeAsync (id, cancellationToken)
 
-        member this.DeleteCurrentEmployeeAsync(cancellationToken) =
-            this.DeleteCurrentEmployeeAsync(cancellationToken)
+        member this.deleteCurrentEmployeeAsync(cancellationToken) =
+            this.deleteCurrentEmployeeAsync (cancellationToken)

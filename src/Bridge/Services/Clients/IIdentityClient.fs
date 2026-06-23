@@ -7,5 +7,5 @@ open Fossa.Bridge.Models
 open Fossa.Bridge.Models.ApiModels
 
 type IIdentityClient =
-    abstract GetClientAsync:
+    abstract getClientAsync:
         origin: string * cancellationToken: CancellationToken -> Task<ClientResult<IdentityClientRetrievalModel>>

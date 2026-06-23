@@ -7,13 +7,13 @@ open Fossa.Bridge.Models
 open Fossa.Bridge.Models.ApiModels
 
 type ICompanySettingsClient =
-    abstract GetCompanySettingsAsync:
+    abstract getCompanySettingsAsync:
         cancellationToken: CancellationToken -> Task<ClientResult<CompanySettingsRetrievalModel>>
 
-    abstract CreateCompanySettingsAsync:
+    abstract createCompanySettingsAsync:
         model: CompanySettingsModificationModel * cancellationToken: CancellationToken -> Task<ClientUnitResult>
 
-    abstract UpdateCompanySettingsAsync:
+    abstract updateCompanySettingsAsync:
         model: CompanySettingsModificationModel * cancellationToken: CancellationToken -> Task<ClientUnitResult>
 
-    abstract DeleteCompanySettingsAsync: cancellationToken: CancellationToken -> Task<ClientUnitResult>
+    abstract deleteCompanySettingsAsync: cancellationToken: CancellationToken -> Task<ClientUnitResult>

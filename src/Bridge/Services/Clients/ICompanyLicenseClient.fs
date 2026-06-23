@@ -7,7 +7,7 @@ open Fossa.Bridge.Models
 open Fossa.Bridge.Models.ApiModels
 
 type ICompanyLicenseClient =
-    abstract GetLicenseAsync:
+    abstract getLicenseAsync:
         cancellationToken: CancellationToken -> Task<ClientResult<LicenseResponseModel<CompanyEntitlementsModel>>>
 
-    abstract CreateLicenseAsync: model: string * cancellationToken: CancellationToken -> Task<ClientUnitResult>
+    abstract createLicenseAsync: model: string * cancellationToken: CancellationToken -> Task<ClientUnitResult>

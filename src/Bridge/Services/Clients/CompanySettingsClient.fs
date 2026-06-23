@@ -9,7 +9,7 @@ open Fossa.Bridge.Services
 open Fossa.Bridge.Services.UrlHelpers
 
 type CompanySettingsClient(transport: IHttpTransport) =
-    member _.GetCompanySettingsAsync
+    member _.getCompanySettingsAsync
         (cancellationToken: CancellationToken)
         : Task<ClientResult<CompanySettingsRetrievalModel>> =
         let endpointPath, securityRequirement = Endpoints.CompanySettings
@@ -19,7 +19,7 @@ type CompanySettingsClient(transport: IHttpTransport) =
 
         transport.GetAsync<CompanySettingsRetrievalModel>(endpointUrl, endpointSecurity, cancellationToken)
 
-    member _.CreateCompanySettingsAsync
+    member _.createCompanySettingsAsync
         (model: CompanySettingsModificationModel, cancellationToken: CancellationToken)
         : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.CompanySettings
@@ -29,7 +29,7 @@ type CompanySettingsClient(transport: IHttpTransport) =
 
         transport.PostAsync<CompanySettingsModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
-    member _.UpdateCompanySettingsAsync
+    member _.updateCompanySettingsAsync
         (model: CompanySettingsModificationModel, cancellationToken: CancellationToken)
         : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.CompanySettings
@@ -39,7 +39,7 @@ type CompanySettingsClient(transport: IHttpTransport) =
 
         transport.PutAsync<CompanySettingsModificationModel>(endpointUrl, endpointSecurity, model, cancellationToken)
 
-    member _.DeleteCompanySettingsAsync(cancellationToken: CancellationToken) : Task<ClientUnitResult> =
+    member _.deleteCompanySettingsAsync(cancellationToken: CancellationToken) : Task<ClientUnitResult> =
         let endpointPath, securityRequirement = Endpoints.CompanySettings
 
         let endpointUrl, endpointSecurity =
@@ -48,14 +48,14 @@ type CompanySettingsClient(transport: IHttpTransport) =
         transport.DeleteAsync(endpointUrl, endpointSecurity, cancellationToken)
 
     interface ICompanySettingsClient with
-        member this.GetCompanySettingsAsync(cancellationToken) =
-            this.GetCompanySettingsAsync(cancellationToken)
+        member this.getCompanySettingsAsync(cancellationToken) =
+            this.getCompanySettingsAsync (cancellationToken)
 
-        member this.CreateCompanySettingsAsync(model, cancellationToken) =
-            this.CreateCompanySettingsAsync(model, cancellationToken)
+        member this.createCompanySettingsAsync(model, cancellationToken) =
+            this.createCompanySettingsAsync (model, cancellationToken)
 
-        member this.UpdateCompanySettingsAsync(model, cancellationToken) =
-            this.UpdateCompanySettingsAsync(model, cancellationToken)
+        member this.updateCompanySettingsAsync(model, cancellationToken) =
+            this.updateCompanySettingsAsync (model, cancellationToken)
 
-        member this.DeleteCompanySettingsAsync(cancellationToken) =
-            this.DeleteCompanySettingsAsync(cancellationToken)
+        member this.deleteCompanySettingsAsync(cancellationToken) =
+            this.deleteCompanySettingsAsync (cancellationToken)
