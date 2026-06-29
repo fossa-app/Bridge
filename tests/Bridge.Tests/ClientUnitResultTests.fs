@@ -39,10 +39,18 @@ let tests =
           <| fun _ ->
               let result = ClientUnitResultHelpers.success
 
-              let matched =
-                  ClientResultHelpers.matchClientUnitResult result (fun () -> "ok") (fun _ -> "problem")
+              let folded =
+                  ClientResultHelpers.foldClientUnitResult result (fun () -> "ok") (fun _ -> "problem")
 
-              Expect.equal matched "ok" "Match should return success projection"
+              let mutable successHandled = false
+              let mutable failureHandled = false
+
+              ClientResultHelpers.handleClientUnitResult result (fun () -> successHandled <- true) (fun _ ->
+                  failureHandled <- true)
+
+              Expect.equal folded "ok" "Fold should return success projection"
+              Expect.isTrue successHandled "Handle should invoke success callback"
+              Expect.isFalse failureHandled "Handle should not invoke failure callback"
               Expect.isTrue (ClientResultHelpers.isClientSuccess result) "Result should be success"
               Expect.isFalse (ClientResultHelpers.isClientFailure result) "Result should not be failure"
               Expect.equal (ClientResultHelpers.getClientProblem result) None "Problem should not be available"
@@ -52,10 +60,18 @@ let tests =
           <| fun _ ->
               let result = ClientUnitResultHelpers.problem problem
 
-              let matched =
-                  ClientResultHelpers.matchClientUnitResult result (fun () -> "ok") (fun actual -> string actual.title)
+              let folded =
+                  ClientResultHelpers.foldClientUnitResult result (fun () -> "ok") (fun actual -> string actual.title)
 
-              Expect.equal matched (string problem.title) "Match should return problem projection"
+              let mutable successHandled = false
+              let mutable failureHandled = false
+
+              ClientResultHelpers.handleClientUnitResult result (fun () -> successHandled <- true) (fun actual ->
+                  failureHandled <- actual = problem)
+
+              Expect.equal folded (string problem.title) "Fold should return problem projection"
+              Expect.isFalse successHandled "Handle should not invoke success callback"
+              Expect.isTrue failureHandled "Handle should invoke failure callback"
               Expect.isFalse (ClientResultHelpers.isClientSuccess result) "Result should not be success"
               Expect.isTrue (ClientResultHelpers.isClientFailure result) "Result should be failure"
               Expect.equal (ClientResultHelpers.getClientProblem result) (Some problem) "Problem should be available"
