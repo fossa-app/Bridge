@@ -9,19 +9,49 @@ module ClientResultHelpers =
     let problem<'T when 'T: not struct and 'T: not null> (problem: ProblemDetailsModel) : ClientResult<'T> =
         ClientResult.Failure problem
 
-    let matchClientResult<'T, 'TResult when 'T: not struct and 'T: not null>
+    let mapClientResult<'T, 'U when 'T: not struct and 'T: not null and 'U: not struct and 'U: not null>
+        (result: ClientResult<'T>)
+        (mapSuccess: 'T -> 'U)
+        : ClientResult<'U> =
+        match result with
+        | ClientResult.Success value -> ClientResult.Success(mapSuccess value)
+        | ClientResult.Failure problem -> ClientResult.Failure problem
+
+    let foldClientResult<'T, 'TResult when 'T: not struct and 'T: not null>
         (result: ClientResult<'T>)
         (onSuccess: 'T -> 'TResult)
         (onFailure: ProblemDetailsModel -> 'TResult)
         : 'TResult =
-        result.Match(onSuccess, onFailure)
+        match result with
+        | ClientResult.Success value -> onSuccess value
+        | ClientResult.Failure problem -> onFailure problem
 
-    let matchClientUnitResult<'TResult>
+    let foldClientUnitResult<'TResult>
         (result: ClientUnitResult)
         (onSuccess: unit -> 'TResult)
         (onFailure: ProblemDetailsModel -> 'TResult)
         : 'TResult =
-        result.Match(onSuccess, onFailure)
+        match result with
+        | ClientUnitResult.Success -> onSuccess ()
+        | ClientUnitResult.Failure problem -> onFailure problem
+
+    let handleClientResult<'T when 'T: not struct and 'T: not null>
+        (result: ClientResult<'T>)
+        (onSuccess: 'T -> unit)
+        (onFailure: ProblemDetailsModel -> unit)
+        : unit =
+        match result with
+        | ClientResult.Success value -> onSuccess value
+        | ClientResult.Failure problem -> onFailure problem
+
+    let handleClientUnitResult
+        (result: ClientUnitResult)
+        (onSuccess: unit -> unit)
+        (onFailure: ProblemDetailsModel -> unit)
+        : unit =
+        match result with
+        | ClientUnitResult.Success -> onSuccess ()
+        | ClientUnitResult.Failure problem -> onFailure problem
 
     let isClientSuccess (result: IClientResult) : bool = result.IsSuccess
 

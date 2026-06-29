@@ -39,9 +39,23 @@ let tests =
           <| fun _ ->
               let result = ClientResultHelpers.success "bridge"
 
-              let matched = ClientResultHelpers.matchClientResult result id (fun _ -> "problem")
+              let mapped =
+                  ClientResultHelpers.mapClientResult result (fun value -> value + "-mapped")
 
-              Expect.equal matched "bridge" "Match should return success value"
+              let folded = ClientResultHelpers.foldClientResult result id (fun _ -> "problem")
+              let mutable successHandled = false
+              let mutable failureHandled = false
+
+              ClientResultHelpers.handleClientResult result (fun value -> successHandled <- value = "bridge") (fun _ ->
+                  failureHandled <- true)
+
+              match mapped with
+              | ClientResult.Success value -> Expect.equal value "bridge-mapped" "Map should transform success value"
+              | ClientResult.Failure _ -> failtest "Expected mapped success"
+
+              Expect.equal folded "bridge" "Fold should return success projection"
+              Expect.isTrue successHandled "Handle should invoke success callback"
+              Expect.isFalse failureHandled "Handle should not invoke failure callback"
               Expect.isTrue (ClientResultHelpers.isClientSuccess result) "Result should be success"
               Expect.isFalse (ClientResultHelpers.isClientFailure result) "Result should not be failure"
               Expect.equal (ClientResultHelpers.getClientValue result) (Some "bridge") "Value should be available"
@@ -51,11 +65,30 @@ let tests =
           testCase "ergonomic helpers expose failure result"
           <| fun _ ->
               let result: ClientResult<string> = ClientResultHelpers.problem problem
+              let mutable mapCalled = false
 
-              let matched =
-                  ClientResultHelpers.matchClientResult result id (fun actual -> string actual.title)
+              let mapped =
+                  ClientResultHelpers.mapClientResult result (fun value ->
+                      mapCalled <- true
+                      value + "-mapped")
 
-              Expect.equal matched (string problem.title) "Match should return problem projection"
+              let folded =
+                  ClientResultHelpers.foldClientResult result id (fun actual -> string actual.title)
+
+              let mutable successHandled = false
+              let mutable failureHandled = false
+
+              ClientResultHelpers.handleClientResult result (fun _ -> successHandled <- true) (fun actual ->
+                  failureHandled <- actual = problem)
+
+              match mapped with
+              | ClientResult.Success _ -> failtest "Expected mapped failure"
+              | ClientResult.Failure actual -> Expect.equal actual problem "Map should preserve problem"
+
+              Expect.isFalse mapCalled "Map should not invoke success mapper for failure"
+              Expect.equal folded (string problem.title) "Fold should return problem projection"
+              Expect.isFalse successHandled "Handle should not invoke success callback"
+              Expect.isTrue failureHandled "Handle should invoke failure callback"
               Expect.isFalse (ClientResultHelpers.isClientSuccess result) "Result should not be success"
               Expect.isTrue (ClientResultHelpers.isClientFailure result) "Result should be failure"
               Expect.equal (ClientResultHelpers.getClientValue result) None "Value should not be available"
