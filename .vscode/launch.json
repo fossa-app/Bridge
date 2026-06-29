@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build tests",
+            "program": "${workspaceFolder}/tests/Bridge.Tests/bin/Debug/net10.0/Fossa.Bridge.Tests.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/tests/Bridge.Tests",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}
