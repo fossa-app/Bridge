@@ -2,6 +2,7 @@ module Fossa.Bridge.Services.UrlHelpers
 
 
 open System
+open System.Globalization
 
 let private suffixMappings =
     [ ".dev.localhost:4211", ".dev.localhost:5210"
@@ -39,7 +40,8 @@ type UrlPart(value: string) =
 
     static member op_Implicit(dt: DateTime) = UrlPart(string dt)
 
-    static member op_Implicit(dto: DateTimeOffset) = UrlPart(string dto)
+    static member op_Implicit(dto: DateTimeOffset) =
+        UrlPart(dto.ToString("O", CultureInfo.InvariantCulture))
 
 let composeRelativeUrl
     (endpointUrl: string)

@@ -17,8 +17,9 @@ type BranchClient(transport: IHttpTransport) =
                   for id in ids do
                       yield "id", (id: UrlPart)
               | _ -> ()
-              if not (String.IsNullOrEmpty(queryParams.search)) then
-                  yield "search", (queryParams.search: UrlPart)
+              match Option.ofObj queryParams.search with
+              | Some search when not (String.IsNullOrEmpty(search)) -> yield "search", (search: UrlPart)
+              | _ -> ()
               if queryParams.pageNumber.HasValue then
                   yield "pageNumber", (queryParams.pageNumber.Value: UrlPart)
               if queryParams.pageSize.HasValue then
