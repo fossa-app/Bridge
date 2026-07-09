@@ -3,6 +3,7 @@ namespace Fossa.Bridge.Models.ApiModels
 
 open System
 open System.Collections.Generic
+open Fossa.Bridge
 
 [<CLIMutable>]
 type LicenseResponseModel<'TEntitlementsModel> =
@@ -14,5 +15,5 @@ type PagingResponseModel<'T> =
     { pageNumber: Nullable<int>
       pageSize: Nullable<int>
       items: IReadOnlyCollection<'T>
-      totalItems: Nullable<int64>
-      totalPages: Nullable<int64> }
+      totalItems: Nullable<ApproximateInt64>
+      totalPages: Nullable<ApproximateInt64> }

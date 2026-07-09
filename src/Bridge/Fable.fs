@@ -1,6 +1,13 @@
 namespace Fossa.Bridge
 
 #if FABLE_COMPILER
+// Logical int64 values are represented as frontend numbers for UI/library interop.
+type ApproximateInt64 = int32
+#else
+type ApproximateInt64 = int64
+#endif
+
+#if FABLE_COMPILER
 open Fable.Core
 
 [<Global>]
