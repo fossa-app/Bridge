@@ -21,6 +21,6 @@
     "@fable-org/fable-library-ts": "^2.0.0"
   },
   "devDependencies": {
-    "typescript": "^6.0.2"
+    "typescript": "^7.0.2"
   }
 }
